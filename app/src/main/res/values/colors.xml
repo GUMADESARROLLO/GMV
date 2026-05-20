@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="seed">#1E88E5</color>
+
+    <!-- Primary — Telegram-style blue -->
+    <color name="primary">#1E88E5</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#BBDEFB</color>
+    <color name="on_primary_container">#0D47A1</color>
+
+    <!-- Secondary -->
+    <color name="secondary">#5C6BC0</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="secondary_container">#E8EAF6</color>
+    <color name="on_secondary_container">#1A237E</color>
+
+    <!-- Tertiary -->
+    <color name="tertiary">#7E57C2</color>
+    <color name="on_tertiary">#FFFFFF</color>
+    <color name="tertiary_container">#EDE7F6</color>
+    <color name="on_tertiary_container">#311B92</color>
+
+    <!-- Error -->
+    <color name="error">#EF5350</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="error_container">#FFEBEE</color>
+    <color name="on_error_container">#B71C1C</color>
+
+    <!-- Background / Surface — light blue tint like Telegram -->
+    <color name="background">#E8F0FE</color>
+    <color name="on_background">#1A1C1E</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="on_surface">#1A1C1E</color>
+    <color name="surface_variant">#E3F2FD</color>
+    <color name="on_surface_variant">#546E7A</color>
+
+    <!-- Outline -->
+    <color name="outline">#B0BEC5</color>
+    <color name="outline_variant">#CFD8DC</color>
+
+    <!-- Telegram-specific extras -->
+    <color name="badge_red">#FF7043</color>
+    <color name="time_text">#78909C</color>
+    <color name="subtitle_text">#607D8B</color>
+    <color name="avatar_bg_1">#BBDEFB</color>
+    <color name="avatar_bg_2">#E1BEE7</color>
+    <color name="avatar_bg_3">#C8E6C9</color>
+    <color name="avatar_bg_4">#FFCCBC</color>
+    <color name="avatar_bg_5">#B2EBF2</color>
+
+    <!-- UI LOGIN -->
+<!--    <color name="background">#F8F8F8</color>-->
+<!--    <color name="primary">#FF5A00</color>-->
+    <color name="primary_dark">#E65100</color>
+    <color name="input_bg">#FCE8DF</color>
+    <color name="text_primary">#111111</color>
+    <color name="text_secondary">#9B9B9B</color>
+    <color name="white">#FFFFFF</color>
 </resources>

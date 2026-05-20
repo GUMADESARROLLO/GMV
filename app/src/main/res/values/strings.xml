@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">GMV</string>
+    <string name="usuario">Usuario</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="ingresar">INGRESAR</string>
+    <string name="label_articulos">ARTÍCULOS</string>
+    <string name="label_clientes">CLIENTES</string>
+    <string name="label_perfil">PERFIL</string>
+    <string name="titulo_articulos">Artículos</string>
+    <string name="titulo_clientes">Clientes</string>
+    <string name="titulo_perfil">Perfil</string>
+    <string name="bienvenido_login">Bienvenido</string>
+    <string name="subtitulo_login">Inicia sesión para continuar</string>
+    <string name="agregar">Agregar</string>
 </resources>

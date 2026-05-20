@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme — Telegram-style dark -->
+    <color name="primary">#90CAF9</color>
+    <color name="on_primary">#0D47A1</color>
+    <color name="primary_container">#1565C0</color>
+    <color name="on_primary_container">#BBDEFB</color>
+
+    <color name="secondary">#9FA8DA</color>
+    <color name="on_secondary">#1A237E</color>
+    <color name="secondary_container">#3949AB</color>
+    <color name="on_secondary_container">#E8EAF6</color>
+
+    <color name="tertiary">#B39DDB</color>
+    <color name="on_tertiary">#311B92</color>
+    <color name="tertiary_container">#512DA8</color>
+    <color name="on_tertiary_container">#EDE7F6</color>
+
+    <color name="error">#EF9A9A</color>
+    <color name="on_error">#B71C1C</color>
+    <color name="error_container">#C62828</color>
+    <color name="on_error_container">#FFEBEE</color>
+
+    <color name="background">#1A1C23</color>
+    <color name="on_background">#E2E2E6</color>
+    <color name="surface">#242836</color>
+    <color name="on_surface">#E2E2E6</color>
+    <color name="surface_variant">#363B4A</color>
+    <color name="on_surface_variant">#90A4AE</color>
+
+    <color name="outline">#546E7A</color>
+    <color name="outline_variant">#37474F</color>
+
+    <color name="badge_red">#FF7043</color>
+    <color name="time_text">#78909C</color>
+    <color name="subtitle_text">#90A4AE</color>
+    <color name="avatar_bg_1">#1565C0</color>
+    <color name="avatar_bg_2">#6A1B9A</color>
+    <color name="avatar_bg_3">#2E7D32</color>
+    <color name="avatar_bg_4">#E65100</color>
+    <color name="avatar_bg_5">#00838F</color>
+</resources>
