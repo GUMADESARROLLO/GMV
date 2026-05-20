@@ -1,4 +1,4 @@
-package com.unimarksa.gmv
+package com.unimarksa.gmv.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
+import com.unimarksa.gmv.R
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        findViewById<MaterialButton>(R.id.btn_ingresar).setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnLogin).setOnClickListener {
             startActivity(Intent(this, DashboardActivity::class.java))
             finish()
         }

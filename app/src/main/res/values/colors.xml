@@ -49,11 +49,16 @@
     <color name="avatar_bg_5">#B2EBF2</color>
 
     <!-- UI LOGIN -->
-<!--    <color name="background">#F8F8F8</color>-->
-<!--    <color name="primary">#FF5A00</color>-->
+    <color name="background_login">#F8F8F8</color>
+    <color name="primary_login">#FF5A00</color>
     <color name="primary_dark">#E65100</color>
     <color name="input_bg">#FCE8DF</color>
     <color name="text_primary">#111111</color>
     <color name="text_secondary">#9B9B9B</color>
     <color name="white">#FFFFFF</color>
+
+    <!-- Productos / UI extras -->
+    <color name="grey_40">#9E9E9E</color>
+    <color name="available">#43A047</color>
+    <color name="txt_price_color">#E65100</color>
 </resources>

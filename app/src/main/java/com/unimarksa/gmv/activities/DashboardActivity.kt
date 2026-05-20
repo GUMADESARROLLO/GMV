@@ -1,4 +1,4 @@
-package com.unimarksa.gmv
+package com.unimarksa.gmv.activities
 
 import android.os.Bundle
 import android.widget.Toast
@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.unimarksa.gmv.R
 
 class DashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

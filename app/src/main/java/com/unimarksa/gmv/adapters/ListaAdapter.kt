@@ -1,4 +1,4 @@
-package com.unimarksa.gmv
+package com.unimarksa.gmv.adapters
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
+import com.unimarksa.gmv.R
+import com.unimarksa.gmv.models.ItemLista
 
 class ListaAdapter(
     private val items: List<ItemLista>,

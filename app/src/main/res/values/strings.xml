@@ -12,4 +12,5 @@
     <string name="bienvenido_login">Bienvenido</string>
     <string name="subtitulo_login">Inicia sesión para continuar</string>
     <string name="agregar">Agregar</string>
+    <string name="img_producto">Imagen del producto</string>
 </resources>

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/articulosFragment"
-        android:name="com.unimarksa.gmv.ArticulosFragment"
+        android:name="com.unimarksa.gmv.fragments.ArticulosFragment"
         android:label="@string/titulo_articulos"
         tools:layout="@layout/fragment_articulos" />
 
     <fragment
         android:id="@+id/clientesFragment"
-        android:name="com.unimarksa.gmv.ClientesFragment"
+        android:name="com.unimarksa.gmv.fragments.ClientesFragment"
         android:label="@string/titulo_clientes"
         tools:layout="@layout/fragment_clientes" />
 
     <fragment
         android:id="@+id/perfilFragment"
-        android:name="com.unimarksa.gmv.PerfilFragment"
+        android:name="com.unimarksa.gmv.fragments.PerfilFragment"
         android:label="@string/titulo_perfil"
         tools:layout="@layout/fragment_perfil" />
 

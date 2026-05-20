@@ -1,4 +1,4 @@
-package com.unimarksa.gmv
+package com.unimarksa.gmv.fragments
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.unimarksa.gmv.R
+import com.unimarksa.gmv.adapters.ListaAdapter
+import com.unimarksa.gmv.models.ItemLista
 
 class ClientesFragment : Fragment() {
 

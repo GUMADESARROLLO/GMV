@@ -1,4 +1,4 @@
-package com.unimarksa.gmv
+package com.unimarksa.gmv.models
 
 data class ItemLista(
     val nombre: String,
