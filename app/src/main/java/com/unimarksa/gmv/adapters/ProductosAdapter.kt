@@ -1,5 +1,6 @@
 package com.unimarksa.gmv.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +11,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.activities.ProductDetailActivity
 import com.unimarksa.gmv.models.ItemProducto
 
 class ProductosAdapter(
-    private val items: List<ItemProducto>,
-    private val onClick: (ItemProducto) -> Unit
+    private val items: List<ItemProducto>
 ) : RecyclerView.Adapter<ProductosAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -60,7 +61,11 @@ class ProductosAdapter(
             .centerCrop()
             .into(holder.categoryImage)
 
-        holder.itemView.setOnClickListener { onClick(item) }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, ProductDetailActivity::class.java)
+            intent.putExtra("producto", item)
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = items.size

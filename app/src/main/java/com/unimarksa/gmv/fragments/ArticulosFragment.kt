@@ -66,6 +66,6 @@ class ArticulosFragment : Fragment() {
     }
 
     private fun mostrarProductos(productos: List<ItemProducto>) {
-        recyclerView.adapter = ProductosAdapter(productos) { /* click handler */ }
+        recyclerView.adapter = ProductosAdapter(productos)
     }
 }

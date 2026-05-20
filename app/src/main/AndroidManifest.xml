@@ -31,6 +31,10 @@
             android:name=".activities.ClienteDetailActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".activities.ProductDetailActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

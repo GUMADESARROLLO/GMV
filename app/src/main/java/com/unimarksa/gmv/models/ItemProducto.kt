@@ -1,5 +1,7 @@
 package com.unimarksa.gmv.models
 
+import java.io.Serializable
+
 data class ItemProducto(
     val nombre: String,
     val sku: String,
@@ -10,4 +12,4 @@ data class ItemProducto(
     val bonificado: String? = null,
     val imagenUrl: String? = null,
     val imagenResource: Int? = null
-)
+) : Serializable
