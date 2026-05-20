@@ -8,12 +8,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ProductosAdapter
+import com.unimarksa.gmv.models.ItemProducto
 import com.unimarksa.gmv.tools.ApiService
 
 class ArticulosFragment : Fragment() {
 
+    companion object {
+        private var cachedProductos: List<ItemProducto>? = null
+    }
+
+    private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
@@ -27,20 +34,38 @@ class ArticulosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipeRefresh = view.findViewById(R.id.swipe_refresh)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        cargarProductos()
+        swipeRefresh.setOnRefreshListener {
+            cachedProductos = null
+            cargarProductos()
+        }
+
+        if (cachedProductos == null) {
+            cargarProductos()
+        } else {
+            mostrarProductos(cachedProductos!!)
+        }
     }
 
     private fun cargarProductos() {
+        swipeRefresh.isRefreshing = true
         ApiService.fetchProductos(
             onResult = { productos ->
-                recyclerView.adapter = ProductosAdapter(productos) { /* click handler */ }
+                cachedProductos = productos
+                mostrarProductos(productos)
+                swipeRefresh.isRefreshing = false
             },
             onError = { error ->
                 Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+                swipeRefresh.isRefreshing = false
             }
         )
+    }
+
+    private fun mostrarProductos(productos: List<ItemProducto>) {
+        recyclerView.adapter = ProductosAdapter(productos) { /* click handler */ }
     }
 }

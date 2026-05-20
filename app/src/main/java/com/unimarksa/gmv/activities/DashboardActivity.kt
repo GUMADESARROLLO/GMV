@@ -1,38 +1,38 @@
 package com.unimarksa.gmv.activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.adapters.ViewPagerAdapter
 
 class DashboardActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        val viewPager = findViewById<ViewPager>(R.id.viewpager)
+        val navigation = findViewById<BottomNavigationView>(R.id.navigation)
 
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
 
-        findViewById<BottomNavigationView>(R.id.nav_view)
-            .setupWithNavController(navController)
+        viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                navigation.menu.getItem(position).isChecked = true
+            }
+        })
 
-        findViewById<FloatingActionButton>(R.id.fab_add).setOnClickListener {
-            Toast.makeText(this, "Agregar nuevo", Toast.LENGTH_SHORT).show()
+        navigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.articulosFragment -> viewPager.currentItem = 0
+                R.id.clientesFragment -> viewPager.currentItem = 1
+                R.id.perfilFragment -> viewPager.currentItem = 2
+            }
+            true
         }
     }
 }
