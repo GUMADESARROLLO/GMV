@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.unimarksa.gmv.R
@@ -25,8 +24,7 @@ class ProductosAdapter(
         val idCantItem: TextView = view.findViewById(R.id.id_Cant_item)
         val productPrice: TextView = view.findViewById(R.id.product_price)
         val categoryImage: ImageView = view.findViewById(R.id.category_image)
-
-        val lytTallas: LinearLayout = view.findViewById(R.id.id_lyt_tallas)
+        val rvBonificados: RecyclerView = view.findViewById(R.id.rv_bonificados)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,34 +38,19 @@ class ProductosAdapter(
         holder.productName.text = item.nombre
         holder.idSku.text = item.codArticulo
         holder.idCantItem.text = item.cantidad
-        holder.productPrice.text = item.precio
+        holder.productPrice.text = "C$ ${item.precio}"
 
+        val partes = if (!item.bonificado.isNullOrBlank()) {
+            item.bonificado!!.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        } else emptyList()
 
-        holder.lytTallas.removeAllViews()
-        if (!item.bonificado.isNullOrBlank()) {
-            val partes = item.bonificado!!.split(":")
-            for (p in partes) {
-                val trimmed = p.trim()
-                if (trimmed.isNotEmpty()) {
-                    val chip = TextView(holder.itemView.context).apply {
-                        text = trimmed
-                        textSize = 10f
-                        setTypeface(typeface, android.graphics.Typeface.BOLD)
-                        setTextColor(ContextCompat.getColor(context, R.color.grey_80))
-                        setBackgroundResource(R.drawable.bg_size_chip)
-                        gravity = android.view.Gravity.CENTER
-                        minWidth = resources.getDimensionPixelSize(R.dimen.spacing_large)
-                        setPadding(8, 0, 8, 0)
-                        val lp = LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            resources.getDimensionPixelSize(R.dimen.spacing_large)
-                        )
-                        lp.marginEnd = resources.getDimensionPixelSize(R.dimen.spacing_small)
-                        layoutParams = lp
-                    }
-                    holder.lytTallas.addView(chip)
-                }
-            }
+        if (partes.isNotEmpty()) {
+            val ctx = holder.itemView.context
+            holder.rvBonificados.layoutManager = GridLayoutManager(ctx, 6)
+            holder.rvBonificados.adapter = BonificadosAdapter(partes)
+            holder.rvBonificados.visibility = View.VISIBLE
+        } else {
+            holder.rvBonificados.visibility = View.GONE
         }
 
         Picasso.get()
