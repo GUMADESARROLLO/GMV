@@ -79,6 +79,9 @@ object ApiService {
             val und = opt("product_und") ?: ""
             val price = opt("product_price") ?: "0.00"
             val status = opt("product_status") ?: ""
+            val image = opt("product_image") ?: ""
+            val bonificado = opt("product_bonificado") ?: opt("product_bonificacion") ?: ""
+            val imageUrl = if (image.isNotEmpty()) "${Config.BASE_URL}/upload/product/$image" else null
             lista.add(
                 ItemProducto(
                     nombre = name,
@@ -86,7 +89,9 @@ object ApiService {
                     codArticulo = id,
                     cantidad = if (und.isNotEmpty()) "$qty [$und]" else qty,
                     precio = price,
-                    oferta = status
+                    oferta = status,
+                    bonificado = bonificado,
+                    imagenUrl = imageUrl
                 )
             )
         }

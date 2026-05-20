@@ -7,5 +7,7 @@ data class ItemProducto(
     val cantidad: String,
     val precio: String,
     val oferta: String? = null,
+    val bonificado: String? = null,
+    val imagenUrl: String? = null,
     val imagenResource: Int? = null
 )

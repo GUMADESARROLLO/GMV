@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.circleimageview)
     implementation(libs.swiperefreshlayout)
+    implementation(libs.picasso)
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
