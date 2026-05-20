@@ -3,35 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
-    android:background="?attr/selectableItemBackground"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="8dp"
     android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    app:cardElevation="1dp"
+    app:cardUseCompatPadding="false">
 
     <LinearLayout
         android:id="@+id/lyt_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal">
 
+        <!-- ── Imagen del artículo con badge de estado ── -->
         <FrameLayout
             android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_height="90dp">
 
             <ImageView
                 android:id="@+id/category_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_image_rounded"
+                android:background="@color/grey_5"
                 android:contentDescription="@string/img_producto"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_empty_history" />
 
+            <!-- Badge texto "FACTURADO" (se muestra/oculta desde código) -->
             <TextView
                 android:id="@+id/txt_offer"
                 android:layout_width="wrap_content"
@@ -40,70 +43,157 @@
                 android:layout_margin="6dp"
                 android:background="@drawable/bg_badge"
                 android:elevation="2dp"
-                android:paddingHorizontal="6dp"
-                android:paddingVertical="2dp"
+                android:paddingHorizontal="7dp"
+                android:paddingVertical="3dp"
                 android:text="FACTURADO"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"
+                android:textSize="10sp"
+                android:textStyle="bold"
                 android:visibility="gone" />
 
+            <!-- Ícono de estado circular (check / pendiente) -->
             <ImageView
                 android:id="@+id/icon_status"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="top|start"
                 android:layout_margin="6dp"
                 android:background="@drawable/bg_badge_icon"
+                android:elevation="2dp"
                 android:padding="4dp"
                 android:src="@drawable/ic_check_circle" />
+
         </FrameLayout>
 
+        <!-- ── Info del artículo ── -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
+            <!-- Nombre -->
             <TextView
                 android:id="@+id/product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="3"
-                android:text="IMIPRAMINA 25 MG TABLETA RECUBIERTA 100/CAJA (INTERMED)"
-                android:textColor="#000000"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:maxLines="2"
+                android:text="IMIPRAMINA 25 MG TABLETA RECUBIERTA 100/CAJA"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:fontFamily="sans-serif-medium" />
 
+            <!-- SKU -->
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SKU "
+                    android:textColor="@color/grey_40"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/id_sku"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00000000"
+                    android:textColor="@color/grey_40"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Tallas disponibles -->
+            <LinearLayout
+                android:id="@+id/id_lyt_tallas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/id_sku"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="SKU. "
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/grey_40"
-                    android:textSize="14sp" />
+                    android:id="@+id/sz_xs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="3dp"
+                    android:background="@drawable/bg_size_chip"
+                    android:gravity="center"
+                    android:minWidth="20dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:text="XS"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/id_cod_articulo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="00000000"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/grey_40"
-                    android:textSize="14sp"
+                    android:id="@+id/sz_s"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="3dp"
+                    android:background="@drawable/bg_size_chip"
+                    android:gravity="center"
+                    android:minWidth="20dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:text="S"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sz_m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="3dp"
+                    android:background="@drawable/bg_size_chip"
+                    android:gravity="center"
+                    android:minWidth="20dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:text="M"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sz_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="3dp"
+                    android:background="@drawable/bg_size_chip"
+                    android:gravity="center"
+                    android:minWidth="20dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:text="L"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sz_xl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:background="@drawable/bg_size_chip"
+                    android:gravity="center"
+                    android:minWidth="20dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:text="XL"
+                    android:textSize="10sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
+            <!-- Cantidad + Precio -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,9 +206,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="5,912 [UND]"
+                    android:text="5,912 UND"
                     android:textColor="@color/available"
-                    android:textSize="17sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -126,11 +216,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="C$ 144.50"
-                    android:textColor="@color/txt_price_color"
-                    android:textSize="19sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

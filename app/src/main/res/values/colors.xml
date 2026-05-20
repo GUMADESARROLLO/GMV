@@ -87,4 +87,13 @@
     <color name="mora_ok_bg">#EAF3DE</color>
     <color name="mora_warn_bg">#FAEEDA</color>
     <color name="mora_danger_bg">#FCEBEB</color>
+
+
+    <!-- Chips de talla — estado disponible (azul) -->
+    <color name="size_chip_available_bg">#E6F1FB</color>
+    <color name="size_chip_available_text">#0C447C</color>
+
+    <!-- Chips de talla — estado por defecto (gris) -->
+    <color name="size_chip_default_bg">#F1EFE8</color>
+    <color name="size_chip_default_text">#888780</color>
 </resources>

@@ -19,7 +19,7 @@ class ProductosAdapter(
         val card: CardView = view as CardView
         val productName: TextView = view.findViewById(R.id.product_name)
         val idSku: TextView = view.findViewById(R.id.id_sku)
-        val idCodArticulo: TextView = view.findViewById(R.id.id_cod_articulo)
+        val idCodArticulo: TextView = view.findViewById(R.id.id_sku)
         val idCantItem: TextView = view.findViewById(R.id.id_Cant_item)
         val productPrice: TextView = view.findViewById(R.id.product_price)
         val categoryImage: ImageView = view.findViewById(R.id.category_image)
