@@ -5,6 +5,9 @@ plugins {
 
 android {
     namespace = "com.unimarksa.gmv"
+    buildFeatures {
+        viewBinding = true
+    }
     compileSdk {
         version = release(36)
     }

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- ── Toolbar personalizada ── -->
+        <!-- Toolbar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -41,10 +41,9 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
-        <!-- ── Header card: avatar · nombre · info básica ── -->
+        <!-- Header card -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +61,6 @@
                 android:orientation="vertical"
                 android:padding="14dp">
 
-                <!-- Avatar + nombre + estado -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -70,7 +68,6 @@
                     android:orientation="horizontal"
                     android:layout_marginBottom="12dp">
 
-                    <!-- Avatar con badge de verificación -->
                     <RelativeLayout
                         android:layout_width="48dp"
                         android:layout_height="48dp">
@@ -90,7 +87,6 @@
                             android:src="@drawable/noverificado" />
                     </RelativeLayout>
 
-                    <!-- Nombre + condición de pago -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -102,11 +98,11 @@
                             android:id="@+id/id_perfil_name_cliente"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
                             android:text="Emma Richmond"
-                            android:textSize="16sp"
                             android:textColor="@color/black"
-                            android:textStyle="bold"
-                            app:fontFamily="sans-serif-medium" />
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -118,44 +114,41 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Cond. pago "
-                                android:textSize="12sp"
-                                android:textColor="@color/grey_40" />
+                                android:textColor="@color/grey_40"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/id_condicion_pago"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Contado"
-                                android:textSize="12sp"
                                 android:textColor="@color/colorPrimary"
+                                android:textSize="12sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Badge estado activo -->
                     <TextView
                         android:id="@+id/id_badge_estado"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Activo"
-                        android:textSize="11sp"
-                        android:textColor="#3B6D11"
-                        android:textStyle="bold"
                         android:background="@drawable/bg_badge_green"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:paddingTop="4dp"
-                        android:paddingBottom="4dp" />
+                        android:paddingBottom="4dp"
+                        android:text="Activo"
+                        android:textColor="#3B6D11"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Divider -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/grey_10"
                     android:layout_marginBottom="10dp" />
 
-                <!-- Info grid: teléfono + nivel precio -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -171,19 +164,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Teléfono"
-                            android:textSize="11sp"
-                            android:textColor="@color/grey_40" />
+                            android:text="Tel\u00e9fono"
+                            android:textColor="@color/grey_40"
+                            android:textSize="11sp" />
 
                         <TextView
                             android:id="@+id/id_tele"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-medium"
                             android:text="8244-9100"
-                            android:textSize="13sp"
                             android:textColor="@color/black"
-                            app:fontFamily="sans-serif-medium" />
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -196,22 +189,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Nv. Precio"
-                            android:textSize="11sp"
-                            android:textColor="@color/grey_40" />
+                            android:textColor="@color/grey_40"
+                            android:textSize="11sp" />
 
                         <TextView
                             android:id="@+id/id_nivel_precio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-medium"
                             android:text="Farmacia"
-                            android:textSize="13sp"
                             android:textColor="@color/black"
-                            app:fontFamily="sans-serif-medium" />
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Dirección -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -220,25 +212,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dirección"
-                        android:textSize="11sp"
-                        android:textColor="@color/grey_40" />
+                        android:text="Direcci\u00f3n"
+                        android:textColor="@color/grey_40"
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/txt_direccion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
+                        android:fontFamily="sans-serif-medium"
                         android:text="@string/lorem_ipsum"
-                        android:textSize="13sp"
                         android:textColor="@color/black"
-                        app:fontFamily="sans-serif-medium" />
+                        android:textSize="13sp" />
                 </LinearLayout>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- ── Acciones rápidas ── -->
+        <!-- Acciones rápidas -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -375,7 +367,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Artículos"
+                        android:text="Art\u00edculos"
                         android:textSize="10sp"
                         android:textColor="@color/colorPrimary" />
                 </LinearLayout>
@@ -383,7 +375,7 @@
 
         </LinearLayout>
 
-        <!-- ── Tarjeta de crédito: disponible · saldo · límite ── -->
+        <!-- Crédito -->
         <androidx.cardview.widget.CardView
             android:id="@+id/id_card_disp"
             android:layout_width="match_parent"
@@ -402,13 +394,12 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Disponible principal -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Disponible"
-                    android:textSize="11sp"
-                    android:textColor="#80FFFFFF" />
+                    android:textColor="#80FFFFFF"
+                    android:textSize="11sp" />
 
                 <TextView
                     android:id="@+id/id_perfil_disponible"
@@ -417,18 +408,16 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="12dp"
                     android:text="C$ 12,000.00"
-                    android:textSize="22sp"
                     android:textColor="@android:color/white"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
 
-                <!-- Divisor -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="#26FFFFFF"
                     android:layout_marginBottom="12dp" />
 
-                <!-- Saldo + Límite en fila -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -444,8 +433,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Saldo"
-                            android:textSize="11sp"
-                            android:textColor="#80FFFFFF" />
+                            android:textColor="#80FFFFFF"
+                            android:textSize="11sp" />
 
                         <TextView
                             android:id="@+id/id_perfil_saldo"
@@ -453,8 +442,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="C$ 2,000.00"
-                            android:textSize="16sp"
                             android:textColor="@android:color/white"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -467,9 +456,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Límite"
-                            android:textSize="11sp"
-                            android:textColor="#80FFFFFF" />
+                            android:text="L\u00edmite"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="11sp" />
 
                         <TextView
                             android:id="@+id/id_perfil_limite"
@@ -477,13 +466,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="C$ 14,000.00"
-                            android:textSize="16sp"
                             android:textColor="@android:color/white"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Barra de progreso de uso de crédito -->
                 <ProgressBar
                     android:id="@+id/id_progress_credito"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -497,12 +485,12 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- ── Sección Saldos en mora ── -->
+        <!-- Saldos en mora -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingStart="18dp"
             android:paddingEnd="12dp"
             android:layout_marginBottom="6dp">
@@ -511,11 +499,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:text="SALDOS EN MORA"
-                android:textSize="11sp"
                 android:textColor="@color/grey_60"
-                android:letterSpacing="0.04"
-                app:fontFamily="sans-serif-medium" />
+                android:textSize="11sp" />
 
             <LinearLayout
                 android:id="@+id/id_history_nc"
@@ -531,10 +518,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Notas de crédito"
-                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Notas de cr\u00e9dito"
                     android:textColor="@color/colorPrimary"
-                    app:fontFamily="sans-serif-medium" />
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:layout_width="14dp"
@@ -561,61 +548,27 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- No Vencido -->
-                <include layout="@layout/item_mora_row"
-                    android:id="@+id/row_no_vencido" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/grey_5" />
-
-                <!-- 30 días -->
-                <include layout="@layout/item_mora_row"
-                    android:id="@+id/row_d30" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/grey_5" />
-
-                <!-- 60 días -->
-                <include layout="@layout/item_mora_row"
-                    android:id="@+id/row_d60" />
-
-                <View android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/grey_5" />
-
-                <!-- 90 días -->
-                <include layout="@layout/item_mora_row"
-                    android:id="@+id/row_d90" />
-
-                <View android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/grey_5" />
-
-                <!-- 120 días -->
-                <include layout="@layout/item_mora_row"
-                    android:id="@+id/row_d120" />
-
-                <View android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/grey_5" />
-
-                <!-- Más 120 días -->
-                <include layout="@layout/item_mora_row"
-                    android:id="@+id/row_m120" />
+                <include android:id="@+id/row_no_vencido" layout="@layout/item_mora_row" />
+                <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="@color/grey_5" />
+                <include android:id="@+id/row_d30" layout="@layout/item_mora_row" />
+                <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="@color/grey_5" />
+                <include android:id="@+id/row_d60" layout="@layout/item_mora_row" />
+                <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="@color/grey_5" />
+                <include android:id="@+id/row_d90" layout="@layout/item_mora_row" />
+                <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="@color/grey_5" />
+                <include android:id="@+id/row_d120" layout="@layout/item_mora_row" />
+                <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="@color/grey_5" />
+                <include android:id="@+id/row_m120" layout="@layout/item_mora_row" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- ── Sección Facturas pendientes ── -->
+        <!-- Facturas pendientes -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingStart="18dp"
             android:paddingEnd="12dp"
             android:layout_marginTop="12dp"
@@ -625,11 +578,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:text="FACTURAS PENDIENTES"
-                android:textSize="11sp"
                 android:textColor="@color/grey_60"
-                android:letterSpacing="0.04"
-                app:fontFamily="sans-serif-medium" />
+                android:textSize="11sp" />
 
             <LinearLayout
                 android:id="@+id/lyt_recibo_colector"
@@ -645,10 +597,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
                     android:text="Rec. colector"
-                    android:textSize="12sp"
                     android:textColor="@color/colorPrimary"
-                    app:fontFamily="sans-serif-medium" />
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:layout_width="16dp"

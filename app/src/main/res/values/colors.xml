@@ -77,4 +77,14 @@
 
 
     <color name="grey_20">#E0E0E0</color>
+
+    <!-- Mora semafórica -->
+    <color name="mora_ok">#639922</color>
+    <color name="mora_warn">#BA7517</color>
+    <color name="mora_danger">#A32D2D</color>
+
+    <!-- Chips de fondo -->
+    <color name="mora_ok_bg">#EAF3DE</color>
+    <color name="mora_warn_bg">#FAEEDA</color>
+    <color name="mora_danger_bg">#FCEBEB</color>
 </resources>
