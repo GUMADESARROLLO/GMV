@@ -103,4 +103,10 @@
         <item name="android:lineHeight">16sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
+
+    <style name="TextAppearance.Medium" />
+    <style name="TextAppearance.Medium.Bold">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

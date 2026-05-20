@@ -6,4 +6,5 @@
     <dimen name="spacing_large">16dp</dimen>
     <dimen name="spacing_xmedium">8dp</dimen>
     <dimen name="spacing_xxlarge">110dp</dimen>
+    <dimen name="spacing_mlarge">24dp</dimen>
 </resources>

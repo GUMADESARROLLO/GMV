@@ -14,4 +14,8 @@
     <string name="agregar">Agregar</string>
     <string name="img_producto">Imagen del producto</string>
     <string name="img_cliente">Foto del cliente</string>
+    <string name="txt_profile_history">Historial de Órdenes</string>
+    <string name="txt_profile_history_vineta">Historial Viñeta</string>
+    <string name="txt_inteligencia_mercado">Inteligencia de Mercado</string>
+    <string name="btn_edit_profile">Editar Perfil</string>
 </resources>
