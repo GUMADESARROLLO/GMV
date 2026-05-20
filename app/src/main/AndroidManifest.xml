@@ -27,6 +27,10 @@
             android:name=".activities.DashboardActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".activities.ClienteDetailActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

@@ -66,6 +66,6 @@ class ClientesFragment : Fragment() {
     }
 
     private fun mostrarClientes(clientes: List<ItemCliente>) {
-        recyclerView.adapter = ClientesAdapter(clientes) { /* click handler */ }
+        recyclerView.adapter = ClientesAdapter(clientes, requireContext())
     }
 }

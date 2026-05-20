@@ -67,7 +67,14 @@
     <color name="orange_500">#FF9800</color>
     <color name="colorPrimary">@color/primary</color>
     <color name="grey_5">#F5F5F5</color>
+    <color name="grey_10">#F0F0F0</color>
+    <color name="grey_80">#424242</color>
     <color name="blue_600">#1E88E5</color>
     <color name="black">#000000</color>
     <color name="light_green_600">#43A047</color>
+    <color name="colorAccent">@color/primary</color>
+    <color name="overlay_light_20">#33FFFFFF</color>
+
+
+    <color name="grey_20">#E0E0E0</color>
 </resources>

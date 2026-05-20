@@ -1,5 +1,7 @@
 package com.unimarksa.gmv.adapters
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +10,12 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.activities.ClienteDetailActivity
 import com.unimarksa.gmv.models.ItemCliente
 
 class ClientesAdapter(
     private val items: List<ItemCliente>,
-    private val onClick: (ItemCliente) -> Unit
+    private val context: Context
 ) : RecyclerView.Adapter<ClientesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -45,7 +48,11 @@ class ClientesAdapter(
 
         holder.tvMoroso.visibility = if (item.moroso == "S") View.VISIBLE else View.GONE
 
-        holder.itemView.setOnClickListener { onClick(item) }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, ClienteDetailActivity::class.java)
+            intent.putExtra("cliente", item)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = items.size

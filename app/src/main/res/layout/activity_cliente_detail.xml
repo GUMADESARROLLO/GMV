@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nested_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_5"
+    android:clipToPadding="false"
+    android:scrollbars="none"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- ── Toolbar personalizada ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingEnd="16dp">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Regresar"
+                android:tint="@color/black"
+                app:srcCompat="@drawable/ic_arrow_left" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
+                android:text="Perfil del cliente"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- ── Header card: avatar · nombre · info básica ── -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="10dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="1dp"
+            app:cardUseCompatPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <!-- Avatar + nombre + estado -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Avatar con badge de verificación -->
+                    <RelativeLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/image"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/photo_male_2" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/id_btn_verificacion"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:src="@drawable/noverificado" />
+                    </RelativeLayout>
+
+                    <!-- Nombre + condición de pago -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/id_perfil_name_cliente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Emma Richmond"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:fontFamily="sans-serif-medium" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cond. pago "
+                                android:textSize="12sp"
+                                android:textColor="@color/grey_40" />
+
+                            <TextView
+                                android:id="@+id/id_condicion_pago"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Contado"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorPrimary"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Badge estado activo -->
+                    <TextView
+                        android:id="@+id/id_badge_estado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Activo"
+                        android:textSize="11sp"
+                        android:textColor="#3B6D11"
+                        android:textStyle="bold"
+                        android:background="@drawable/bg_badge_green"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp" />
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey_10"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- Info grid: teléfono + nivel precio -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Teléfono"
+                            android:textSize="11sp"
+                            android:textColor="@color/grey_40" />
+
+                        <TextView
+                            android:id="@+id/id_tele"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="8244-9100"
+                            android:textSize="13sp"
+                            android:textColor="@color/black"
+                            app:fontFamily="sans-serif-medium" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nv. Precio"
+                            android:textSize="11sp"
+                            android:textColor="@color/grey_40" />
+
+                        <TextView
+                            android:id="@+id/id_nivel_precio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Farmacia"
+                            android:textSize="13sp"
+                            android:textColor="@color/black"
+                            app:fontFamily="sans-serif-medium" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Dirección -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dirección"
+                        android:textSize="11sp"
+                        android:textColor="@color/grey_40" />
+
+                    <TextView
+                        android:id="@+id/txt_direccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/lorem_ipsum"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        app:fontFamily="sans-serif-medium" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ── Acciones rápidas ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="10dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="1dp">
+                <LinearLayout
+                    android:id="@+id/id_search_lotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless">
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        app:srcCompat="@drawable/ic_search"
+                        android:tint="@color/grey_60" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Lotes"
+                        android:textSize="10sp"
+                        android:textColor="@color/grey_60" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="1dp">
+                <LinearLayout
+                    android:id="@+id/id_history_last_3m"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless">
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        app:srcCompat="@drawable/ic_history"
+                        android:tint="@color/grey_60" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Historial"
+                        android:textSize="10sp"
+                        android:textColor="@color/grey_60" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="1dp">
+                <LinearLayout
+                    android:id="@+id/id_plan_crecimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless">
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        app:srcCompat="@drawable/ic_stat"
+                        android:tint="@color/grey_60" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Plan"
+                        android:textSize="10sp"
+                        android:textColor="@color/grey_60" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="1dp">
+                <LinearLayout
+                    android:id="@+id/btn_list_articulos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless">
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        app:srcCompat="@drawable/ic_cart_black"
+                        android:tint="@color/colorPrimary" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Artículos"
+                        android:textSize="10sp"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <!-- ── Tarjeta de crédito: disponible · saldo · límite ── -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/id_card_disp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="10dp"
+            app:cardBackgroundColor="#1A2B4A"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="1dp"
+            app:cardUseCompatPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Disponible principal -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disponible"
+                    android:textSize="11sp"
+                    android:textColor="#80FFFFFF" />
+
+                <TextView
+                    android:id="@+id/id_perfil_disponible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="C$ 12,000.00"
+                    android:textSize="22sp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <!-- Divisor -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#26FFFFFF"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Saldo + Límite en fila -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Saldo"
+                            android:textSize="11sp"
+                            android:textColor="#80FFFFFF" />
+
+                        <TextView
+                            android:id="@+id/id_perfil_saldo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="C$ 2,000.00"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Límite"
+                            android:textSize="11sp"
+                            android:textColor="#80FFFFFF" />
+
+                        <TextView
+                            android:id="@+id/id_perfil_limite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="C$ 14,000.00"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Barra de progreso de uso de crédito -->
+                <ProgressBar
+                    android:id="@+id/id_progress_credito"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="12dp"
+                    android:progress="14"
+                    android:progressTint="@color/colorPrimary"
+                    android:progressBackgroundTint="#26FFFFFF" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ── Sección Saldos en mora ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="18dp"
+            android:paddingEnd="12dp"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SALDOS EN MORA"
+                android:textSize="11sp"
+                android:textColor="@color/grey_60"
+                android:letterSpacing="0.04"
+                app:fontFamily="sans-serif-medium" />
+
+            <LinearLayout
+                android:id="@+id/id_history_nc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:padding="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notas de crédito"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorPrimary"
+                    app:fontFamily="sans-serif-medium" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="2dp"
+                    app:srcCompat="@drawable/ic_arrow_right"
+                    app:tint="@color/colorPrimary" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="4dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="1dp"
+            app:cardUseCompatPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- No Vencido -->
+                <include layout="@layout/item_mora_row"
+                    android:id="@+id/row_no_vencido" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey_5" />
+
+                <!-- 30 días -->
+                <include layout="@layout/item_mora_row"
+                    android:id="@+id/row_d30" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey_5" />
+
+                <!-- 60 días -->
+                <include layout="@layout/item_mora_row"
+                    android:id="@+id/row_d60" />
+
+                <View android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey_5" />
+
+                <!-- 90 días -->
+                <include layout="@layout/item_mora_row"
+                    android:id="@+id/row_d90" />
+
+                <View android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey_5" />
+
+                <!-- 120 días -->
+                <include layout="@layout/item_mora_row"
+                    android:id="@+id/row_d120" />
+
+                <View android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey_5" />
+
+                <!-- Más 120 días -->
+                <include layout="@layout/item_mora_row"
+                    android:id="@+id/row_m120" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ── Sección Facturas pendientes ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="18dp"
+            android:paddingEnd="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="FACTURAS PENDIENTES"
+                android:textSize="11sp"
+                android:textColor="@color/grey_60"
+                android:letterSpacing="0.04"
+                app:fontFamily="sans-serif-medium" />
+
+            <LinearLayout
+                android:id="@+id/lyt_recibo_colector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:padding="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rec. colector"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorPrimary"
+                    app:fontFamily="sans-serif-medium" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="4dp"
+                    app:srcCompat="@drawable/ic_add_card"
+                    android:tint="@color/colorPrimary" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/lyt_empty_result"
+            layout="@layout/include_empty_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:scrollbars="vertical" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

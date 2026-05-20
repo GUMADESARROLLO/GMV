@@ -1,5 +1,7 @@
 package com.unimarksa.gmv.models
 
+import java.io.Serializable
+
 data class ItemCliente(
     val nombre: String,
     val codCliente: String,
@@ -11,4 +13,4 @@ data class ItemCliente(
     val moroso: String = "N",
     val badge: Int = 0,
     val avatarBgColor: Int = 0
-)
+) : Serializable
