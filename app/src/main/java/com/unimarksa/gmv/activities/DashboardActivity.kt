@@ -61,6 +61,7 @@ class DashboardActivity : AppCompatActivity() {
                 (v[0] as android.widget.ImageView).setColorFilter(tint)
                 (v[1] as android.widget.TextView).setTextColor(tint)
             }
+            btnSearchIcon.visibility = if (tab == 2) View.GONE else View.VISIBLE
         }
 
         navArticulos.setOnClickListener { viewPager.currentItem = 0 }
