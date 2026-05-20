@@ -23,6 +23,8 @@
         android:paddingTop="@dimen/spacing_mlarge"
         android:paddingVertical="@dimen/spacing_large">
 
+
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -708,12 +710,5 @@
 
 </androidx.core.widget.NestedScrollView>
 
-    <include
-        android:id="@+id/floating_island"
-        layout="@layout/floating_island"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="8dp" />
 
 </FrameLayout>

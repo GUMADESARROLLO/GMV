@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,8 +13,9 @@ import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ProductosAdapter
 import com.unimarksa.gmv.models.ItemProducto
 import com.unimarksa.gmv.tools.ApiService
+import com.unimarksa.gmv.tools.Searchable
 
-class ArticulosFragment : Fragment() {
+class ArticulosFragment : Fragment(), Searchable {
 
     companion object {
         private var cachedProductos: List<ItemProducto>? = null
@@ -24,11 +23,7 @@ class ArticulosFragment : Fragment() {
 
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView
-    private lateinit var floatingIsland: View
-    private lateinit var tvIslandText: TextView
-    private lateinit var ivIslandIcon: ImageView
-    private var isIslandHidden = false
-    private var isNavHidden = false
+    private var fullList: List<ItemProducto> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,10 +38,6 @@ class ArticulosFragment : Fragment() {
 
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
         recyclerView = view.findViewById(R.id.recycler_view)
-        floatingIsland = view.findViewById(R.id.floating_island)
-        tvIslandText = floatingIsland.findViewById(R.id.tv_island_text)
-        ivIslandIcon = floatingIsland.findViewById(R.id.iv_island_icon)
-
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         swipeRefresh.setOnRefreshListener {
@@ -54,48 +45,24 @@ class ArticulosFragment : Fragment() {
             cargarProductos()
         }
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                val floatingNav = activity?.findViewById<View>(R.id.floating_nav)
-                if (dy > 5 && !isIslandHidden) {
-                    floatingIsland.animate().translationY(200f).duration = 300
-                    isIslandHidden = true
-                    floatingNav?.animate()?.translationY(200f)?.duration = 300
-                    isNavHidden = true
-                } else if (dy < -5 && isIslandHidden) {
-                    floatingIsland.animate().translationY(0f).duration = 300
-                    isIslandHidden = false
-                    floatingNav?.animate()?.translationY(0f)?.duration = 300
-                    isNavHidden = false
-                }
-            }
-
-            override fun onScrollStateChanged(rv: RecyclerView, state: Int) {
-                if (!rv.canScrollVertically(-1)) {
-                    val floatingNav = activity?.findViewById<View>(R.id.floating_nav)
-                    if (isIslandHidden) {
-                        floatingIsland.animate().translationY(0f).duration = 300
-                        isIslandHidden = false
-                    }
-                    if (isNavHidden) {
-                        floatingNav?.animate()?.translationY(0f)?.duration = 300
-                        isNavHidden = false
-                    }
-                }
-            }
-        })
-
-        floatingIsland.setOnClickListener {
-            recyclerView.smoothScrollToPosition(0)
-            floatingIsland.animate().translationY(0f).duration = 300
-            isIslandHidden = false
-        }
-
         if (cachedProductos == null) {
             cargarProductos()
         } else {
-            mostrarProductos(cachedProductos!!)
+            fullList = cachedProductos!!
+            mostrarProductos(fullList)
         }
+    }
+
+    override fun onSearchQuery(query: String) {
+        if (query.isEmpty()) {
+            mostrarProductos(fullList)
+            return
+        }
+        val filtrados = fullList.filter {
+            it.nombre.lowercase().contains(query) ||
+            it.codArticulo.lowercase().contains(query)
+        }
+        mostrarProductos(filtrados)
     }
 
     private fun cargarProductos() {
@@ -103,6 +70,7 @@ class ArticulosFragment : Fragment() {
         ApiService.fetchProductos(
             onResult = { productos ->
                 cachedProductos = productos
+                fullList = productos
                 mostrarProductos(productos)
                 swipeRefresh.isRefreshing = false
             },
@@ -115,9 +83,5 @@ class ArticulosFragment : Fragment() {
 
     private fun mostrarProductos(productos: List<ItemProducto>) {
         recyclerView.adapter = ProductosAdapter(productos)
-        tvIslandText.text = "${productos.size} artículos"
-        ivIslandIcon.setImageResource(R.drawable.ic_article)
-        floatingIsland.animate().translationY(0f).duration = 300
-        isIslandHidden = false
     }
 }

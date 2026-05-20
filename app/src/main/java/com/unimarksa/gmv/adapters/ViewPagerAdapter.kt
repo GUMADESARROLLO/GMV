@@ -10,7 +10,7 @@ import com.unimarksa.gmv.fragments.PerfilFragment
 class ViewPagerAdapter(fm: FragmentManager)
     : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val fragments = listOf(
+    private val fragments: List<Fragment> = listOf(
         ArticulosFragment(),
         ClientesFragment(),
         PerfilFragment()

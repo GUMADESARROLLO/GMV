@@ -1,27 +1,41 @@
 package com.unimarksa.gmv.activities
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ViewPagerAdapter
+import com.unimarksa.gmv.tools.Searchable
 
 class DashboardActivity : AppCompatActivity() {
 
-    companion object {
-        private const val COLOR_ACTIVE = 0
-        private const val COLOR_INACTIVE = 1
-    }
+    private lateinit var viewPager: ViewPager
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var lytSearchMode: View
+    private lateinit var etToolbarSearch: EditText
+    private lateinit var btnSearchClear: ImageButton
+    private lateinit var btnSearchIcon: ImageButton
+    private var isSearchOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        val viewPager = findViewById<ViewPager>(R.id.viewpager)
+        viewPager = findViewById(R.id.viewpager)
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
+
+        toolbar = findViewById(R.id.toolbar)
+        lytSearchMode = findViewById(R.id.lyt_search_mode)
+        etToolbarSearch = findViewById(R.id.et_toolbar_search)
+        btnSearchClear = findViewById(R.id.btn_search_clear)
+        btnSearchIcon = findViewById(R.id.btn_toolbar_search)
 
         val navArticulos = findViewById<android.widget.LinearLayout>(R.id.nav_articulos)
         val navClientes = findViewById<android.widget.LinearLayout>(R.id.nav_clientes)
@@ -56,9 +70,56 @@ class DashboardActivity : AppCompatActivity() {
         viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 setActive(position)
+                if (isSearchOpen) closeSearch()
+            }
+        })
+
+        btnSearchIcon.setOnClickListener { openSearch() }
+
+        findViewById<ImageButton>(R.id.btn_search_back).setOnClickListener { closeSearch() }
+
+        btnSearchClear.setOnClickListener {
+            etToolbarSearch.setText("")
+            notifySearch("")
+        }
+
+        etToolbarSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val q = s?.toString()?.trim()?.lowercase() ?: ""
+                btnSearchClear.visibility = if (q.isNotEmpty()) View.VISIBLE else View.GONE
+                notifySearch(q)
             }
         })
 
         setActive(0)
+    }
+
+    private fun openSearch() {
+        isSearchOpen = true
+        toolbar.title = ""
+        btnSearchIcon.visibility = View.GONE
+        lytSearchMode.visibility = View.VISIBLE
+        etToolbarSearch.requestFocus()
+        (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)
+            ?.showSoftInput(etToolbarSearch, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun closeSearch() {
+        isSearchOpen = false
+        etToolbarSearch.setText("")
+        lytSearchMode.visibility = View.GONE
+        btnSearchIcon.visibility = View.VISIBLE
+        toolbar.title = getString(R.string.app_name)
+        (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)
+            ?.hideSoftInputFromWindow(etToolbarSearch.windowToken, 0)
+        notifySearch("")
+    }
+
+    private fun notifySearch(query: String) {
+        val adapter = viewPager.adapter as ViewPagerAdapter
+        val fragment = adapter.getItem(viewPager.currentItem)
+        (fragment as? Searchable)?.onSearchQuery(query)
     }
 }
