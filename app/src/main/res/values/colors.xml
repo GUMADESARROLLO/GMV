@@ -59,6 +59,11 @@
 
     <!-- Productos / UI extras -->
     <color name="grey_40">#9E9E9E</color>
+    <color name="grey_60">#757575</color>
     <color name="available">#43A047</color>
     <color name="txt_price_color">#E65100</color>
+    <color name="light_blue_400">#29B6F6</color>
+    <color name="red">#EF5350</color>
+    <color name="orange_500">#FF9800</color>
+    <color name="colorPrimary">@color/primary</color>
 </resources>
