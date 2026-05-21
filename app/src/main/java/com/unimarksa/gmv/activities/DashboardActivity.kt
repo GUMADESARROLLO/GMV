@@ -107,7 +107,7 @@ class DashboardActivity : AppCompatActivity() {
         })
 
         setActive(0)
-        viewPager.post { attachScrollBehavior(0) }
+        attachScrollBehavior(0)
     }
 
     private fun openSearch() {
@@ -142,7 +142,11 @@ class DashboardActivity : AppCompatActivity() {
 
         val adapter = viewPager.adapter as ViewPagerAdapter
         val fragment = adapter.getItem(position)
-        val view = fragment.view ?: return
+        val view = fragment.view
+        if (view == null) {
+            viewPager.post { attachScrollBehavior(position) }
+            return
+        }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         if (recyclerView != null) {
