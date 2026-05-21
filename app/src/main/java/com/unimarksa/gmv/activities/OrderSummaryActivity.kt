@@ -75,9 +75,17 @@ class OrderSummaryActivity : AppCompatActivity() {
             val row = inflater.inflate(R.layout.item_summary_product, binding.lytItems, false) as LinearLayout
             row.findViewById<TextView>(R.id.tv_item_name).text = item.producto.nombre
             row.findViewById<TextView>(R.id.tv_item_sku).text = item.producto.codArticulo
-            row.findViewById<TextView>(R.id.tv_item_qty).text = "x${item.cantidad}"
+            val qtyTxt = if (item.cantidad == item.cantidad.toLong().toDouble()) item.cantidad.toLong().toString() else item.cantidad.toString()
+            row.findViewById<TextView>(R.id.tv_item_qty).text = "x$qtyTxt"
             row.findViewById<TextView>(R.id.tv_item_price).text = "C$ ${fmt.format(item.producto.precio.replace(",", "").toDoubleOrNull() ?: 0.0)}"
             row.findViewById<TextView>(R.id.tv_item_subtotal).text = "C$ ${fmt.format(item.subtotal)}"
+            val tvBonif = row.findViewById<TextView>(R.id.tv_item_bonificado)
+            if (item.selectedBonificado != null) {
+                tvBonif.text = "Bonif: ${item.selectedBonificado}"
+                tvBonif.visibility = android.view.View.VISIBLE
+            } else {
+                tvBonif.visibility = android.view.View.GONE
+            }
             binding.lytItems.addView(row)
         }
     }

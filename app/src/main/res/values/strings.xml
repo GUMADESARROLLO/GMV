@@ -33,7 +33,7 @@
     <string name="section_descripcion">DESCRIPCIÓN</string>
     <string name="btn_agregar_pedido">Agregar al pedido</string>
     <string name="hint_selecciona_talla">Selecciona una talla para continuar</string>
-    <string name="hint_talla_seleccionada">Talla seleccionada: %s</string>
+    <string name="hint_talla_seleccionada">Bonificado seleccionad0: %s</string>
     <string name="hint_sin_seleccion">Listo para agregar al pedido</string>
     <string name="action_back">Regresar</string>
     <string name="action_share">Compartir</string>

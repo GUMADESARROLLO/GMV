@@ -33,14 +33,7 @@ object CartManager {
 
     fun add(producto: ItemProducto, cantidad: Double = 1.0, bonificado: String? = null) {
         val list = _items.value ?: mutableListOf()
-        val existing = list.find {
-            it.producto.codArticulo == producto.codArticulo && it.selectedBonificado == bonificado
-        }
-        if (existing != null) {
-            existing.cantidad += cantidad
-        } else {
-            list.add(ItemCarrito(producto = producto, cantidad = cantidad, selectedBonificado = bonificado))
-        }
+        list.add(ItemCarrito(producto = producto, cantidad = cantidad, selectedBonificado = bonificado))
         _items.value = list
         _cartCount.value = list.size
     }

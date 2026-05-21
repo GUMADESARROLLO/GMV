@@ -24,10 +24,10 @@ class CartAdapter(
         val ivImage: ImageView = view.findViewById(R.id.iv_product_image)
         val tvName: TextView = view.findViewById(R.id.tv_product_name)
         val tvSku: TextView = view.findViewById(R.id.tv_product_sku)
-        val tvPrice: TextView = view.findViewById(R.id.tv_product_price)
-        val tvStock: TextView = view.findViewById(R.id.tv_stock_info)
-        val tvQuantity: TextView = view.findViewById(R.id.tv_quantity)
+        val tvBonificado: TextView = view.findViewById(R.id.tv_cart_bonificado)
+        val tvQtyInfo: TextView = view.findViewById(R.id.tv_qty_info)
         val tvSubtotal: TextView = view.findViewById(R.id.tv_subtotal)
+        val tvQuantity: TextView = view.findViewById(R.id.tv_quantity)
         val btnDecrease: ImageButton = view.findViewById(R.id.btn_decrease)
         val btnIncrease: ImageButton = view.findViewById(R.id.btn_increase)
         val btnDelete: ImageButton = view.findViewById(R.id.btn_delete)
@@ -48,10 +48,17 @@ class CartAdapter(
 
         holder.tvName.text = item.producto.nombre
         holder.tvSku.text = "SKU: ${item.producto.codArticulo}"
-        holder.tvPrice.text = "C$ ${fmt.format(item.producto.precio.replace(",", "").toDoubleOrNull() ?: 0.0)}"
-        holder.tvStock.text = "Stock: ${fmt.format(item.stockDisponible)} UND"
-        holder.tvQuantity.text = qtyFmt
+
+        if (item.selectedBonificado != null) {
+            holder.tvBonificado.text = "| ${item.selectedBonificado}"
+            holder.tvBonificado.visibility = android.view.View.VISIBLE
+        } else {
+            holder.tvBonificado.visibility = android.view.View.GONE
+        }
+
+        val unitPrice = item.producto.precio.replace(",", "").toDoubleOrNull() ?: 0.0
         holder.tvSubtotal.text = "C$ ${fmt.format(item.subtotal)}"
+        holder.tvQtyInfo.text = "C$ ${fmt.format(unitPrice)} x $qtyFmt"
 
         val imgUrl = item.producto.imagenUrl
         if (!imgUrl.isNullOrBlank()) {
@@ -78,7 +85,8 @@ class CartAdapter(
 
         holder.btnIncrease.setOnClickListener {
             val newQty = item.cantidad + 1.0
-            if (newQty <= item.stockDisponible) {
+            val stock = item.producto.cantidad.replace(",", "").toDoubleOrNull() ?: 999999.0
+            if (newQty <= stock) {
                 animateQuantityChange(holder.tvQuantity, newQty)
                 onQuantityChanged(item, newQty)
             } else {

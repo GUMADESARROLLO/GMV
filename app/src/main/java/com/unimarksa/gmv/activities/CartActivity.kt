@@ -93,6 +93,8 @@ class CartActivity : AppCompatActivity() {
 
     private fun updateUI() {
         val isEmpty = CartManager.currentItems.isEmpty()
+        val count = CartManager.currentItems.size
+        binding.tvCartTitle.text = if (count > 0) "Carrito ($count)" else "Carrito"
         binding.lytEmpty.visibility = if (isEmpty) View.VISIBLE else View.GONE
         binding.rvCart.visibility = if (isEmpty) View.GONE else View.VISIBLE
         binding.lytSummary.visibility = if (isEmpty) View.GONE else View.VISIBLE

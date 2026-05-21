@@ -89,20 +89,42 @@ class ProductDetailActivity : AppCompatActivity() {
         val tvDisplay = view.findViewById<TextView>(R.id.tv_display)
         val tvStock = view.findViewById<TextView>(R.id.tv_stock_calc)
         val tvPrice = view.findViewById<TextView>(R.id.tv_price_calc)
+        val tvBonus = view.findViewById<TextView>(R.id.tv_bonus_calc)
         val tvName = view.findViewById<TextView>(R.id.tv_product_name_calc)
         val precioUni = prod.precio.replace(",", "").toDoubleOrNull() ?: 0.0
         val priceFmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
         tvName.text = prod.nombre
         tvStock.text = "Stock Disp. ${formatNumero(stock.toString())} UND"
 
-        var input = "1"
-        var userStarted = false
+        fun parseBonificado(b: String): Pair<Double, Double>? {
+            val parts = b.split("+").map { it.trim().toDoubleOrNull() }
+            return if (parts.size == 2 && parts[0] != null && parts[1] != null)
+                Pair(parts[0]!!, parts[1]!!) else null
+        }
+
+        val bonif = selectedBonificado?.let { parseBonificado(it) }
+
+        var input = if (bonif != null) bonif.first.toInt().toString() else "1"
+        var userStarted = bonif != null
         tvDisplay.text = input
 
         fun updatePrice() {
             val qty = input.toDoubleOrNull() ?: 1.0
-            val total = qty * precioUni
+            val (paidQty, freeQty) = bonif ?: Pair(qty, 0.0)
+            val cycleSize = paidQty + freeQty
+            val effectivePaid = if (bonif != null && cycleSize > 0) {
+                val fullCycles = (qty / cycleSize).toInt()
+                val remaining = qty - fullCycles * cycleSize
+                (fullCycles * paidQty) + remaining.coerceAtMost(paidQty)
+            } else qty
+            val total = effectivePaid * precioUni
             tvPrice.text = "C$ ${priceFmt.format(total)}"
+            if (bonif != null && qty >= cycleSize) {
+                tvBonus.visibility = android.view.View.VISIBLE
+                tvBonus.text = "Bonif: ${paidQty.toInt()}+${freeQty.toInt()} (paga ${effectivePaid.toInt()} uds)"
+            } else {
+                tvBonus.visibility = android.view.View.GONE
+            }
         }
         updatePrice()
 
