@@ -9,7 +9,7 @@
         android:id="@+id/nested_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey_5"
+        android:background="?android:attr/colorBackground"
         android:scrollingCache="true"
         android:scrollbars="none">
 
@@ -17,7 +17,7 @@
         android:id="@+id/lyt_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey_5"
+        android:background="?android:attr/colorBackground"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/spacing_large"
         android:paddingTop="@dimen/spacing_mlarge"
@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,15 +68,16 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="F00 - Nombre del vendedor"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
+android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_user_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="UNBUENCORRE@GMAIL.OM"
-                        android:textSize="11sp" />
+                        android:textSize="11sp"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -116,7 +118,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -132,13 +135,14 @@
                     android:padding="@dimen/spacing_large"
                     android:text="General"
                     android:textAppearance="@style/TextAppearance.Medium.Bold"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="@dimen/spacing_large"
-                    android:background="@color/grey_5" />
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/btn_order_history"
@@ -155,7 +159,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_order_history"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -166,6 +170,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/txt_profile_history"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -177,7 +182,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -185,7 +190,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="@dimen/spacing_large"
-                    android:background="@color/grey_5" />
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/btn_vineta_history"
@@ -202,7 +207,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_order_history"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -213,6 +218,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/txt_profile_history_vineta"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -224,7 +230,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -232,7 +238,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="@dimen/spacing_large"
-                    android:background="@color/grey_5" />
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/Reportes"
@@ -249,7 +255,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_monetization_on"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -260,6 +266,7 @@
                         android:layout_height="wrap_content"
                         android:text="Facturación"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -271,7 +278,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -279,7 +286,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="@dimen/spacing_large"
-                    android:background="@color/grey_5" />
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/btn_recibos_history"
@@ -296,7 +303,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_monetization_on"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -307,6 +314,7 @@
                         android:layout_height="wrap_content"
                         android:text="Recibos"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -318,7 +326,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -326,7 +334,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="@dimen/spacing_large"
-                    android:background="@color/grey_5" />
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/id_mis_stat"
@@ -343,7 +351,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_stat"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -354,6 +362,7 @@
                         android:layout_height="wrap_content"
                         android:text="Mis Estadisticas"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -365,7 +374,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -385,7 +394,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_event"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -396,6 +405,7 @@
                         android:layout_height="wrap_content"
                         android:text="Plan de trabajo"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -407,7 +417,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -438,6 +448,7 @@
                         android:layout_height="wrap_content"
                         android:text="Comisiónes (Beta)"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -449,7 +460,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -465,7 +476,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -486,7 +498,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_settings"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -497,6 +509,7 @@
                         android:layout_height="wrap_content"
                         android:text="Opciónes"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -505,7 +518,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="@dimen/spacing_large"
-                    android:background="@color/grey_5" />
+                    android:background="?attr/colorOutlineVariant" />
+
+                <LinearLayout
+                    android:id="@+id/btn_dark_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_large">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_dark_mode"
+                        app:tint="?attr/colorPrimary" />
+
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Modo Oscuro"
+                        android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switch_dark_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="@dimen/spacing_large"
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/btn_inteligencia_mercado"
@@ -522,7 +578,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_feedback"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -533,6 +589,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/txt_inteligencia_mercado"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -544,7 +601,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -552,7 +609,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="@dimen/spacing_large"
-                    android:background="@color/grey_5" />
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/txt_user_name"
@@ -569,7 +626,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_no_cell"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -580,6 +637,7 @@
                         android:layout_height="wrap_content"
                         android:text="Cambiar Contraseña"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -591,7 +649,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -599,7 +657,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="@dimen/spacing_large"
-                    android:background="@color/grey_5" />
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/AboutUs"
@@ -616,7 +674,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_info"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -627,6 +685,7 @@
                         android:layout_height="wrap_content"
                         android:text="Acerca GMV"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -638,7 +697,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -654,7 +713,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -676,7 +736,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_login"
-                        app:tint="@color/blue_600" />
+                        app:tint="?attr/colorPrimary" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -687,6 +747,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/btn_edit_profile"
                         android:textAppearance="@style/TextAppearance.Medium.Bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
 
                     <View
@@ -698,7 +759,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/grey_40" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 

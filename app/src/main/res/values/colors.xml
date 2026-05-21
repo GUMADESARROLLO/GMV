@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="seed">#1E88E5</color>
+    <color name="seed">#337AB7</color>
 
-    <!-- Primary — Telegram-style blue -->
-    <color name="primary">#1E88E5</color>
+    <!-- Primary -->
+    <color name="primary">#337AB7</color>
     <color name="on_primary">#FFFFFF</color>
-    <color name="primary_container">#BBDEFB</color>
-    <color name="on_primary_container">#0D47A1</color>
+    <color name="primary_container">#D6E4F0</color>
+    <color name="on_primary_container">#1A3A5C</color>
 
     <!-- Secondary -->
-    <color name="secondary">#5C6BC0</color>
+    <color name="secondary">#3A539B</color>
     <color name="on_secondary">#FFFFFF</color>
-    <color name="secondary_container">#E8EAF6</color>
-    <color name="on_secondary_container">#1A237E</color>
+    <color name="secondary_container">#D6DCE8</color>
+    <color name="on_secondary_container">#1C2A5C</color>
 
     <!-- Tertiary -->
     <color name="tertiary">#7E57C2</color>
@@ -26,35 +26,38 @@
     <color name="error_container">#FFEBEE</color>
     <color name="on_error_container">#B71C1C</color>
 
-    <!-- Background / Surface — light blue tint like Telegram -->
-    <color name="background">#E8F0FE</color>
-    <color name="on_background">#1A1C1E</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="on_surface">#1A1C1E</color>
-    <color name="surface_variant">#E3F2FD</color>
-    <color name="on_surface_variant">#546E7A</color>
+    <!-- Background / Surface -->
+    <color name="background">#F2F2F2</color>
+    <color name="on_background">#000000</color>
+    <color name="surface">#E7E7E7</color>
+    <color name="on_surface">#000000</color>
+    <color name="surface_variant">#D4D4D4</color>
+    <color name="on_surface_variant">#535353</color>
 
     <!-- Outline -->
     <color name="outline">#B0BEC5</color>
     <color name="outline_variant">#CFD8DC</color>
 
+    <!-- Overlay -->
+    <color name="overlay">#80000000</color>
+
     <!-- Telegram-specific extras -->
     <color name="badge_red">#FF7043</color>
-    <color name="time_text">#78909C</color>
-    <color name="subtitle_text">#607D8B</color>
-    <color name="avatar_bg_1">#BBDEFB</color>
+    <color name="time_text">#535353</color>
+    <color name="subtitle_text">#535353</color>
+    <color name="avatar_bg_1">#D6E4F0</color>
     <color name="avatar_bg_2">#E1BEE7</color>
     <color name="avatar_bg_3">#C8E6C9</color>
     <color name="avatar_bg_4">#FFCCBC</color>
     <color name="avatar_bg_5">#B2EBF2</color>
 
     <!-- UI LOGIN -->
-    <color name="background_login">#F8F8F8</color>
-    <color name="primary_login">#FF5A00</color>
-    <color name="primary_dark">#E65100</color>
-    <color name="input_bg">#FCE8DF</color>
-    <color name="text_primary">#111111</color>
-    <color name="text_secondary">#9B9B9B</color>
+    <color name="background_login">#F2F2F2</color>
+    <color name="primary_login">#337AB7</color>
+    <color name="primary_dark">#273B7A</color>
+    <color name="input_bg">#E7E7E7</color>
+    <color name="text_primary">#000000</color>
+    <color name="text_secondary">#535353</color>
     <color name="white">#FFFFFF</color>
 
     <!-- Productos / UI extras -->
@@ -70,23 +73,22 @@
     <color name="grey_5">#F5F5F5</color>
     <color name="grey_10">#F0F0F0</color>
     <color name="grey_80">#424242</color>
-    <color name="blue_600">#1E88E5</color>
+    <color name="blue_600">#337AB7</color>
     <color name="black">#000000</color>
     <color name="light_green_600">#43A047</color>
     <color name="light_green_700">#689F38</color>
     <color name="colorAccent">@color/primary</color>
     <color name="overlay_light_20">#33FFFFFF</color>
 
-
-    <color name="grey_20">#E0E0E0</color>
+    <color name="grey_20">#D4D4D4</color>
 
     <!-- Floating nav — premium dark glass (always dark) -->
     <color name="nav_pill_bg">#E61A1D2B</color>
-    <color name="nav_pill_stroke">#2A2F42</color>
-    <color name="nav_active_bg">#2D3D60</color>
+    <color name="nav_pill_stroke">#2A3348</color>
+    <color name="nav_active_bg">#273B7A</color>
     <color name="nav_inactive_icon">#6B7280</color>
     <color name="nav_active_icon">#FFFFFF</color>
-    <color name="nav_active_text">#F3F4F6</color>
+    <color name="nav_active_text">#FFFFFF</color>
 
     <!-- Mora semafórica -->
     <color name="mora_ok">#639922</color>
@@ -97,7 +99,6 @@
     <color name="mora_ok_bg">#EAF3DE</color>
     <color name="mora_warn_bg">#FAEEDA</color>
     <color name="mora_danger_bg">#FCEBEB</color>
-
 
     <!-- Chips de talla — estado disponible (azul) -->
     <color name="size_chip_available_bg">#E6F1FB</color>

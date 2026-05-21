@@ -8,7 +8,7 @@
     android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="12dp"
     app:cardElevation="1dp"
     app:cardUseCompatPadding="false">
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="IMIPRAMINA 25 MG TABLETA RECUBIERTA 100/CAJA (INTERMED)"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:textStyle="bold"
                 android:textSize="15sp"
                 android:maxLines="3"
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SKU "
-                    android:textColor="@color/grey_40"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp" />
 
                 <TextView
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="00000000"
-                    android:textColor="@color/grey_40"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 

@@ -9,6 +9,7 @@
     app:cardCornerRadius="12dp"
     android:clickable="true"
     android:background="?attr/selectableItemBackgroundBorderless"
+    app:cardBackgroundColor="?attr/colorSurface"
     app:cardElevation="2dp">
 
     <LinearLayout
@@ -86,7 +87,7 @@
                             android:id="@+id/client_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="#000000"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             android:text="ALPHACHEMI ALBERT JOHN ATHA SALINAS RUC 0012705650057S"
                             android:textStyle="bold" />
@@ -177,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:text="Limite"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/grey_60" />
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
 
 
@@ -208,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:text="Saldo"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/grey_60" />
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
             </LinearLayout>
 
@@ -236,7 +237,7 @@
                     android:layout_height="wrap_content"
                     android:text="Disponible"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/grey_60" />
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
             </LinearLayout>
 

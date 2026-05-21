@@ -54,6 +54,7 @@ class ClientesFragment : Fragment(), Searchable {
     }
 
     override fun onSearchQuery(query: String) {
+        if (!::recyclerView.isInitialized) return
         if (query.isEmpty()) {
             mostrarClientes(fullList)
             return

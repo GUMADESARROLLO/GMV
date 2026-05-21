@@ -51,7 +51,7 @@
         android:layout_marginTop="4dp"
         android:alpha="0.6"
         android:letterSpacing="0.06"
-        android:text="Soluciones Farmacéuticas"
+        android:text="Supliendo Salud"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -54,6 +54,7 @@ class ArticulosFragment : Fragment(), Searchable {
     }
 
     override fun onSearchQuery(query: String) {
+        if (!::recyclerView.isInitialized) return
         if (query.isEmpty()) {
             mostrarProductos(fullList)
             return
