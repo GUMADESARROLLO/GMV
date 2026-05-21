@@ -69,7 +69,13 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun setupFab() {
         binding.fabCart.setOnClickListener {
-            showCalculatorModal()
+            if (CartManager.currentCliente == null) {
+                Snackbar.make(binding.main, "Primero seleccione un Cliente", Snackbar.LENGTH_LONG)
+                    .setAnchorView(binding.btnAdd)
+                    .show()
+            } else {
+                showCalculatorModal()
+            }
         }
     }
 
@@ -182,7 +188,13 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun setupAddButton() {
         binding.btnAdd.setOnClickListener {
-            showCalculatorModal()
+            if (CartManager.currentCliente == null) {
+                Snackbar.make(binding.main, "Primero seleccione un Cliente", Snackbar.LENGTH_LONG)
+                    .setAnchorView(binding.btnAdd)
+                    .show()
+            } else {
+                showCalculatorModal()
+            }
         }
     }
 
