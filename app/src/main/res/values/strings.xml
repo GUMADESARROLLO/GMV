@@ -20,4 +20,22 @@
     <string name="btn_edit_profile">Editar Perfil</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="failed_fetch_data">Error al obtener datos</string>
+
+    <!-- Product Detail -->
+    <string name="badge_disponible">Disponible</string>
+    <string name="badge_categoria">Categoría</string>
+    <string name="product_name_placeholder">Nombre del artículo</string>
+    <string name="sku_placeholder">SKU: 00000000</string>
+    <string name="price_placeholder">C$ 0.00</string>
+    <string name="qty_placeholder">0 UND</string>
+    <string name="section_talla_disponible">TALLA DISPONIBLE</string>
+    <string name="section_bonificaciones">BONIFICACIONES</string>
+    <string name="section_descripcion">DESCRIPCIÓN</string>
+    <string name="btn_agregar_pedido">Agregar al pedido</string>
+    <string name="hint_selecciona_talla">Selecciona una talla para continuar</string>
+    <string name="hint_talla_seleccionada">Talla seleccionada: %s</string>
+    <string name="hint_sin_seleccion">Listo para agregar al pedido</string>
+    <string name="action_back">Regresar</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_add_cart">Agregar al carrito</string>
 </resources>
