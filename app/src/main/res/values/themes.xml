@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.GMV" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.GMV" parent="Theme.Material3.Light.NoActionBar">
         <!-- Color roles -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/on_primary</item>
@@ -56,7 +56,7 @@
 
     <style name="Theme.GMV" parent="Base.Theme.GMV" />
 
-    <style name="Theme.GMV.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.GMV.Splash" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:windowBackground">#09C7A1</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
