@@ -1,5 +1,6 @@
 package com.unimarksa.gmv.activities
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -16,10 +18,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ViewPagerAdapter
+import com.unimarksa.gmv.tools.CartManager
 import com.unimarksa.gmv.tools.Searchable
 
 class DashboardActivity : AppCompatActivity() {
@@ -114,6 +118,8 @@ class DashboardActivity : AppCompatActivity() {
         btnSearchIcon.setOnClickListener { openSearch() }
 
         findViewById<ImageButton>(R.id.btn_search_back).setOnClickListener { closeSearch() }
+
+        setupCartButton()
 
         btnSearchClear.setOnClickListener {
             etToolbarSearch.setText("")
@@ -213,6 +219,26 @@ class DashboardActivity : AppCompatActivity() {
         val adapter = viewPager.adapter as ViewPagerAdapter
         val fragment = adapter.getItem(viewPager.currentItem)
         (fragment as? Searchable)?.onSearchQuery(query)
+    }
+
+    private fun setupCartButton() {
+        val cartBtn = findViewById<View>(R.id.lyt_cart_toolbar)
+        cartBtn.setOnClickListener {
+            startActivity(Intent(this, CartActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        CartManager.cartCount.observe(this) { count ->
+            val badge = findViewById<TextView>(R.id.tv_cart_badge_dashboard)
+            if (badge != null) {
+                if (count > 0) {
+                    badge.text = if (count > 99) "99+" else count.toString()
+                    badge.visibility = View.VISIBLE
+                } else {
+                    badge.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun getTabTitle(tab: Int): String = when (tab) {

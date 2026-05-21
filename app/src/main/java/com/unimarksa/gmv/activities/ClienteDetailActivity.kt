@@ -1,5 +1,6 @@
 package com.unimarksa.gmv.activities
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.databinding.ActivityClienteDetailBinding
 import com.unimarksa.gmv.models.ItemCliente
+import com.unimarksa.gmv.tools.CartManager
 
 class ClienteDetailActivity : AppCompatActivity() {
 
@@ -52,6 +54,12 @@ class ClienteDetailActivity : AppCompatActivity() {
         val cliente = intent.getSerializableExtra("cliente") as? ItemCliente
         cliente?.let { bindData(it) }
         setupMoraRows()
+
+        binding.btnListArticulos.setOnClickListener {
+            CartManager.setCliente(cliente)
+            startActivity(Intent(this, CatalogoActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
     }
 
     private fun bindData(cliente: ItemCliente) {

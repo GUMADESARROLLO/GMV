@@ -297,18 +297,37 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabCart"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_cart"
-        android:tint="@android:color/white"
-        app:backgroundTint="#185FA5"
-        app:fabSize="normal"
         app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|right|end">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_cart"
+            android:tint="@android:color/white"
+            app:backgroundTint="#185FA5"
+            app:fabSize="normal" />
+
+        <TextView
+            android:id="@+id/cartBadge"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|end"
+            android:background="@drawable/bg_circle_red"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,17 +1,23 @@
 package com.unimarksa.gmv.activities
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.databinding.ActivityProductDetailBinding
 import com.unimarksa.gmv.models.ItemProducto
+import com.unimarksa.gmv.tools.CartManager
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
@@ -20,6 +26,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductDetailBinding
     private var selectedBonificado: String? = null
+    private var producto: ItemProducto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -35,9 +42,16 @@ class ProductDetailActivity : AppCompatActivity() {
 
         setupToolbar()
         setupFab()
+        setupAddButton()
 
-        val producto = intent.getSerializableExtra("producto") as? ItemProducto
+        producto = intent.getSerializableExtra("producto") as? ItemProducto
         producto?.let { bindData(it) }
+        updateCartBadge()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateCartBadge()
     }
 
     private fun setupToolbar() {
@@ -55,11 +69,142 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun setupFab() {
         binding.fabCart.setOnClickListener {
-            // TODO: agregar al carrito/pedido
+            showCalculatorModal()
+        }
+    }
+
+    private fun showCalculatorModal() {
+        val prod = producto ?: return
+        val stock = prod.cantidad.replace(",", "").toDoubleOrNull() ?: 999999.0
+        val dialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.dialog_calculator_quantity, null)
+        dialog.setContentView(view)
+
+        val tvDisplay = view.findViewById<TextView>(R.id.tv_display)
+        val tvStock = view.findViewById<TextView>(R.id.tv_stock_calc)
+        val tvPrice = view.findViewById<TextView>(R.id.tv_price_calc)
+        val tvName = view.findViewById<TextView>(R.id.tv_product_name_calc)
+        val precioUni = prod.precio.replace(",", "").toDoubleOrNull() ?: 0.0
+        val priceFmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
+        tvName.text = prod.nombre
+        tvStock.text = "Stock Disp. ${formatNumero(stock.toString())} UND"
+
+        var input = "1"
+        var userStarted = false
+        tvDisplay.text = input
+
+        fun updatePrice() {
+            val qty = input.toDoubleOrNull() ?: 1.0
+            val total = qty * precioUni
+            tvPrice.text = "C$ ${priceFmt.format(total)}"
+        }
+        updatePrice()
+
+        fun updateDisplay() {
+            tvDisplay.text = input
+            tvDisplay.scaleX = 0.85f
+            tvDisplay.scaleY = 0.85f
+            tvDisplay.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+            tvStock.setTextColor(ContextCompat.getColor(this, R.color.available))
+            tvStock.text = "Stock Disp. ${formatNumero(stock.toString())} UND"
+            updatePrice()
+        }
+
+        fun currentValue(): Double = input.toDoubleOrNull() ?: 1.0
+
+        val digits = mapOf(
+            R.id.btn_0 to "0", R.id.btn_1 to "1", R.id.btn_2 to "2", R.id.btn_3 to "3",
+            R.id.btn_4 to "4", R.id.btn_5 to "5", R.id.btn_6 to "6", R.id.btn_7 to "7",
+            R.id.btn_8 to "8", R.id.btn_9 to "9"
+        )
+
+        for ((id, digit) in digits) {
+            view.findViewById<Button>(id).setOnClickListener {
+                val candidate = if (!userStarted) digit else input + digit
+                userStarted = true
+                if (candidate.toDoubleOrNull() != null && candidate.length <= 10) {
+                    input = candidate
+                    updateDisplay()
+                }
+            }
+        }
+
+        view.findViewById<Button>(R.id.btn_dot).setOnClickListener {
+            if (!input.contains(".")) {
+                input += "."
+                updateDisplay()
+            }
+        }
+
+        view.findViewById<Button>(R.id.btn_delete).setOnClickListener {
+            if (input.length > 1) {
+                input = input.dropLast(1)
+                if (input == "." || input.isEmpty()) input = "1"
+            } else {
+                input = "1"
+            }
+            if (input == "1" && !input.contains(".")) userStarted = false
+            updateDisplay()
+        }
+
+        view.findViewById<Button>(R.id.btn_clear).setOnClickListener {
+            input = "1"
+            userStarted = false
+            updateDisplay()
+        }
+
+        view.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+            val qty = currentValue()
+            if (qty > stock) {
+                tvStock.setTextColor(ContextCompat.getColor(this, R.color.error))
+                tvStock.text = "Stock disp.: ${formatNumero(stock.toString())} UND — Excedido"
+                tvStock.postDelayed({
+                    tvStock.setTextColor(ContextCompat.getColor(this, R.color.available))
+                    tvStock.text = "Stock disp.: ${formatNumero(stock.toString())} UND"
+                }, 3000)
+                return@setOnClickListener
+            }
+            CartManager.add(prod, qty, selectedBonificado)
+            updateCartBadge()
+            dialog.dismiss()
+            val fmtQty = if (qty == qty.toLong().toDouble()) qty.toLong().toString() else qty.toString()
+            Snackbar.make(binding.main, "$fmtQty x ${prod.nombre} agregado", Snackbar.LENGTH_LONG)
+                .setAction("Ver carrito") {
+                    startActivity(Intent(this, CartActivity::class.java))
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
+                .setAnchorView(binding.btnAdd)
+                .show()
+        }
+
+        dialog.show()
+    }
+
+    private fun setupAddButton() {
+        binding.btnAdd.setOnClickListener {
+            showCalculatorModal()
+        }
+    }
+
+    private fun updateCartBadge() {
+        val count = CartManager.itemCount
+        if (count > 0) {
+            binding.cartBadge.text = if (count > 99) "99+" else count.toString()
+            binding.cartBadge.visibility = android.view.View.VISIBLE
+            binding.cartBadge.scaleX = 0f
+            binding.cartBadge.scaleY = 0f
+            binding.cartBadge.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(250)
+                .start()
+        } else {
+            binding.cartBadge.visibility = android.view.View.GONE
         }
     }
 
     private fun bindData(item: ItemProducto) {
+        producto = item
         binding.productName.text = item.nombre
         binding.productSku.text = "SKU: ${item.codArticulo}"
         val cantidadFmt = formatNumero(item.cantidad)

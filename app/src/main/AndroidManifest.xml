@@ -40,6 +40,21 @@
             android:name=".activities.ProductDetailActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".activities.CatalogoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
+        <activity
+            android:name=".activities.CartActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
+        <activity
+            android:name=".activities.OrderSummaryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
     </application>
 
 </manifest>

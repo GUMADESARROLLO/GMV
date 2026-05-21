@@ -41,4 +41,61 @@
     <string name="RETRY">Reintentar</string>
     <string name="empty_cart">Carrito vacío</string>
     <string name="btn_continue_shopping">Continuar comprando</string>
+
+    <!-- Cart -->
+    <string name="cart_title">Carrito</string>
+    <string name="cart_empty_title">Tu carrito está vacío</string>
+    <string name="cart_empty_subtitle">Explora artículos y agrega los que necesites</string>
+    <string name="cart_clear">Vaciar</string>
+    <string name="cart_subtotal">Subtotal</string>
+    <string name="cart_iva">IVA (15%)</string>
+    <string name="cart_total">Total</string>
+    <string name="cart_continue">Continuar</string>
+    <string name="cart_continue_shopping">Seguir comprando</string>
+    <string name="cart_checkout">Continuar</string>
+    <string name="cart_added">Agregado al carrito</string>
+    <string name="cart_removed">eliminado</string>
+    <string name="cart_undo">Deshacer</string>
+    <string name="cart_cleared">Carrito vaciado</string>
+    <string name="cart_view">Ver carrito</string>
+    <string name="cart_explore">Explorar artículos</string>
+    <string name="cart_stock_info">Stock: %d UND</string>
+
+    <!-- Order Summary -->
+    <string name="order_title">Resumen del pedido</string>
+    <string name="order_section_client">CLIENTE</string>
+    <string name="order_section_items">ARTÍCULOS</string>
+    <string name="order_section_observations">OBSERVACIONES</string>
+    <string name="order_section_delivery">DETALLES DE ENTREGA</string>
+    <string name="order_section_payment">RESUMEN DE PAGO</string>
+    <string name="order_priority">Prioridad</string>
+    <string name="order_delivery_type">Tipo de entrega</string>
+    <string name="order_payment_method">Método de pago</string>
+    <string name="order_estimated_date">Fecha estimada</string>
+    <string name="order_observations_hint">Agregar observaciones…</string>
+    <string name="order_edit">Editar</string>
+    <string name="order_confirm">Confirmar pedido</string>
+    <string name="order_confirm_title">Confirmar pedido</string>
+    <string name="order_confirm_message">¿Deseas confirmar el pedido?</string>
+    <string name="order_success_title">¡Pedido confirmado!</string>
+    <string name="order_success_message">Tu pedido ha sido registrado exitosamente.</string>
+    <string name="order_go_home">Ir al inicio</string>
+    <string name="order_cancel">Cancelar</string>
+    <string name="order_discount">Descuento</string>
+    <string name="order_priority_normal">Normal</string>
+    <string name="order_priority_urgent">Urgente</string>
+    <string name="order_priority_express">Express</string>
+    <string name="order_delivery_regular">Regular</string>
+    <string name="order_delivery_nextday">24 horas</string>
+    <string name="order_delivery_scheduled">Programada</string>
+    <string name="order_payment_credit">Crédito</string>
+    <string name="order_payment_cash">Contado</string>
+    <string name="order_payment_transfer">Transferencia</string>
+    <string name="order_code_format">Código: %s</string>
+
+    <!-- Quantity -->
+    <string name="quantity">Cantidad</string>
+
+    <!-- Badge -->
+    <string name="badge_cart_count">%d artículo(s) en el carrito</string>
 </resources>
