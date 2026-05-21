@@ -141,7 +141,30 @@
                     android:background="@drawable/bg_badge_blue"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
-                    android:text="Ropa superior"
+                    android:text="Etiqueta"
+                    android:textColor="#0C447C"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_badge_green"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="Etiqueta"
+                    android:textColor="#3B6D11"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_badge_blue"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="Etiqueta"
                     android:textColor="#0C447C"
                     android:textSize="11sp"
                     android:textStyle="bold" />

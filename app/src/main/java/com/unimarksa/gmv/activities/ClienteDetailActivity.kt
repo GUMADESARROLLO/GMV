@@ -55,6 +55,14 @@ class ClienteDetailActivity : AppCompatActivity() {
         cliente?.let { bindData(it) }
         setupMoraRows()
 
+        binding.btnSolicitarIncremento.setOnClickListener {
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle("Solicitar Incremento")
+                .setMessage("En construcción")
+                .setPositiveButton("Cerrar", null)
+                .show()
+        }
+
         binding.btnListArticulos.setOnClickListener {
             CartManager.setCliente(cliente)
             startActivity(Intent(this, CatalogoActivity::class.java))
@@ -66,12 +74,18 @@ class ClienteDetailActivity : AppCompatActivity() {
         binding.idPerfilNameCliente.text = cliente.nombre
         binding.idTele.text = "Tel. ${cliente.telefono}"
         binding.txtDireccion.text = cliente.direccion
-        binding.idPerfilDisponible.text = "C$ ${cliente.disponible}"
-        binding.idPerfilSaldo.text = "C$ ${cliente.saldo}"
-        binding.idPerfilLimite.text = "C$ ${cliente.limite}"
 
         val saldo = cliente.saldo.replace(",", "").replace("C$", "").trim().toDoubleOrNull() ?: 0.0
         val limite = cliente.limite.replace(",", "").replace("C$", "").trim().toDoubleOrNull() ?: 1.0
+        val pedido = CartManager.subtotal
+
+        val disponible = (limite - saldo - pedido).coerceAtLeast(0.0)
+        val fmtNum = { v: Double -> "C$ ${"%,.2f".format(v)}" }
+
+        binding.idPerfilDisponible.text = fmtNum(disponible)
+        binding.idPerfilSaldo.text = fmtNum(saldo)
+        binding.idPerfilPedido.text = fmtNum(pedido)
+        binding.idPerfilLimite.text = fmtNum(limite)
         binding.idProgressCredito.progress = ((saldo / limite) * 100).toInt().coerceIn(0, 100)
     }
 

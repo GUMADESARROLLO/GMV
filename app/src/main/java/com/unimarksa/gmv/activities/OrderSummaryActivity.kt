@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.squareup.picasso.Picasso
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.databinding.ActivityOrderSummaryBinding
 import com.unimarksa.gmv.tools.CartManager
@@ -53,8 +54,9 @@ class OrderSummaryActivity : AppCompatActivity() {
         val cliente = CartManager.currentCliente
         if (cliente != null) {
             binding.cardClient.visibility = View.VISIBLE
-            binding.tvClientName.text = cliente.nombre
-            binding.tvClientCode.text = "Código: ${cliente.codCliente}"
+            binding.tvClientName.text = "${cliente.codCliente} - ${cliente.nombre}"
+            binding.tvClientCode.visibility = View.GONE
+            binding.tvClientDireccion.text = cliente.direccion
         } else {
             binding.cardClient.visibility = View.GONE
         }
@@ -69,10 +71,12 @@ class OrderSummaryActivity : AppCompatActivity() {
     }
 
     private fun populateItems() {
+        val items = CartManager.currentItems
+        binding.tvArticulosTitle.text = "ARTÍCULOS (${items.size})"
         binding.lytItems.removeAllViews()
         val inflater = LayoutInflater.from(this)
-        for (item in CartManager.currentItems) {
-            val row = inflater.inflate(R.layout.item_summary_product, binding.lytItems, false) as LinearLayout
+        for (item in items) {
+            val row = inflater.inflate(R.layout.item_summary_product, binding.lytItems, false) as android.view.View
             row.findViewById<TextView>(R.id.tv_item_name).text = item.producto.nombre
             row.findViewById<TextView>(R.id.tv_item_sku).text = item.producto.codArticulo
             val qtyTxt = if (item.cantidad == item.cantidad.toLong().toDouble()) item.cantidad.toLong().toString() else item.cantidad.toString()
@@ -81,10 +85,15 @@ class OrderSummaryActivity : AppCompatActivity() {
             row.findViewById<TextView>(R.id.tv_item_subtotal).text = "C$ ${fmt.format(item.subtotal)}"
             val tvBonif = row.findViewById<TextView>(R.id.tv_item_bonificado)
             if (item.selectedBonificado != null) {
-                tvBonif.text = "Bonif: ${item.selectedBonificado}"
+                tvBonif.text = " ${item.selectedBonificado}"
                 tvBonif.visibility = android.view.View.VISIBLE
             } else {
                 tvBonif.visibility = android.view.View.GONE
+            }
+            val imgUrl = item.producto.imagenUrl
+            val ivImage = row.findViewById<android.widget.ImageView>(R.id.tv_item_image)
+            if (!imgUrl.isNullOrBlank()) {
+                Picasso.get().load(imgUrl).placeholder(R.drawable.ic_placeholder_product).resize(150, 150).centerCrop().into(ivImage)
             }
             binding.lytItems.addView(row)
         }
@@ -127,6 +136,8 @@ class OrderSummaryActivity : AppCompatActivity() {
     }
 
     private fun updateTotals() {
+        val pct = (CartManager.ivaPorcentaje * 100).toInt()
+        binding.tvIvaLabel.text = "IVA (${pct}%)"
         binding.tvSubtotal.text = "C$ ${fmt.format(CartManager.subtotal)}"
         binding.tvIva.text = "C$ ${fmt.format(CartManager.iva)}"
         binding.tvDiscount.text = "C$ 0.00"

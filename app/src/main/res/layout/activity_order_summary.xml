@@ -123,7 +123,30 @@
                         android:layout_marginTop="2dp"
                         android:text="Código: 00000"
                         android:textColor="#9A9890"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="DIRECCIÓN"
+                        android:textAllCaps="true"
+                        android:textColor="#9A9890"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_client_direccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/lorem_ipsum"
+                        android:textColor="#1A1A18"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:maxLines="2"
+                        android:ellipsize="end" />
 
                     <View
                         android:layout_width="match_parent"
@@ -215,6 +238,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_articulos_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ARTÍCULOS"
@@ -352,13 +376,14 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="IVA (15%)"
-                            android:textColor="#555450"
-                            android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/tv_iva_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="IVA"
+                        android:textColor="#555450"
+                        android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tv_iva"

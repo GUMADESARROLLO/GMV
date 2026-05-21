@@ -58,12 +58,18 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_clear"
                     style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:text="Vaciar"
-                    android:textColor="#EF5350"
-                    android:textSize="13sp"
-                    android:visibility="gone" />
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_trash"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="22dp"
+                    app:iconTint="#EF5350" />
 
             </LinearLayout>
 
@@ -205,10 +211,11 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_iva_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="IVA (15%)"
+                    android:text="IVA"
                     android:textColor="#9A9890"
                     android:textSize="14sp" />
 

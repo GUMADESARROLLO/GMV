@@ -69,13 +69,8 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun setupFab() {
         binding.fabCart.setOnClickListener {
-            if (CartManager.currentCliente == null) {
-                Snackbar.make(binding.main, "Primero seleccione un Cliente", Snackbar.LENGTH_LONG)
-                    .setAnchorView(binding.btnAdd)
-                    .show()
-            } else {
-                showCalculatorModal()
-            }
+            startActivity(Intent(this, CartActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 

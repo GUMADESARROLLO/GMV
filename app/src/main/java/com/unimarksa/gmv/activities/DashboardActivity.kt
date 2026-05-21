@@ -222,23 +222,25 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun setupCartButton() {
-        val cartBtn = findViewById<View>(R.id.lyt_cart_toolbar)
-        cartBtn.setOnClickListener {
+        val goToCart = {
             startActivity(Intent(this, CartActivity::class.java))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
-        CartManager.cartCount.observe(this) { count ->
-            val badge = findViewById<TextView>(R.id.tv_cart_badge_dashboard)
-            if (badge != null) {
-                if (count > 0) {
-                    badge.text = if (count > 99) "99+" else count.toString()
-                    badge.visibility = View.VISIBLE
-                } else {
-                    badge.visibility = View.GONE
-                }
-            }
+        findViewById<View>(R.id.btn_toolbar_cart).setOnClickListener { goToCart() }
+        findViewById<View>(R.id.btn_search_cart)?.setOnClickListener { goToCart() }
+
+        fun updateBadge(count: Int) {
+            val badge1 = findViewById<TextView>(R.id.tv_cart_badge_dashboard)
+            val badge2 = findViewById<TextView>(R.id.tv_cart_badge_search)
+            val txt = if (count > 99) "99+" else count.toString()
+            val vis = if (count > 0) View.VISIBLE else View.GONE
+            badge1?.let { it.text = txt; it.visibility = vis }
+            badge2?.let { it.text = txt; it.visibility = vis }
         }
+
+        CartManager.cartCount.observe(this) { updateBadge(it) }
+        updateBadge(CartManager.itemCount)
     }
 
     private fun getTabTitle(tab: Int): String = when (tab) {

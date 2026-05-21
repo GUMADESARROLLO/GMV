@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.CartAdapter
@@ -73,11 +74,35 @@ class CartActivity : AppCompatActivity() {
         binding.btnContinueShoppingBottom.setOnClickListener { finish() }
         binding.btnCheckout.setOnClickListener {
             if (CartManager.currentItems.isEmpty()) return@setOnClickListener
+            val cliente = CartManager.currentCliente
+            if (cliente != null) {
+                val saldo = cliente.saldo.replace(",", "").replace("C$", "").trim().toDoubleOrNull() ?: 0.0
+                val limite = cliente.limite.replace(",", "").replace("C$", "").trim().toDoubleOrNull() ?: 0.0
+                val disponible = limite - saldo
+                if (CartManager.subtotal > disponible) {
+                    val exceso = CartManager.subtotal - disponible
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle("Límite de crédito excedido")
+                        .setMessage("El total del pedido (C$ ${fmt.format(CartManager.subtotal)}) excede su disponible (C$ ${fmt.format(disponible)}) por C$ ${fmt.format(exceso)}.\n\nReduzca el pedido para continuar.")
+                        .setPositiveButton("Cerrar", null)
+                        .show()
+                    return@setOnClickListener
+                }
+            }
             startActivity(Intent(this, OrderSummaryActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         binding.btnClear.setOnClickListener {
-            CartManager.clear()
-            Snackbar.make(binding.root, "Carrito vaciado", Snackbar.LENGTH_SHORT).show()
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Vaciar carrito")
+                .setMessage("¿Estás seguro de vaciar el carrito?")
+                .setIcon(R.drawable.ic_trash)
+                .setPositiveButton("Vaciar") { _, _ ->
+                    CartManager.clear()
+                    Snackbar.make(binding.root, "Carrito vaciado", Snackbar.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
         }
     }
 
@@ -104,6 +129,8 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun updateSummary() {
+        val pct = (CartManager.ivaPorcentaje * 100).toInt()
+        binding.tvIvaLabel.text = "IVA (${pct}%)"
         binding.tvSubtotal.text = "C$ ${fmt.format(CartManager.subtotal)}"
         binding.tvIva.text = "C$ ${fmt.format(CartManager.iva)}"
         binding.tvTotal.text = "C$ ${fmt.format(CartManager.total)}"

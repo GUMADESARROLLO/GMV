@@ -394,23 +394,61 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Disponible"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="11sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/id_perfil_disponible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="12dp"
-                    android:text="C$ 12,000.00"
-                    android:textColor="@android:color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Disponible"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/id_perfil_disponible"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="C$ 12,000.00"
+                            android:textColor="@color/available"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_solicitar_incremento"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:text="Solicitar Incremento"
+                        android:textAllCaps="false"
+                        android:textSize="10sp"
+                        android:textColor="#80FFFFFF"
+                        app:cornerRadius="16dp"
+                        app:strokeColor="#80FFFFFF"
+                        app:strokeWidth="1dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="#26FFFFFF"
+                    android:layout_marginBottom="12dp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -442,7 +480,31 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="C$ 2,000.00"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/red"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pedidos"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/id_perfil_pedido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="C$ 2,000.00"
+                            android:textColor="@color/red"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>

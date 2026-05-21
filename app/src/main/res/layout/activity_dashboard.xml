@@ -73,6 +73,36 @@
                         android:tint="@color/grey_40"
                         android:visibility="gone" />
 
+                    <FrameLayout
+                        android:id="@+id/lyt_cart_search"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp">
+
+                        <ImageButton
+                            android:id="@+id/btn_search_cart"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:importantForAccessibility="no"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_cart"
+                            android:tint="@color/on_primary" />
+
+                        <TextView
+                            android:id="@+id/tv_cart_badge_search"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="top|end"
+                            android:background="@drawable/bg_circle_red"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@android:color/white"
+                            android:textSize="7sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                    </FrameLayout>
+
                 </LinearLayout>
 
                 <FrameLayout
@@ -97,9 +127,7 @@
                     android:id="@+id/lyt_cart_toolbar"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
-                    android:layout_gravity="end"
-                    android:clickable="true"
-                    android:focusable="true">
+                    android:layout_gravity="end">
 
                     <ImageButton
                         android:id="@+id/btn_toolbar_cart"

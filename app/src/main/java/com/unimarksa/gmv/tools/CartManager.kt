@@ -14,7 +14,7 @@ object CartManager {
     private val _cartCount = MutableLiveData(0)
     val cartCount: LiveData<Int> = _cartCount
 
-    var ivaPorcentaje: Double = 0.15
+    var ivaPorcentaje: Double = 0.0
         private set
 
     var currentCliente: ItemCliente? = null
