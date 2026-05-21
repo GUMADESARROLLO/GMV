@@ -55,19 +55,22 @@ class DashboardActivity : AppCompatActivity() {
         val tvClientes = findViewById<android.widget.TextView>(R.id.tv_nav_clientes_title)
         val tvPerfil = findViewById<android.widget.TextView>(R.id.tv_nav_perfil_title)
 
-        val activeColor = ContextCompat.getColor(this, R.color.primary)
-        val inactiveColor = ContextCompat.getColor(this, R.color.grey_40)
+        val activeColor = ContextCompat.getColor(this, R.color.nav_active_icon)
+        val inactiveColor = ContextCompat.getColor(this, R.color.nav_inactive_icon)
+        val activeTextColor = ContextCompat.getColor(this, R.color.nav_active_text)
+        val activeBg = ContextCompat.getDrawable(this, R.drawable.nav_active_bg)
+
+        val tabs = listOf(navArticulos, navClientes, navPerfil)
+        val iconViews = listOf(ivArticulos, ivClientes, ivPerfil)
+        val textViews = listOf(tvArticulos, tvClientes, tvPerfil)
 
         fun setActive(tab: Int) {
-            val views = listOf(
-                listOf(ivArticulos, tvArticulos),
-                listOf(ivClientes, tvClientes),
-                listOf(ivPerfil, tvPerfil)
-            )
-            views.forEachIndexed { i, v ->
-                val tint = if (i == tab) activeColor else inactiveColor
-                (v[0] as android.widget.ImageView).setColorFilter(tint)
-                (v[1] as android.widget.TextView).setTextColor(tint)
+            tabs.forEachIndexed { i, tabLayout ->
+                val isActive = i == tab
+                textViews[i].visibility = if (isActive) View.VISIBLE else View.GONE
+                textViews[i].setTextColor(if (isActive) activeTextColor else inactiveColor)
+                iconViews[i].setColorFilter(if (isActive) activeColor else inactiveColor)
+                tabLayout.background = if (isActive) activeBg else null
             }
             btnSearchIcon.visibility = if (tab == 2) View.GONE else View.VISIBLE
         }

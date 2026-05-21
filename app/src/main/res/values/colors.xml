@@ -80,6 +80,14 @@
 
     <color name="grey_20">#E0E0E0</color>
 
+    <!-- Floating nav — premium dark glass (always dark) -->
+    <color name="nav_pill_bg">#E61A1D2B</color>
+    <color name="nav_pill_stroke">#2A2F42</color>
+    <color name="nav_active_bg">#2D3D60</color>
+    <color name="nav_inactive_icon">#6B7280</color>
+    <color name="nav_active_icon">#FFFFFF</color>
+    <color name="nav_active_text">#F3F4F6</color>
+
     <!-- Mora semafórica -->
     <color name="mora_ok">#639922</color>
     <color name="mora_warn">#BA7517</color>
