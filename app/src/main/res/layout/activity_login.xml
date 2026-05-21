@@ -24,8 +24,8 @@
         <!-- IMAGE -->
         <ImageView
             android:id="@+id/imgLogin"
-            android:layout_width="220dp"
-            android:layout_height="220dp"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:src="@drawable/unimark"

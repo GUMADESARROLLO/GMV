@@ -55,4 +55,10 @@
     </style>
 
     <style name="Theme.GMV" parent="Base.Theme.GMV" />
+
+    <style name="Theme.GMV.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">#09C7A1</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
 </resources>

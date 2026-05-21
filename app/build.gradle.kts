@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.circleimageview)
     implementation(libs.swiperefreshlayout)
     implementation(libs.picasso)
+    implementation(libs.viewpager2)
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
