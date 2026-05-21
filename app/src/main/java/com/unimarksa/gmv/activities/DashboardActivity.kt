@@ -9,6 +9,8 @@ import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ViewPagerAdapter
@@ -22,7 +24,11 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var etToolbarSearch: EditText
     private lateinit var btnSearchClear: ImageButton
     private lateinit var btnSearchIcon: ImageButton
+    private lateinit var floatingNav: View
     private var isSearchOpen = false
+    private var isNavHidden = false
+    private var currentScrollListener: RecyclerView.OnScrollListener? = null
+    private var currentScrollableView: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +42,8 @@ class DashboardActivity : AppCompatActivity() {
         etToolbarSearch = findViewById(R.id.et_toolbar_search)
         btnSearchClear = findViewById(R.id.btn_search_clear)
         btnSearchIcon = findViewById(R.id.btn_toolbar_search)
+
+        floatingNav = findViewById(R.id.floating_nav)
 
         val navArticulos = findViewById<android.widget.LinearLayout>(R.id.nav_articulos)
         val navClientes = findViewById<android.widget.LinearLayout>(R.id.nav_clientes)
@@ -72,6 +80,7 @@ class DashboardActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 setActive(position)
                 if (isSearchOpen) closeSearch()
+                attachScrollBehavior(position)
             }
         })
 
@@ -95,6 +104,7 @@ class DashboardActivity : AppCompatActivity() {
         })
 
         setActive(0)
+        viewPager.post { attachScrollBehavior(0) }
     }
 
     private fun openSearch() {
@@ -116,6 +126,56 @@ class DashboardActivity : AppCompatActivity() {
         (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)
             ?.hideSoftInputFromWindow(etToolbarSearch.windowToken, 0)
         notifySearch("")
+    }
+
+    private fun attachScrollBehavior(position: Int) {
+        currentScrollListener?.let {
+            (currentScrollableView as? RecyclerView)?.removeOnScrollListener(it)
+        }
+        currentScrollListener = null
+        currentScrollableView = null
+        isNavHidden = false
+        floatingNav.translationY = 0f
+
+        val adapter = viewPager.adapter as ViewPagerAdapter
+        val fragment = adapter.getItem(position)
+        val view = fragment.view ?: return
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        if (recyclerView != null) {
+            val listener = object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0) hideFloatingNav() else showFloatingNav()
+                }
+            }
+            recyclerView.addOnScrollListener(listener)
+            currentScrollListener = listener
+            currentScrollableView = recyclerView
+            return
+        }
+
+        val nestedScroll = view.findViewById<NestedScrollView>(R.id.nested_content)
+        if (nestedScroll != null) {
+            nestedScroll.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+                if (scrollY > oldScrollY) hideFloatingNav() else showFloatingNav()
+            }
+            currentScrollableView = nestedScroll
+        }
+    }
+
+    private fun showFloatingNav() {
+        if (!isNavHidden) return
+        isNavHidden = false
+        floatingNav.animate().translationY(0f).setDuration(200).start()
+    }
+
+    private fun hideFloatingNav() {
+        if (isNavHidden) return
+        isNavHidden = true
+        floatingNav.post {
+            val offset = floatingNav.height + 16
+            floatingNav.animate().translationY(offset.toFloat()).setDuration(200).start()
+        }
     }
 
     private fun notifySearch(query: String) {
