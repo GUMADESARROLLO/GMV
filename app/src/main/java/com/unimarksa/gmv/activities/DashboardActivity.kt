@@ -1,5 +1,7 @@
 package com.unimarksa.gmv.activities
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,9 +9,12 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -33,8 +38,22 @@ class DashboardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
+
+        val coordinatorLayout = findViewById<View>(R.id.tab_coordinator_layout)
+        ViewCompat.setOnApplyWindowInsetsListener(coordinatorLayout) { v, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            v.setPadding(statusBar.left, statusBar.top, statusBar.right, 0)
+            insets
+        }
+
+        if (Build.VERSION.SDK_INT < 35) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
+        }
+
+        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
 
         viewPager = findViewById(R.id.viewpager)
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager)

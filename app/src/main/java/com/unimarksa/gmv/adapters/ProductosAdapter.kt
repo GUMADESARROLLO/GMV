@@ -13,6 +13,9 @@ import com.squareup.picasso.Picasso
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.activities.ProductDetailActivity
 import com.unimarksa.gmv.models.ItemProducto
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class ProductosAdapter(
     private val items: List<ItemProducto>
@@ -38,8 +41,9 @@ class ProductosAdapter(
         val item = items[position]
         holder.productName.text = item.nombre
         holder.idSku.text = item.codArticulo
-        holder.idCantItem.text = item.cantidad
-        holder.productPrice.text = "C$ ${item.precio}"
+        val cantidadFormateada = formatNumero(item.cantidad)
+        holder.idCantItem.text = if (!item.und.isNullOrBlank()) "$cantidadFormateada [${item.und}]" else cantidadFormateada
+        holder.productPrice.text = "C$ ${formatNumero(item.precio)}"
 
         val partes = if (!item.bonificado.isNullOrBlank()) {
             item.bonificado!!.split(",").map { it.trim() }.filter { it.isNotEmpty() }
@@ -69,4 +73,13 @@ class ProductosAdapter(
     }
 
     override fun getItemCount() = items.size
+
+    private fun formatNumero(valor: String): String {
+        return try {
+            val num = valor.replace(",", "").toDouble()
+            DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US)).format(num)
+        } catch (_: NumberFormatException) {
+            valor
+        }
+    }
 }

@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="5,912 UND"
-                    android:textColor="@color/available"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="C$ 144.50"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/available"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

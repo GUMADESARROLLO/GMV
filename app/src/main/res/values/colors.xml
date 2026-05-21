@@ -82,11 +82,11 @@
 
     <color name="grey_20">#D4D4D4</color>
 
-    <!-- Floating nav — premium dark glass (always dark) -->
-    <color name="nav_pill_bg">#E61A1D2B</color>
-    <color name="nav_pill_stroke">#2A3348</color>
-    <color name="nav_active_bg">#273B7A</color>
-    <color name="nav_inactive_icon">#6B7280</color>
+    <!-- Floating nav — corporate colors -->
+    <color name="nav_pill_bg">@color/colorUmkPrimaryDark</color>
+    <color name="nav_pill_stroke">@color/colorUmkPrimaryDark</color>
+    <color name="nav_active_bg">@color/colorUmkPrimary</color>
+    <color name="nav_inactive_icon">#80FFFFFF</color>
     <color name="nav_active_icon">#FFFFFF</color>
     <color name="nav_active_text">#FFFFFF</color>
 

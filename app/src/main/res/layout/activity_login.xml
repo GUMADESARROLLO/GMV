@@ -74,8 +74,6 @@
             android:drawableStart="@android:drawable/ic_lock_lock"/>
 
         <!-- LOGIN BUTTON -->
-
-        <!-- LINKS -->
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"

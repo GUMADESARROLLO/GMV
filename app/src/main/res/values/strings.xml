@@ -17,7 +17,7 @@
     <string name="txt_profile_history">Órdenes</string>
     <string name="txt_profile_history_vineta">Viñeta</string>
     <string name="txt_inteligencia_mercado">Inteligencia de Mercado</string>
-    <string name="btn_edit_profile">Editar Perfil</string>
+    <string name="btn_edit_profile">Salir</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="failed_fetch_data">Error al obtener datos</string>
 

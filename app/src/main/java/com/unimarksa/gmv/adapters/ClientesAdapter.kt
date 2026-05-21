@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.activities.ClienteDetailActivity
 import com.unimarksa.gmv.models.ItemCliente
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class ClientesAdapter(
     private val items: List<ItemCliente>,
@@ -50,9 +53,9 @@ class ClientesAdapter(
         val item = items[position]
         holder.clientName.text = "${item.codCliente} - ${item.nombre}"
         holder.clientDir.text = item.direccion
-        holder.tvDisponible.text = "C$ ${item.disponible}"
-        holder.tvSaldo.text = "C$ ${item.saldo}"
-        holder.tvLimite.text = "C$ ${item.limite}"
+        holder.tvDisponible.text = "C$ ${formatNumero(item.disponible)}"
+        holder.tvSaldo.text = "C$ ${formatNumero(item.saldo)}"
+        holder.tvLimite.text = "C$ ${formatNumero(item.limite)}"
         holder.tvCodigo.text = item.codCliente
 
         holder.tvMoroso.visibility = if (item.moroso == "S") View.VISIBLE else View.GONE
@@ -67,6 +70,15 @@ class ClientesAdapter(
     }
 
     override fun getItemCount() = items.size
+
+    private fun formatNumero(valor: String): String {
+        return try {
+            val num = valor.replace(",", "").toDouble()
+            DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US)).format(num)
+        } catch (_: NumberFormatException) {
+            valor
+        }
+    }
 
     private fun setSelectableBackground(view: View, baseColorResId: Int) {
         val baseColor = ContextCompat.getColor(context, baseColorResId)

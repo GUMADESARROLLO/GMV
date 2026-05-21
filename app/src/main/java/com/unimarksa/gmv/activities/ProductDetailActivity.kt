@@ -1,17 +1,20 @@
 package com.unimarksa.gmv.activities
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.databinding.ActivityProductDetailBinding
 import com.unimarksa.gmv.models.ItemProducto
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class ProductDetailActivity : AppCompatActivity() {
 
@@ -20,16 +23,15 @@ class ProductDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
-        window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        if (Build.VERSION.SDK_INT < 35) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
         }
+
+        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
 
         setupToolbar()
         setupFab()
@@ -60,8 +62,9 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun bindData(item: ItemProducto) {
         binding.productName.text = item.nombre
         binding.productSku.text = "SKU: ${item.codArticulo}"
-        binding.productQuantity.text = item.cantidad
-        binding.productPrice.text = "C$ ${item.precio}"
+        val cantidadFmt = formatNumero(item.cantidad)
+        binding.productQuantity.text = if (!item.und.isNullOrBlank()) "$cantidadFmt [${item.und}]" else cantidadFmt
+        binding.productPrice.text = "C$ ${formatNumero(item.precio)}"
         binding.productDescription.text = item.nombre.ifEmpty { "Sin descripción" }
 
         Picasso.get()
@@ -113,6 +116,15 @@ class ProductDetailActivity : AppCompatActivity() {
         } else {
             binding.btnAdd.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.mockup_btn_active))
             binding.hintText.text = getString(R.string.hint_talla_seleccionada, texto)
+        }
+    }
+
+    private fun formatNumero(valor: String): String {
+        return try {
+            val num = valor.replace(",", "").toDouble()
+            DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US)).format(num)
+        } catch (_: NumberFormatException) {
+            valor
         }
     }
 }
