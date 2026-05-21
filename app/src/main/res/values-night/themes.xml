@@ -49,7 +49,7 @@
         <item name="textAppearanceLabelSmall">@style/TextAppearance.M3.LabelSmall</item>
 
         <!-- System bars -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/colorUmkPrimaryDark</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/background</item>
     </style>

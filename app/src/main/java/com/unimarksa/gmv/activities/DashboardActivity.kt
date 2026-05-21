@@ -40,6 +40,8 @@ class DashboardActivity : AppCompatActivity() {
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
 
         toolbar = findViewById(R.id.toolbar)
+        toolbar.setTitleTextColor(android.graphics.Color.WHITE)
+        toolbar.title = getTabTitle(0)
         lytSearchMode = findViewById(R.id.lyt_search_mode)
         etToolbarSearch = findViewById(R.id.et_toolbar_search)
         btnSearchClear = findViewById(R.id.btn_search_clear)
