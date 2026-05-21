@@ -111,4 +111,9 @@
     <!-- Product Detail mockup -->
     <color name="mockup_btn_primary">#1A2B4A</color>
     <color name="mockup_btn_active">#185FA5</color>
+
+    <color name="colorUmkPrimaryDark">#003044</color>
+    <color name="colorUmkPrimary">#006690</color>
+    <color name="colorUmkAccent">#009cdd</color>\
+    <color name="greyUmk_10">#e6e6e6</color>
 </resources>

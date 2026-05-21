@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -36,6 +37,7 @@ class ClientesAdapter(
         val lytPin: View = view.findViewById(R.id.id_lyt_pin)
         val btnVerificacion: ImageView = view.findViewById(R.id.btn_verificacion)
         val tvCodigo: TextView = view.findViewById(R.id.id_cliente_codigo)
+        val lytParent: LinearLayout = view.findViewById(R.id.lyt_parent)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -55,7 +57,7 @@ class ClientesAdapter(
 
         holder.tvMoroso.visibility = if (item.moroso == "S") View.VISIBLE else View.GONE
 
-        //if (item.moroso == "S") setSelectableBackground(holder.card, R.color.mora_danger_bg)
+        if (item.moroso == "S") setSelectableBackground(holder.lytParent, R.color.mora_danger_bg)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ClienteDetailActivity::class.java)

@@ -5,10 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
+    android:layout_margin="4dp"
     app:cardCornerRadius="12dp"
     android:clickable="true"
-    app:cardBackgroundColor="?attr/colorSurface"
+    android:background="?attr/selectableItemBackground"
     app:cardElevation="2dp">
 
     <LinearLayout
@@ -228,7 +228,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/txt_price_color" />
+                    android:textColor="@color/available" />
 
                 <TextView
                     android:layout_width="wrap_content"
