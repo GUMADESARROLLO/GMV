@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +22,10 @@ class ArticulosFragment : Fragment(), Searchable {
 
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView
+    private lateinit var lytEmpty: View
+    private lateinit var progressBar: View
+    private lateinit var lytNoConnection: View
+    private lateinit var btRetry: View
     private var fullList: List<ItemProducto> = emptyList()
 
     override fun onCreateView(
@@ -38,6 +41,11 @@ class ArticulosFragment : Fragment(), Searchable {
 
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
         recyclerView = view.findViewById(R.id.recycler_view)
+        lytEmpty = view.findViewById(R.id.lyt_empty)
+        progressBar = lytEmpty.findViewById(R.id.progress_bar)
+        lytNoConnection = lytEmpty.findViewById(R.id.lyt_no_connection)
+        btRetry = lytEmpty.findViewById(R.id.bt_retry)
+
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         swipeRefresh.setOnRefreshListener {
@@ -45,7 +53,12 @@ class ArticulosFragment : Fragment(), Searchable {
             cargarProductos()
         }
 
+        btRetry.setOnClickListener {
+            cargarProductos()
+        }
+
         if (cachedProductos == null) {
+            mostrarCargando()
             cargarProductos()
         } else {
             fullList = cachedProductos!!
@@ -63,26 +76,49 @@ class ArticulosFragment : Fragment(), Searchable {
             it.nombre.lowercase().contains(query) ||
             it.codArticulo.lowercase().contains(query)
         }
-        mostrarProductos(filtrados)
+        if (filtrados.isEmpty()) {
+            mostrarVacioConTexto()
+        } else {
+            mostrarProductos(filtrados)
+        }
+    }
+
+    private fun mostrarCargando() {
+        swipeRefresh.visibility = View.GONE
+        lytEmpty.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
+        lytNoConnection.visibility = View.GONE
+    }
+
+    private fun mostrarVacioConTexto() {
+        swipeRefresh.visibility = View.GONE
+        lytEmpty.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+        lytNoConnection.visibility = View.VISIBLE
     }
 
     private fun cargarProductos() {
-        swipeRefresh.isRefreshing = true
+        mostrarCargando()
         ApiService.fetchProductos(
             onResult = { productos ->
                 cachedProductos = productos
                 fullList = productos
-                mostrarProductos(productos)
-                swipeRefresh.isRefreshing = false
+                if (productos.isEmpty()) {
+                    mostrarVacioConTexto()
+                } else {
+                    mostrarProductos(productos)
+                }
             },
-            onError = { error ->
-                Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-                swipeRefresh.isRefreshing = false
+            onError = { _ ->
+                mostrarVacioConTexto()
             }
         )
     }
 
     private fun mostrarProductos(productos: List<ItemProducto>) {
+        swipeRefresh.visibility = View.VISIBLE
+        lytEmpty.visibility = View.GONE
+        swipeRefresh.isRefreshing = false
         recyclerView.adapter = ProductosAdapter(productos)
     }
 }

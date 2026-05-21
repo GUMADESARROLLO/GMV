@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +22,10 @@ class ClientesFragment : Fragment(), Searchable {
 
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView
+    private lateinit var lytEmpty: View
+    private lateinit var progressBar: View
+    private lateinit var lytNoConnection: View
+    private lateinit var btRetry: View
     private var fullList: List<ItemCliente> = emptyList()
 
     override fun onCreateView(
@@ -38,6 +41,11 @@ class ClientesFragment : Fragment(), Searchable {
 
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
         recyclerView = view.findViewById(R.id.recycler_view)
+        lytEmpty = view.findViewById(R.id.lyt_empty)
+        progressBar = lytEmpty.findViewById(R.id.progress_bar)
+        lytNoConnection = lytEmpty.findViewById(R.id.lyt_no_connection)
+        btRetry = lytEmpty.findViewById(R.id.bt_retry)
+
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         swipeRefresh.setOnRefreshListener {
@@ -45,7 +53,12 @@ class ClientesFragment : Fragment(), Searchable {
             cargarClientes()
         }
 
+        btRetry.setOnClickListener {
+            cargarClientes()
+        }
+
         if (cachedClientes == null) {
+            mostrarCargando()
             cargarClientes()
         } else {
             fullList = cachedClientes!!
@@ -63,26 +76,49 @@ class ClientesFragment : Fragment(), Searchable {
             it.nombre.lowercase().contains(query) ||
             it.codCliente.lowercase().contains(query)
         }
-        mostrarClientes(filtrados)
+        if (filtrados.isEmpty()) {
+            mostrarVacioConTexto()
+        } else {
+            mostrarClientes(filtrados)
+        }
+    }
+
+    private fun mostrarCargando() {
+        swipeRefresh.visibility = View.GONE
+        lytEmpty.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
+        lytNoConnection.visibility = View.GONE
+    }
+
+    private fun mostrarVacioConTexto() {
+        swipeRefresh.visibility = View.GONE
+        lytEmpty.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+        lytNoConnection.visibility = View.VISIBLE
     }
 
     private fun cargarClientes() {
-        swipeRefresh.isRefreshing = true
+        mostrarCargando()
         ApiService.fetchClientes(
             onResult = { clientes ->
                 cachedClientes = clientes
                 fullList = clientes
-                mostrarClientes(clientes)
-                swipeRefresh.isRefreshing = false
+                if (clientes.isEmpty()) {
+                    mostrarVacioConTexto()
+                } else {
+                    mostrarClientes(clientes)
+                }
             },
-            onError = { error ->
-                Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-                swipeRefresh.isRefreshing = false
+            onError = { _ ->
+                mostrarVacioConTexto()
             }
         )
     }
 
     private fun mostrarClientes(clientes: List<ItemCliente>) {
+        swipeRefresh.visibility = View.VISIBLE
+        lytEmpty.visibility = View.GONE
+        swipeRefresh.isRefreshing = false
         recyclerView.adapter = ClientesAdapter(clientes, requireContext())
     }
 }

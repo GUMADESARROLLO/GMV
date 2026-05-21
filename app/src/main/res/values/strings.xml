@@ -38,4 +38,7 @@
     <string name="action_back">Regresar</string>
     <string name="action_share">Compartir</string>
     <string name="action_add_cart">Agregar al carrito</string>
+    <string name="RETRY">Reintentar</string>
+    <string name="empty_cart">Carrito vacío</string>
+    <string name="btn_continue_shopping">Continuar comprando</string>
 </resources>
