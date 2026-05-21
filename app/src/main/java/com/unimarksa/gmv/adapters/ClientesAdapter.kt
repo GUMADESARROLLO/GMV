@@ -2,12 +2,17 @@ package com.unimarksa.gmv.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.RippleDrawable
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.activities.ClienteDetailActivity
@@ -30,6 +35,7 @@ class ClientesAdapter(
         val ivPlan: ImageView = view.findViewById(R.id.id_img_plan)
         val lytPin: View = view.findViewById(R.id.id_lyt_pin)
         val btnVerificacion: ImageView = view.findViewById(R.id.btn_verificacion)
+        val tvCodigo: TextView = view.findViewById(R.id.id_cliente_codigo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,13 +46,16 @@ class ClientesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.clientName.text = item.nombre
+        holder.clientName.text = "${item.codCliente} - ${item.nombre}"
         holder.clientDir.text = item.direccion
         holder.tvDisponible.text = "C$ ${item.disponible}"
         holder.tvSaldo.text = "C$ ${item.saldo}"
         holder.tvLimite.text = "C$ ${item.limite}"
+        holder.tvCodigo.text = item.codCliente
 
         holder.tvMoroso.visibility = if (item.moroso == "S") View.VISIBLE else View.GONE
+
+        //if (item.moroso == "S") setSelectableBackground(holder.card, R.color.mora_danger_bg)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ClienteDetailActivity::class.java)
@@ -56,4 +65,13 @@ class ClientesAdapter(
     }
 
     override fun getItemCount() = items.size
+
+    private fun setSelectableBackground(view: View, baseColorResId: Int) {
+        val baseColor = ContextCompat.getColor(context, baseColorResId)
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(android.R.attr.colorControlHighlight, typedValue, true)
+        val rippleColor = ColorStateList.valueOf(typedValue.data)
+        val rippleDrawable = RippleDrawable(rippleColor, ColorDrawable(baseColor), null)
+        view.background = rippleDrawable
+    }
 }

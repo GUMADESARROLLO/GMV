@@ -8,13 +8,11 @@
     android:layout_margin="3dp"
     app:cardCornerRadius="12dp"
     android:clickable="true"
-    android:background="?attr/selectableItemBackgroundBorderless"
     app:cardBackgroundColor="?attr/colorSurface"
     app:cardElevation="2dp">
 
     <LinearLayout
         android:id="@+id/lyt_parent"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">

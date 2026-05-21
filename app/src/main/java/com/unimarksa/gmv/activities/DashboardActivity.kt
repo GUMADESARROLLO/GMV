@@ -73,6 +73,7 @@ class DashboardActivity : AppCompatActivity() {
                 tabLayout.background = if (isActive) activeBg else null
             }
             btnSearchIcon.visibility = if (tab == 2) View.GONE else View.VISIBLE
+            if (!isSearchOpen) toolbar.title = getTabTitle(tab)
         }
 
         navArticulos.setOnClickListener { viewPager.currentItem = 0 }
@@ -125,7 +126,7 @@ class DashboardActivity : AppCompatActivity() {
         etToolbarSearch.setText("")
         lytSearchMode.visibility = View.GONE
         btnSearchIcon.visibility = View.VISIBLE
-        toolbar.title = getString(R.string.app_name)
+        toolbar.title = getTabTitle(viewPager.currentItem)
         (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)
             ?.hideSoftInputFromWindow(etToolbarSearch.windowToken, 0)
         notifySearch("")
@@ -189,5 +190,12 @@ class DashboardActivity : AppCompatActivity() {
         val adapter = viewPager.adapter as ViewPagerAdapter
         val fragment = adapter.getItem(viewPager.currentItem)
         (fragment as? Searchable)?.onSearchQuery(query)
+    }
+
+    private fun getTabTitle(tab: Int): String = when (tab) {
+        0 -> getString(R.string.label_articulos)
+        1 -> getString(R.string.label_clientes)
+        2 -> getString(R.string.label_perfil)
+        else -> getString(R.string.app_name)
     }
 }
