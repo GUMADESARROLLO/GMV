@@ -70,6 +70,11 @@
             android:exported="false"
             android:theme="@style/Theme.GMV" />
 
+        <activity
+            android:name=".activities.ReporteFacturacionActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
     </application>
 
 </manifest>

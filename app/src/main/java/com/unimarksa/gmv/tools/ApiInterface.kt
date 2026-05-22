@@ -30,4 +30,12 @@ interface ApiInterface {
         @Query("get_detalle_factura") numeroFactura: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getReporteFacturacion(
+        @Query("post_rpt_ruta") ruta: String = "F10",
+        @Query("desde") desde: String,
+        @Query("hasta") hasta: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
 }

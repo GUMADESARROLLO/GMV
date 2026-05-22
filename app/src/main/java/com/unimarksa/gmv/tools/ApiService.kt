@@ -6,6 +6,7 @@ import com.unimarksa.gmv.models.ItemDetalleFactura
 import com.unimarksa.gmv.models.ItemFacturaPendiente
 import com.unimarksa.gmv.models.ItemPerfilCliente
 import com.unimarksa.gmv.models.ItemProducto
+import com.unimarksa.gmv.models.ItemReporteFactura
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -229,6 +230,56 @@ object ApiService {
             mas120 = opt("Mas120"),
             factPend = item.optString("FACT_PEND", "")
         )
+    }
+
+    fun fetchReporteFacturacion(
+        desde: String,
+        hasta: String,
+        onResult: (List<ItemReporteFactura>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.getReporteFacturacion(desde = desde, hasta = hasta).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) {
+                    onError("Error del servidor: ${response.code()}")
+                    return
+                }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try {
+                    onResult(parseReporteFacturacion(body.toString()))
+                } catch (e: Exception) {
+                    onError("Error al procesar datos: ${e.message}")
+                }
+            }
+
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError("Error de conexión: ${t.message}")
+            }
+        })
+    }
+
+    private fun parseReporteFacturacion(json: String): List<ItemReporteFactura> {
+        val lista = mutableListOf<ItemReporteFactura>()
+        val array = extractArray(json)
+        for (i in 0 until array.length()) {
+            val item = array.getJSONObject(i)
+            val opt: (String) -> String? = { k -> item.optString(k, null) }
+            lista.add(
+                ItemReporteFactura(
+                    numero = opt("factura") ?: opt("numero")
+                        ?: opt("NUMERO") ?: opt("FACTURA") ?: opt("documento") ?: "",
+                    fecha = opt("fecha") ?: opt("FECHA") ?: opt("fecha_emision")
+                        ?: opt("fecha_factura") ?: "",
+                    total = opt("total") ?: opt("TOTAL") ?: opt("monto")
+                        ?: opt("MONTO") ?: opt("saldo") ?: opt("SALDO") ?: "0.00",
+                    saldo = opt("saldo") ?: opt("SALDO") ?: "",
+                    cliente = opt("cliente") ?: opt("CLIENTE") ?: opt("nombre")
+                        ?: opt("NOMBRE") ?: opt("razon_social") ?: ""
+                )
+            )
+        }
+        return lista
     }
 
     private fun extractArray(json: String): JSONArray {

@@ -1,6 +1,7 @@
 package com.unimarksa.gmv.fragments
 
 import android.app.Dialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -13,6 +14,7 @@ import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.activities.ReporteFacturacionActivity
 import com.unimarksa.gmv.tools.Config
 
 class PerfilFragment : Fragment() {
@@ -31,6 +33,9 @@ class PerfilFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         nestedScroll = view.findViewById(R.id.nested_content)
         view.findViewById<View>(R.id.AboutUs).setOnClickListener { showDialogAbout() }
+        view.findViewById<View>(R.id.Reportes).setOnClickListener {
+            startActivity(Intent(requireContext(), ReporteFacturacionActivity::class.java))
+        }
     }
 
     private fun showDialogAbout() {

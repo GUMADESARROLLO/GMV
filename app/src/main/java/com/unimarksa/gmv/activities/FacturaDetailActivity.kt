@@ -23,8 +23,13 @@ import com.unimarksa.gmv.ui.PagoFacturaDialog
 
 class FacturaDetailActivity : AppCompatActivity() {
 
+    companion object {
+        const val EXTRA_READ_ONLY = "readOnly"
+    }
+
     private lateinit var binding: ActivityFacturaDetailBinding
     private var factura: ItemFacturaPendiente? = null
+    private var isReadOnly = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -59,21 +64,27 @@ class FacturaDetailActivity : AppCompatActivity() {
         factura = intent.getSerializableExtra("factura") as? ItemFacturaPendiente
         factura?.let { bindHeader(it) }
 
-        binding.btnRegistrarPago.setOnClickListener {
-            showPagoDialog()
-        }
+        isReadOnly = intent.getBooleanExtra(EXTRA_READ_ONLY, false)
+        if (isReadOnly) {
+            binding.lytBottomActions.visibility = View.GONE
+            binding.btnRecibo.visibility = View.GONE
+        } else {
+            binding.btnRegistrarPago.setOnClickListener {
+                showPagoDialog()
+            }
 
-        updateReciboButton()
+            updateReciboButton()
 
-        binding.btnRecibo.setOnClickListener {
-            startActivity(Intent(this, ListadoPagosActivity::class.java))
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            binding.btnRecibo.setOnClickListener {
+                startActivity(Intent(this, ListadoPagosActivity::class.java))
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        updateReciboButton()
+        if (!isReadOnly) updateReciboButton()
     }
 
     private fun updateReciboButton() {
