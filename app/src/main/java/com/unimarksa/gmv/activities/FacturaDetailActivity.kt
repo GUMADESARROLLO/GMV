@@ -1,5 +1,6 @@
 package com.unimarksa.gmv.activities
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,12 +11,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.DetalleFacturaAdapter
 import com.unimarksa.gmv.databinding.ActivityFacturaDetailBinding
 import com.unimarksa.gmv.models.ItemFacturaPendiente
+import com.unimarksa.gmv.models.ItemPagoFactura
 import com.unimarksa.gmv.tools.ApiService
+import com.unimarksa.gmv.tools.PagoManager
 import com.unimarksa.gmv.ui.PagoFacturaDialog
 
 class FacturaDetailActivity : AppCompatActivity() {
@@ -59,6 +62,22 @@ class FacturaDetailActivity : AppCompatActivity() {
         binding.btnRegistrarPago.setOnClickListener {
             showPagoDialog()
         }
+
+        updateReciboButton()
+
+        binding.btnRecibo.setOnClickListener {
+            startActivity(Intent(this, ListadoPagosActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateReciboButton()
+    }
+
+    private fun updateReciboButton() {
+        binding.btnRecibo.visibility = if (PagoManager.count > 0) View.VISIBLE else View.GONE
     }
 
     private fun bindHeader(f: ItemFacturaPendiente) {
@@ -100,18 +119,31 @@ class FacturaDetailActivity : AppCompatActivity() {
             val desc = values[PagoFacturaDialog.FIELD_DESCUENTO] ?: "0.00"
             val rec = values[PagoFacturaDialog.FIELD_RECIBIDO] ?: "0.00"
 
-            val msg = buildString {
-                appendLine("Acci\u00f3n: ${action.replaceFirstChar { it.uppercase() }}")
-                if (nc != "0.00") appendLine("N/C: C$ $nc")
-                if (ret != "0.00") appendLine("Retenci\u00f3n: C$ $ret")
-                if (desc != "0.00") appendLine("Descuento: C$ $desc")
-                appendLine("Valor Recibido: C$ $rec")
+            val saldoVal = saldoStr.replace(",", "").toDoubleOrNull() ?: 0.0
+            val recVal = rec.replace(",", "").toDoubleOrNull() ?: 0.0
+            val estado = when {
+                action == "cancelacion" || action == "contado" -> "pagado"
+                recVal < saldoVal -> "parcial"
+                else -> "pendiente"
             }
+            val pago = ItemPagoFactura(
+                numero = factura?.numero ?: "",
+                nc = nc.replace(",", "").toDoubleOrNull() ?: 0.0,
+                retencion = ret.replace(",", "").toDoubleOrNull() ?: 0.0,
+                descuento = desc.replace(",", "").toDoubleOrNull() ?: 0.0,
+                valorRecibido = recVal,
+                saldo = saldoVal,
+                action = action,
+                estado = estado
+            )
+            PagoManager.add(pago)
+            updateReciboButton()
 
-            MaterialAlertDialogBuilder(this)
-                .setTitle("Confirmar pago")
-                .setMessage(msg.trimEnd())
-                .setPositiveButton("OK") { _, _ -> }
+            Snackbar.make(binding.root, "Pago agregado a la lista", Snackbar.LENGTH_LONG)
+                .setAction("Ver listado") {
+                    startActivity(Intent(this, ListadoPagosActivity::class.java))
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
                 .show()
         }
         dialog.setOnActionListener(actionListener)

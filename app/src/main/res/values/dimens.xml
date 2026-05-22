@@ -7,6 +7,8 @@
     <dimen name="spacing_xmedium">8dp</dimen>
     <dimen name="spacing_xxlarge">50dp</dimen>
     <dimen name="spacing_mlarge">24dp</dimen>
+    <dimen name="spacing_smlarge">12dp</dimen>
+    <dimen name="spacing_xmlarge">48dp</dimen>
     <dimen name="spacing_xlarge">32dp</dimen>
     <dimen name="size_chip_stroke">2dp</dimen>
 </resources>

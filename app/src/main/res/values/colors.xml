@@ -66,6 +66,8 @@
     <color name="available">#43A047</color>
     <color name="txt_price_color">#E65100</color>
     <color name="grey_90">#212121</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="red_400">#EF5350</color>
     <color name="light_blue_400">#29B6F6</color>
     <color name="red">#EF5350</color>
     <color name="orange_500">#FF9800</color>
