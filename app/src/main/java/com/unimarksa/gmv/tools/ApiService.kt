@@ -275,11 +275,38 @@ object ApiService {
                         ?: opt("MONTO") ?: opt("saldo") ?: opt("SALDO") ?: "0.00",
                     saldo = opt("saldo") ?: opt("SALDO") ?: "",
                     cliente = opt("cliente") ?: opt("CLIENTE") ?: opt("nombre")
-                        ?: opt("NOMBRE") ?: opt("razon_social") ?: ""
+                        ?: opt("NOMBRE") ?: opt("razon_social") ?: "",
+                    vencimiento = opt("vence") ?: opt("VENCE") ?: ""
                 )
             )
         }
         return lista
+    }
+
+    fun fetchHistoricoFactura(
+        codCliente: String,
+        onResult: (List<ItemReporteFactura>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.getHistoricoFactura(codCliente).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) {
+                    onError("Error del servidor: ${response.code()}")
+                    return
+                }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try {
+                    onResult(parseReporteFacturacion(body.toString()))
+                } catch (e: Exception) {
+                    onError("Error al procesar datos: ${e.message}")
+                }
+            }
+
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError("Error de conexión: ${t.message}")
+            }
+        })
     }
 
     private fun extractArray(json: String): JSONArray {

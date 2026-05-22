@@ -17,6 +17,7 @@ import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.FacturasAdapter
 import com.unimarksa.gmv.databinding.ActivityClienteDetailBinding
 import com.unimarksa.gmv.models.ItemCliente
+import com.unimarksa.gmv.models.ItemFacturaPendiente
 import com.unimarksa.gmv.tools.ApiService
 import com.unimarksa.gmv.tools.CartManager
 
@@ -74,6 +75,15 @@ class ClienteDetailActivity : AppCompatActivity() {
         binding.lytReciboColector.setOnClickListener {
             startActivity(Intent(this, ListadoPagosActivity::class.java))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        binding.idHistoryLast3m.setOnClickListener {
+            val codCliente = (intent.getSerializableExtra("cliente") as? com.unimarksa.gmv.models.ItemCliente)?.codCliente
+            if (codCliente != null) {
+                startActivity(Intent(this, HistoricoFacturaActivity::class.java)
+                    .putExtra("codCliente", codCliente))
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
     }
 

@@ -7,5 +7,6 @@ data class ItemReporteFactura(
     val fecha: String,
     val total: String,
     val saldo: String = "",
-    val cliente: String = ""
+    val cliente: String = "",
+    val vencimiento: String = ""
 ) : Serializable
