@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -25,7 +24,6 @@ class ListadoPagosActivity : AppCompatActivity() {
     private val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityListadoPagosBinding.inflate(layoutInflater)
         setContentView(binding.root)
