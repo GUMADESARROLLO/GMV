@@ -1,12 +1,17 @@
 package com.unimarksa.gmv.ui
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 import com.unimarksa.gmv.R
 
 class PagoFacturaDialog : BottomSheetDialogFragment() {
@@ -18,7 +23,11 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
         FIELD_RECIBIDO to "0.00"
     )
     private var selectedField = FIELD_NC
+    private var selectedAction = "contado"
+    private var saldo: Double = 0.0
     private var listener: ((action: String, values: Map<String, String>) -> Unit)? = null
+
+    fun setSaldo(s: Double) { saldo = s }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_pago_factura, container, false)
@@ -26,6 +35,13 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view.post {
+            (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        val tvSaldo = view.findViewById<TextView>(R.id.tv_saldo_dialog)
+        tvSaldo.text = "C$ ${"%,.2f".format(saldo)}"
 
         val fieldViews = mapOf(
             FIELD_NC to FieldViews(
@@ -91,18 +107,86 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
             updateDisplay()
         }
 
-        view.findViewById<Button>(R.id.btn_abono).setOnClickListener {
-            listener?.invoke("abono", values.toMap())
+        val btnAbono = view.findViewById<MaterialButton>(R.id.btn_abono)
+        val btnCancelacion = view.findViewById<MaterialButton>(R.id.btn_cancelacion)
+        val btnContado = view.findViewById<MaterialButton>(R.id.btn_contado)
+
+        val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary)
+        val onPrimaryColor = ContextCompat.getColor(requireContext(), R.color.on_primary)
+        val strokeColor = ContextCompat.getColor(requireContext(), R.color.outline)
+        val transparent = ContextCompat.getColor(requireContext(), android.R.color.transparent)
+
+        fun styleAsSelected(btn: MaterialButton) {
+            btn.backgroundTintList = ColorStateList.valueOf(primaryColor)
+            btn.setTextColor(onPrimaryColor)
+            btn.strokeColor = ColorStateList.valueOf(primaryColor)
+            btn.strokeWidth = 0
+        }
+
+        fun styleAsUnselected(btn: MaterialButton) {
+            btn.backgroundTintList = ColorStateList.valueOf(transparent)
+            btn.setTextColor(primaryColor)
+            btn.strokeColor = ColorStateList.valueOf(strokeColor)
+            btn.strokeWidth = 1
+        }
+
+        fun selectAction(action: String) {
+            selectedAction = action
+            styleAsUnselected(btnAbono)
+            styleAsUnselected(btnCancelacion)
+            styleAsUnselected(btnContado)
+            when (action) {
+                "abono" -> styleAsSelected(btnAbono)
+                "cancelacion" -> styleAsSelected(btnCancelacion)
+                "contado" -> styleAsSelected(btnContado)
+            }
+        }
+
+        selectAction("contado")
+
+        btnAbono.setOnClickListener { selectAction("abono") }
+        btnCancelacion.setOnClickListener { selectAction("cancelacion") }
+        btnContado.setOnClickListener { selectAction("contado") }
+
+        fun parseValue(key: String): Double {
+            return (values[key] ?: "0.00").replace(",", "").toDoubleOrNull() ?: 0.0
+        }
+
+        view.findViewById<MaterialButton>(R.id.btn_confirmar_accion).setOnClickListener {
+            val nc = parseValue(FIELD_NC)
+            val ret = parseValue(FIELD_RETENCION)
+            val desc = parseValue(FIELD_DESCUENTO)
+            val rec = parseValue(FIELD_RECIBIDO)
+            val total = nc + ret + desc + rec
+            if (total > saldo) {
+                val errorMsg = "La suma de valores (C$ ${"%,.2f".format(total)}) excede el saldo de la factura (C$ ${"%,.2f".format(saldo)})"
+                com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Error")
+                    .setMessage(errorMsg)
+                    .setPositiveButton("OK", null)
+                    .show()
+                return@setOnClickListener
+            }
+            listener?.invoke(selectedAction, values.toMap())
             dismiss()
         }
-        view.findViewById<Button>(R.id.btn_cancelacion).setOnClickListener {
-            listener?.invoke("cancelacion", values.toMap())
+
+        view.findViewById<MaterialButton>(R.id.btn_cancelar_accion).setOnClickListener {
+            resetValues()
             dismiss()
         }
-        view.findViewById<Button>(R.id.btn_contado).setOnClickListener {
-            listener?.invoke("contado", values.toMap())
-            dismiss()
-        }
+    }
+
+    private fun resetValues() {
+        values[FIELD_NC] = "0.00"
+        values[FIELD_RETENCION] = "0.00"
+        values[FIELD_DESCUENTO] = "0.00"
+        values[FIELD_RECIBIDO] = "0.00"
+    }
+
+    override fun onDismiss(dialog: android.content.DialogInterface) {
+        resetValues()
+        super.onDismiss(dialog)
     }
 
     fun setOnActionListener(l: (action: String, values: Map<String, String>) -> Unit) {

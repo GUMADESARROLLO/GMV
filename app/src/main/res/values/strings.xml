@@ -106,4 +106,6 @@
     <string name="factura_detail_vencimiento">Vencimiento</string>
     <string name="factura_detail_saldo_actual">Saldo actual</string>
     <string name="btn_registrar_pago">Registrar pago / Abono</string>
+    <string name="btn_agregar">Agregar</string>
+    <string name="btn_cancelar">Cancelar</string>
 </resources>

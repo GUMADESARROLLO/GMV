@@ -92,7 +92,9 @@ class FacturaDetailActivity : AppCompatActivity() {
 
     private fun showPagoDialog() {
         val dialog = PagoFacturaDialog()
-        dialog.setOnActionListener { action, values ->
+        val saldoStr = factura?.saldo ?: "0.00"
+        dialog.setSaldo(saldoStr.replace(",", "").trim().toDoubleOrNull() ?: 0.0)
+        val actionListener: (String, Map<String, String>) -> Unit = { action, values ->
             val nc = values[PagoFacturaDialog.FIELD_NC] ?: "0.00"
             val ret = values[PagoFacturaDialog.FIELD_RETENCION] ?: "0.00"
             val desc = values[PagoFacturaDialog.FIELD_DESCUENTO] ?: "0.00"
@@ -112,6 +114,7 @@ class FacturaDetailActivity : AppCompatActivity() {
                 .setPositiveButton("OK") { _, _ -> }
                 .show()
         }
+        dialog.setOnActionListener(actionListener)
         dialog.show(supportFragmentManager, "PagoFacturaDialog")
     }
 }
