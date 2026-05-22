@@ -108,4 +108,6 @@
     <string name="btn_registrar_pago">Registrar pago / Abono</string>
     <string name="btn_agregar">Agregar</string>
     <string name="btn_cancelar">Cancelar</string>
+    <string name="about_text">GMV utiliza la API interna de la empresa para brindar una experiencia segura y de alta velocidad.
+        Además, se rige por las políticas de desarrollo propias de UNIMARK S.A.</string>
 </resources>
