@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_group_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="6dp"
+    android:text="Mayo 2025"
+    android:textColor="#9BA3AF"
+    android:textSize="11sp"
+    android:letterSpacing="0.08"
+    android:textStyle="bold" />

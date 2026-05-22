@@ -78,10 +78,12 @@ class ClienteDetailActivity : AppCompatActivity() {
         }
 
         binding.idHistoryLast3m.setOnClickListener {
-            val codCliente = (intent.getSerializableExtra("cliente") as? com.unimarksa.gmv.models.ItemCliente)?.codCliente
-            if (codCliente != null) {
+            val cli = intent.getSerializableExtra("cliente") as? com.unimarksa.gmv.models.ItemCliente
+            if (cli != null) {
                 startActivity(Intent(this, HistoricoFacturaActivity::class.java)
-                    .putExtra("codCliente", codCliente))
+                    .putExtra("codCliente", cli.codCliente)
+                    .putExtra("nomCliente", cli.nombre)
+                    .putExtra("codTexto", "Cod. ${cli.codCliente} · ${cli.telefono}"))
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
