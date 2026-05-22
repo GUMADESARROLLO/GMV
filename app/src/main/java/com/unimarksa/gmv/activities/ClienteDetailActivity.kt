@@ -12,9 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.adapters.FacturasAdapter
 import com.unimarksa.gmv.databinding.ActivityClienteDetailBinding
 import com.unimarksa.gmv.models.ItemCliente
+import com.unimarksa.gmv.tools.ApiService
 import com.unimarksa.gmv.tools.CartManager
 
 class ClienteDetailActivity : AppCompatActivity() {
@@ -53,7 +56,6 @@ class ClienteDetailActivity : AppCompatActivity() {
 
         val cliente = intent.getSerializableExtra("cliente") as? ItemCliente
         cliente?.let { bindData(it) }
-        setupMoraRows()
 
         binding.btnSolicitarIncremento.setOnClickListener {
             com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
@@ -71,9 +73,10 @@ class ClienteDetailActivity : AppCompatActivity() {
     }
 
     private fun bindData(cliente: ItemCliente) {
-        binding.idPerfilNameCliente.text = cliente.nombre
+        binding.idPerfilNameCliente.text = "${cliente.codCliente} - ${cliente.nombre}"
         binding.idTele.text = "Tel. ${cliente.telefono}"
         binding.txtDireccion.text = cliente.direccion
+        binding.idCondicionPago.text = cliente.condPago.ifEmpty { "Contado" }
 
         val saldo = cliente.saldo.replace(",", "").replace("C$", "").trim().toDoubleOrNull() ?: 0.0
         val limite = cliente.limite.replace(",", "").replace("C$", "").trim().toDoubleOrNull() ?: 1.0
@@ -87,42 +90,94 @@ class ClienteDetailActivity : AppCompatActivity() {
         binding.idPerfilPedido.text = fmtNum(pedido)
         binding.idPerfilLimite.text = fmtNum(limite)
         binding.idProgressCredito.progress = ((saldo / limite) * 100).toInt().coerceIn(0, 100)
+
+        loadPerfilCliente(cliente.codCliente)
     }
 
-    private fun setupMoraRows() {
-        val colorOk = ContextCompat.getColor(this, R.color.mora_ok)
-        val colorWarn = ContextCompat.getColor(this, R.color.mora_warn)
-        val colorDanger = ContextCompat.getColor(this, R.color.mora_danger)
-        val colorOkBg = ContextCompat.getColor(this, R.color.mora_ok_bg)
-        val colorWarnBg = ContextCompat.getColor(this, R.color.mora_warn_bg)
-        val colorDangerBg = ContextCompat.getColor(this, R.color.mora_danger_bg)
+    private fun loadPerfilCliente(codCliente: String) {
+        ApiService.fetchPerfilCliente(
+            codCliente = codCliente,
+            onResult = { perfil ->
+                setupMoraRows(perfil)
+                setupFacturas(perfil)
+            },
+            onError = { }
+        )
+    }
 
-        fun moraColor(amount: Double) = when {
-            amount <= 0.0 -> Triple(colorOk, colorOkBg, colorOk)
-            amount < 500.0 -> Triple(colorWarn, colorWarnBg, colorWarn)
-            else -> Triple(colorDanger, colorDangerBg, colorDanger)
-        }
+    private fun setupMoraRows(perfil: com.unimarksa.gmv.models.ItemPerfilCliente) {
+        val colors = listOf(
+            Triple(
+                ContextCompat.getColor(this, R.color.mora_ok),
+                ContextCompat.getColor(this, R.color.mora_ok_bg),
+                ContextCompat.getColor(this, R.color.mora_ok)
+            ),
+            Triple(
+                ContextCompat.getColor(this, R.color.mora_warn),
+                ContextCompat.getColor(this, R.color.mora_warn_bg),
+                ContextCompat.getColor(this, R.color.mora_warn)
+            ),
+            Triple(
+                ContextCompat.getColor(this, R.color.mora_60),
+                ContextCompat.getColor(this, R.color.mora_60_bg),
+                ContextCompat.getColor(this, R.color.mora_60)
+            ),
+            Triple(
+                ContextCompat.getColor(this, R.color.mora_90),
+                ContextCompat.getColor(this, R.color.mora_90_bg),
+                ContextCompat.getColor(this, R.color.mora_90)
+            ),
+            Triple(
+                ContextCompat.getColor(this, R.color.mora_danger),
+                ContextCompat.getColor(this, R.color.mora_danger_bg),
+                ContextCompat.getColor(this, R.color.mora_danger)
+            ),
+            Triple(
+                ContextCompat.getColor(this, R.color.mora_danger),
+                ContextCompat.getColor(this, R.color.mora_danger_bg),
+                ContextCompat.getColor(this, R.color.mora_danger)
+            )
+        )
 
-        fun setMoraRow(include: View, label: String, amount: Double) {
-            val (dot, chipBg, chipText) = moraColor(amount)
-            val dotView = include.findViewById<View>(R.id.mora_dot)
-            dotView.backgroundTintList = ColorStateList.valueOf(dot)
-            include.findViewById<TextView>(R.id.tv_mora_label).text = label
-            val chip = include.findViewById<TextView>(R.id.tv_mora_amount)
-            chip.text = "C$ ${"%.2f".format(amount)}"
-            chip.backgroundTintList = ColorStateList.valueOf(chipBg)
-            chip.setTextColor(chipText)
+        fun parseAmount(raw: String): Double {
+            return raw.replace(",", "").trim().toDoubleOrNull() ?: 0.0
         }
 
         val rows = listOf(
-            binding.rowNoVencido to "No vencido",
-            binding.rowD30 to "30 d\u00edas",
-            binding.rowD60 to "60 d\u00edas",
-            binding.rowD90 to "90 d\u00edas",
-            binding.rowD120 to "120 d\u00edas",
-            binding.rowM120 to "M\u00e1s de 120 d\u00edas"
+            Triple(binding.rowNoVencido.root, "No vencido", parseAmount(perfil.noVencidos)),
+            Triple(binding.rowD30.root, "30 d\u00edas", parseAmount(perfil.dias30)),
+            Triple(binding.rowD60.root, "60 d\u00edas", parseAmount(perfil.dias60)),
+            Triple(binding.rowD90.root, "90 d\u00edas", parseAmount(perfil.dias90)),
+            Triple(binding.rowD120.root, "120 d\u00edas", parseAmount(perfil.dias120)),
+            Triple(binding.rowM120.root, "M\u00e1s de 120 d\u00edas", parseAmount(perfil.mas120))
         )
 
-        rows.forEach { (view, label) -> setMoraRow(view.root, label, 0.0) }
+        rows.forEachIndexed { index, (view, label, amount) ->
+            val (dot, chipBg, chipText) = colors[index]
+            view.findViewById<View>(R.id.mora_dot).backgroundTintList = ColorStateList.valueOf(dot)
+            view.findViewById<TextView>(R.id.tv_mora_label).text = label
+            val chip = view.findViewById<TextView>(R.id.tv_mora_amount)
+            chip.text = "C$ ${"%,.2f".format(amount)}"
+            chip.backgroundTintList = ColorStateList.valueOf(chipBg)
+            chip.setTextColor(chipText)
+        }
+    }
+
+    private fun setupFacturas(perfil: com.unimarksa.gmv.models.ItemPerfilCliente) {
+        val facturas = ApiService.parseFacturasPendientes(perfil.factPend)
+        if (facturas.isEmpty()) {
+            binding.lytEmptyResult.root.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+        } else {
+            binding.lytEmptyResult.root.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.recyclerView.layoutManager = LinearLayoutManager(this)
+            binding.recyclerView.adapter = FacturasAdapter(facturas) { factura ->
+                val intent = Intent(this, FacturaDetailActivity::class.java)
+                intent.putExtra("factura", factura)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+        }
     }
 }

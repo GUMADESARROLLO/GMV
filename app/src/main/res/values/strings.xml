@@ -98,4 +98,12 @@
 
     <!-- Badge -->
     <string name="badge_cart_count">%d artículo(s) en el carrito</string>
+
+    <!-- Factura detail -->
+    <string name="factura_detail_title">Detalle de factura</string>
+    <string name="factura_detail_label">Factura</string>
+    <string name="factura_detail_saldo">Saldo</string>
+    <string name="factura_detail_vencimiento">Vencimiento</string>
+    <string name="factura_detail_saldo_actual">Saldo actual</string>
+    <string name="btn_registrar_pago">Registrar pago / Abono</string>
 </resources>

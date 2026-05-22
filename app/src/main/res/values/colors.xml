@@ -99,6 +99,10 @@
     <color name="mora_ok_bg">#EAF3DE</color>
     <color name="mora_warn_bg">#FAEEDA</color>
     <color name="mora_danger_bg">#FF8D85</color>
+    <color name="mora_60">#E67E22</color>
+    <color name="mora_60_bg">#FDEBD0</color>
+    <color name="mora_90">#D35400</color>
+    <color name="mora_90_bg">#FAE5D3</color>
 
     <!-- Chips de talla — estado disponible (azul) -->
     <color name="size_chip_available_bg">#E6F1FB</color>

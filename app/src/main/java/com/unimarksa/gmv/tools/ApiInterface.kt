@@ -18,4 +18,16 @@ interface ApiInterface {
         @Query("clients_id") clientsId: String = "F10",
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getPerfilCliente(
+        @Query("get_perfil_user") codCliente: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getDetalleFactura(
+        @Query("get_detalle_factura") numeroFactura: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
 }

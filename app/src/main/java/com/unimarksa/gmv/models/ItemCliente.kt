@@ -11,6 +11,7 @@ data class ItemCliente(
     val saldo: String = "",
     val limite: String = "",
     val moroso: String = "N",
+    val condPago: String = "",
     val badge: Int = 0,
     val avatarBgColor: Int = 0
 ) : Serializable
