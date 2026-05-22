@@ -1,12 +1,17 @@
 package com.unimarksa.gmv.activities
 
-import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,13 +22,14 @@ import com.unimarksa.gmv.databinding.ActivityReciboColectorBinding
 import com.unimarksa.gmv.models.ItemPagoFactura
 import com.unimarksa.gmv.tools.CartManager
 import com.unimarksa.gmv.tools.PagoManager
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class ReciboColectorActivity : AppCompatActivity() {
+class ReciboColectorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: ActivityReciboColectorBinding
     private var selectedDate: String = ""
@@ -118,33 +124,67 @@ class ReciboColectorActivity : AppCompatActivity() {
 
     private fun setupDatePicker() {
         binding.tvReciboFecha.setOnClickListener {
-            val cal = Calendar.getInstance()
-            DatePickerDialog(this, R.style.Theme_GMV, { _, year, month, day ->
-                val cal2 = Calendar.getInstance()
-                cal2.set(year, month, day)
-                selectedDate = dateFmt.format(cal2.time)
-                binding.tvReciboFecha.text = selectedDate
-            }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
+            val now = Calendar.getInstance()
+            DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+            ).apply {
+                accentColor = ContextCompat.getColor(this@ReciboColectorActivity, R.color.colorUmkPrimaryDark)
+                autoDismiss(true)
+                show(supportFragmentManager, "Datepickerdialog")
+            }
         }
+    }
+
+    override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        val cal = Calendar.getInstance()
+        cal.set(year, monthOfYear, dayOfMonth)
+        selectedDate = dateFmt.format(cal.time)
+        binding.tvReciboFecha.text = selectedDate
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val dpd = supportFragmentManager.findFragmentByTag("Datepickerdialog") as? DatePickerDialog
+        dpd?.setOnDateSetListener(this)
     }
 
     private fun setupReceiptNumber() {
         binding.tvReciboNumero.setOnClickListener {
-            val input = com.google.android.material.textfield.TextInputEditText(this)
-            input.inputType = android.text.InputType.TYPE_CLASS_NUMBER
-            input.setText(receiptNumber)
-            input.hint = "No. de recibo"
-            input.setSelection(input.text?.length ?: 0)
+            val dialog = Dialog(this)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.dialog_add_vineta)
+            dialog.setCancelable(true)
 
-            MaterialAlertDialogBuilder(this)
-                .setTitle("N\u00famero de recibo")
-                .setView(input)
-                .setPositiveButton("OK") { _, _ ->
-                    receiptNumber = input.text?.toString()?.trim() ?: ""
-                    binding.tvReciboNumero.text = receiptNumber.ifEmpty { "Ingresar" }
+            val edt = dialog.findViewById<EditText>(R.id.edt_cantidad_vineta)
+            edt.hint = "N\u00ba Recibo: "
+
+            val title = dialog.findViewById<TextView>(R.id.id_title_frm)
+            title.text = "Digite el N\u00ba de recibo."
+
+            val lp = dialog.window?.attributes
+            if (lp != null) {
+                lp.width = (resources.displayMetrics.widthPixels * 0.85).toInt()
+                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                dialog.window?.attributes = lp
+            }
+
+            dialog.findViewById<View>(R.id.bt_cancel).setOnClickListener { dialog.dismiss() }
+
+            dialog.findViewById<View>(R.id.bt_add).setOnClickListener {
+                val input = edt.text.toString()
+                if (input.isEmpty()) {
+                    Toast.makeText(this, "por favor, digite un valor", Toast.LENGTH_SHORT).show()
+                } else {
+                    receiptNumber = ("00000" + input).takeLast(5)
+                    binding.tvReciboNumero.text = receiptNumber
+                    dialog.dismiss()
                 }
-                .setNegativeButton("Cancelar", null)
-                .show()
+            }
+
+            dialog.show()
         }
     }
 

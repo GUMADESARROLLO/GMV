@@ -120,6 +120,12 @@
 
     <color name="colorUmkPrimaryDark">#003044</color>
     <color name="colorUmkPrimary">#006690</color>
-    <color name="colorUmkAccent">#009cdd</color>\
+    <color name="colorUmkAccent">#009cdd</color>
     <color name="greyUmk_10">#e6e6e6</color>
+
+    <color name="text_hint">#5A5A72</color>
+    <color name="accent_blue">#4F6EF7</color>
+    <color name="icon_muted">#9E9E9E</color>
+    <color name="divider">#D4D4D4</color>
+
 </resources>
