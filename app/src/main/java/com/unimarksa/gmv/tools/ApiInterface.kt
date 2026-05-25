@@ -51,4 +51,16 @@ interface ApiInterface {
         @Query("Cliente") cliente: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getOrdenesCliente(
+        @Query("get_ordenes_cliente") codCliente: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getOrdenes(
+        @Query("get_ordenes") getOrdenes: String = "F10",
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
 }

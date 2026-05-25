@@ -85,6 +85,11 @@
             android:exported="false"
             android:theme="@style/Theme.GMV" />
 
+        <activity
+            android:name=".activities.OrdenesClienteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
     </application>
 
 </manifest>

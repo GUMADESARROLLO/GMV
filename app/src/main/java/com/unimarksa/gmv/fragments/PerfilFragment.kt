@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.activities.OrdenesClienteActivity
 import com.unimarksa.gmv.activities.ReporteFacturacionActivity
 import com.unimarksa.gmv.tools.Config
 
@@ -35,6 +36,9 @@ class PerfilFragment : Fragment() {
         view.findViewById<View>(R.id.AboutUs).setOnClickListener { showDialogAbout() }
         view.findViewById<View>(R.id.Reportes).setOnClickListener {
             startActivity(Intent(requireContext(), ReporteFacturacionActivity::class.java))
+        }
+        view.findViewById<View>(R.id.btn_order_history).setOnClickListener {
+            startActivity(Intent(requireContext(), OrdenesClienteActivity::class.java))
         }
     }
 
