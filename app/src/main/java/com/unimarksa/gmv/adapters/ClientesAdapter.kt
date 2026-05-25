@@ -58,9 +58,14 @@ class ClientesAdapter(
         holder.tvLimite.text = "C$ ${formatNumero(item.limite)}"
         holder.tvCodigo.text = item.codCliente
 
-        holder.tvMoroso.visibility = if (item.moroso == "S") View.VISIBLE else View.GONE
+        val esMoroso = item.moroso.equals("S", ignoreCase = true) || item.moroso == "1" || item.moroso.equals("SI", ignoreCase = true)
+        holder.tvMoroso.visibility = if (esMoroso) View.VISIBLE else View.GONE
 
-        if (item.moroso == "S") setSelectableBackground(holder.lytParent, R.color.mora_danger_bg)
+        if (esMoroso) {
+            setSelectableBackground(holder.lytParent, R.color.mora_danger_bg)
+        } else {
+            holder.lytParent.background = null
+        }
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ClienteDetailActivity::class.java)

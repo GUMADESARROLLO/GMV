@@ -6,4 +6,9 @@
     <dimen name="m3_corner_medium">12dp</dimen>
     <dimen name="m3_corner_large">16dp</dimen>
     <dimen name="m3_corner_extra_large">28dp</dimen>
+
+    <style name="ShapeAppearance.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

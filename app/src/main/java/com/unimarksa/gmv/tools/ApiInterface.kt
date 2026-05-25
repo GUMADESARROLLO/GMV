@@ -63,4 +63,26 @@ interface ApiInterface {
         @Query("get_ordenes") getOrdenes: String = "F10",
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getStatArticulo(
+        @Query("get_stat_articulo") ruta: String = "F10",
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getStatRuta(
+        @Query("get_stat_ruta") ruta: String = "F10",
+        @Query("sMes") mes: Int,
+        @Query("sAnno") anno: Int,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getStatRecup(
+        @Query("stat_recup") ruta: String = "F10",
+        @Query("sMes") mes: Int,
+        @Query("sAnno") anno: Int,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
 }

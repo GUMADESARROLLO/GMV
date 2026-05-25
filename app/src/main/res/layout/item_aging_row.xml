@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="4dp">
+
+    <LinearLayout
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/card_stroke" />
+
+        <View
+            android:id="@+id/dot_indicator"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/shape_dot_primary" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/card_stroke" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_aging_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:text="No Vencido"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_aging_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:text="C$ 0.00"
+        android:textSize="11sp"
+        android:textColor="@color/text_primary"
+        app:chipBackgroundColor="@color/chip_bg"
+        app:chipStrokeWidth="0dp"
+        app:ensureMinTouchTargetSize="false"
+        app:chipMinHeight="28dp" />
+</LinearLayout>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
+    app:cardBackgroundColor="@color/surface_card"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/card_stroke"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="18dp"
+                android:background="@drawable/bg_accent_pill_primary"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="VENTAS DEL MES"
+                android:textColor="@color/text_label"
+                android:textSize="11sp"
+                android:letterSpacing="0.12" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meta"
+                    android:textColor="@color/text_hint"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/id_Meta_venta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C$ 0.00"
+                    android:textColor="@color/accent_primary"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/card_stroke"
+                android:layout_marginHorizontal="16dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Real"
+                    android:textColor="@color/text_hint"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/id_Meta_venta_real"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C$ 0.00"
+                    android:textColor="@color/accent_green"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginTop="12dp">
+
+            <com.unimarksa.gmv.views.ArcProgressView
+                android:id="@+id/arc_progress_ventas"
+                android:layout_width="220dp"
+                android:layout_height="130dp"
+                android:layout_gravity="center"
+                app:arcColor="@color/accent_primary"
+                app:arcTrackColor="@color/progress_track"
+                app:arcProgress="0"
+                app:arcStrokeWidth="12dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_ventas_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0%"
+                    android:textColor="@color/text_primary"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/id_meta_faltante"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Falta C$ 0.00"
+                    android:textColor="@color/text_hint"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="16dp"
+            android:background="@color/card_stroke" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.unimarksa.gmv.views.MetricPillView
+                android:id="@+id/pill_meta_units"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:pillLabel="Meta Unid."
+                app:pillValue="0"
+                app:pillColor="@color/accent_primary" />
+
+            <com.unimarksa.gmv.views.MetricPillView
+                android:id="@+id/pill_real_units"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:pillLabel="Real Unid."
+                app:pillValue="0"
+                app:pillColor="@color/accent_green" />
+
+            <com.unimarksa.gmv.views.MetricPillView
+                android:id="@+id/pill_diff_units"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:pillLabel="Diferencia"
+                app:pillValue="0.00%"
+                app:pillColor="@color/text_hint" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

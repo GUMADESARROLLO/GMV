@@ -249,10 +249,11 @@ class ProductDetailActivity : AppCompatActivity() {
             .into(binding.imgProduct)
 
         val partes = if (!item.bonificado.isNullOrBlank()) {
-            item.bonificado!!.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+            item.bonificado!!.split(",").map { it.trim() }.filter { it.isNotEmpty() && it != "0" && it != "0.00" }
         } else emptyList()
 
         if (partes.isNotEmpty()) {
+            binding.tvBonifLabel.text = "BONIFICADOS DISPONIBLE"
             binding.bonusContainer.removeAllViews()
             for (texto in partes) {
                 val card = layoutInflater.inflate(R.layout.item_bonificado_card, binding.bonusContainer, false) as MaterialCardView
@@ -261,6 +262,8 @@ class ProductDetailActivity : AppCompatActivity() {
                 card.setOnClickListener { selectBonificado(texto, card) }
                 binding.bonusContainer.addView(card)
             }
+        } else {
+            binding.tvBonifLabel.text = "SIN BONIFICADO DISPONIBLE"
         }
     }
 

@@ -61,7 +61,7 @@ class ProductosAdapter(
         holder.productPrice.text = "C$ ${formatNumero(item.precio)}"
 
         val partes = if (!item.bonificado.isNullOrBlank()) {
-            item.bonificado!!.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+            item.bonificado!!.split(",").map { it.trim() }.filter { it.isNotEmpty() && it != "0" && it != "0.00" }
         } else emptyList()
 
         if (partes.isNotEmpty()) {

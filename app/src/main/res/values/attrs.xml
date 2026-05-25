@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ArcProgressView">
+        <attr name="arcColor" format="color" />
+        <attr name="arcTrackColor" format="color" />
+        <attr name="arcProgress" format="float" />
+        <attr name="arcStrokeWidth" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="AnimatedProgressBar">
+        <attr name="apbColor" format="color" />
+        <attr name="apbTrackColor" format="color" />
+        <attr name="apbProgress" format="float" />
+        <attr name="apbCornerRadius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CircularProgressMiniView">
+        <attr name="cpColor" format="color" />
+        <attr name="cpTrack" format="color" />
+        <attr name="cpProgress" format="float" />
+        <attr name="cpStrokeWidth" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="MetricPillView">
+        <attr name="pillLabel" format="string" />
+        <attr name="pillValue" format="string" />
+        <attr name="pillColor" format="color" />
+    </declare-styleable>
+</resources>

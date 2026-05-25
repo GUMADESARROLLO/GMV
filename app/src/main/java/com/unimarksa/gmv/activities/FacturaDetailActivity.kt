@@ -67,28 +67,15 @@ class FacturaDetailActivity : AppCompatActivity() {
         isReadOnly = intent.getBooleanExtra(EXTRA_READ_ONLY, false)
         if (isReadOnly) {
             binding.lytBottomActions.visibility = View.GONE
-            binding.btnRecibo.visibility = View.GONE
         } else {
             binding.btnRegistrarPago.setOnClickListener {
                 showPagoDialog()
-            }
-
-            updateReciboButton()
-
-            binding.btnRecibo.setOnClickListener {
-                startActivity(Intent(this, ListadoPagosActivity::class.java))
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if (!isReadOnly) updateReciboButton()
-    }
-
-    private fun updateReciboButton() {
-        binding.btnRecibo.visibility = if (PagoManager.count > 0) View.VISIBLE else View.GONE
     }
 
     private fun bindHeader(f: ItemFacturaPendiente) {
@@ -148,7 +135,6 @@ class FacturaDetailActivity : AppCompatActivity() {
                 estado = estado
             )
             PagoManager.add(pago)
-            updateReciboButton()
 
             Snackbar.make(binding.root, "Pago agregado a la lista", Snackbar.LENGTH_LONG)
                 .setAction("Ver listado") {

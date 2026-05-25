@@ -9,6 +9,9 @@ import com.unimarksa.gmv.models.ItemPedidoCliente
 import com.unimarksa.gmv.models.ItemPerfilCliente
 import com.unimarksa.gmv.models.ItemProducto
 import com.unimarksa.gmv.models.ItemReporteFactura
+import com.unimarksa.gmv.models.ItemStatArticulo
+import com.unimarksa.gmv.models.ItemStatRecup
+import com.unimarksa.gmv.models.ItemStatVenta
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -426,6 +429,104 @@ object ApiService {
             )
         }
         return lista
+    }
+
+    fun fetchStatArticulo(
+        onResult: (ItemStatArticulo) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.getStatArticulo().enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) { onError("Error del servidor: ${response.code()}"); return }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try { onResult(parseStatArticulo(body.toString())) }
+                catch (e: Exception) { onError("Error al procesar datos: ${e.message}") }
+            }
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError("Error de conexión: ${t.message}")
+            }
+        })
+    }
+
+    fun fetchStatRuta(
+        mes: Int, anno: Int,
+        onResult: (ItemStatVenta) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.getStatRuta(mes = mes, anno = anno).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) { onError("Error del servidor: ${response.code()}"); return }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try { onResult(parseStatVenta(body.toString())) }
+                catch (e: Exception) { onError("Error al procesar datos: ${e.message}") }
+            }
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError("Error de conexión: ${t.message}")
+            }
+        })
+    }
+
+    fun fetchStatRecup(
+        mes: Int, anno: Int,
+        onResult: (ItemStatRecup) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.getStatRecup(mes = mes, anno = anno).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) { onError("Error del servidor: ${response.code()}"); return }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try { onResult(parseStatRecup(body.toString())) }
+                catch (e: Exception) { onError("Error al procesar datos: ${e.message}") }
+            }
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError("Error de conexión: ${t.message}")
+            }
+        })
+    }
+
+    private fun parseStatArticulo(json: String): ItemStatArticulo {
+        val array = extractArray(json)
+        if (array.length() == 0) return ItemStatArticulo()
+        val item = array.getJSONObject(0)
+        return ItemStatArticulo(
+            noVencidos = item.optString("NoVencidos", item.optString("noVencidos", "0.00")),
+            vencidos = item.optString("Vencidos", item.optString("vencidos", "0.00")),
+            dias30 = item.optString("Dias30", item.optString("dias30", "0.00")),
+            dias60 = item.optString("Dias60", item.optString("dias60", "0.00")),
+            dias90 = item.optString("Dias90", item.optString("dias90", "0.00")),
+            dias120 = item.optString("Dias120", item.optString("dias120", "0.00")),
+            mas120 = item.optString("Mas120", item.optString("mas120", "0.00"))
+        )
+    }
+
+    private fun parseStatVenta(json: String): ItemStatVenta {
+        val array = extractArray(json)
+        if (array.length() == 0) return ItemStatVenta()
+        val item = array.getJSONObject(0)
+        return ItemStatVenta(
+            ventaReal = item.optDouble("mVentaReal", 0.0),
+            metaVenta = item.optDouble("mMetaVenta", 0.0),
+            ventaDif = item.optDouble("mVentaDif", 0.0),
+            vntCanti = item.optInt("mVntCanti", 0),
+            vntCantiReal = item.optInt("mVntCantiReal", 0),
+            vntCantiDif = item.optInt("mVntCantiDif", 0)
+        )
+    }
+
+    private fun parseStatRecup(json: String): ItemStatRecup {
+        val array = extractArray(json)
+        if (array.length() == 0) return ItemStatRecup()
+        val item = array.getJSONObject(0)
+        return ItemStatRecup(
+            metaRecuperacion = item.optDouble("Meta_Recuperacion", 0.0),
+            recupCredito = item.optDouble("Recup_Credito", 0.0),
+            recupContado = item.optDouble("Recup_Contado", 0.0),
+            recupTotal = item.optDouble("Recup_Total", 0.0),
+            recupCumple = item.optDouble("Recup_cumple", 100.0)
+        )
     }
 
     private fun extractArray(json: String): JSONArray {
