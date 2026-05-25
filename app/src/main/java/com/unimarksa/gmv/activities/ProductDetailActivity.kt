@@ -43,6 +43,7 @@ class ProductDetailActivity : AppCompatActivity() {
         setupToolbar()
         setupFab()
         setupAddButton()
+        setupFabScrollBehavior()
 
         producto = intent.getSerializableExtra("producto") as? ItemProducto
         producto?.let { bindData(it) }
@@ -302,6 +303,14 @@ class ProductDetailActivity : AppCompatActivity() {
             DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US)).format(num)
         } catch (_: NumberFormatException) {
             valor
+        }
+    }
+
+    private fun setupFabScrollBehavior() {
+        binding.appBarLayout.addOnOffsetChangedListener { _, verticalOffset ->
+            val fab = binding.fabContainer
+            val isCollapsed = Math.abs(verticalOffset) >= binding.appBarLayout.totalScrollRange
+            fab.visibility = if (isCollapsed) View.GONE else View.VISIBLE
         }
     }
 }

@@ -78,21 +78,20 @@ class ClienteDetailActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
-        binding.lytReciboColector.setOnClickListener {
+        binding.btnReciboColector.setOnClickListener {
             startActivity(Intent(this, ListadoPagosActivity::class.java))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
+    
+
         binding.idHistoryLast3m.setOnClickListener {
-            val cli = intent.getSerializableExtra("cliente") as? com.unimarksa.gmv.models.ItemCliente
-            if (cli != null) {
-                startActivity(Intent(this, HistoricoFacturaActivity::class.java)
-                    .putExtra("codCliente", cli.codCliente)
-                    .putExtra("nomCliente", cli.nombre)
-                    .putExtra("codTexto", "Cod. ${cli.codCliente} · ${cli.telefono}"))
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-            }
+            startActivity(Intent(this, HistoricoFacturaActivity::class.java)
+                .putExtra("codCliente", cliente?.codCliente ?: ""))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
+
+        setupTabs()
     }
 
     private fun bindData(cliente: ItemCliente) {
@@ -209,5 +208,24 @@ class ClienteDetailActivity : AppCompatActivity() {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
+    }
+
+    private fun setupTabs() {
+        binding.tabLayout.addOnTabSelectedListener(object : com.google.android.material.tabs.TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: com.google.android.material.tabs.TabLayout.Tab) {
+                when (tab.position) {
+                    0 -> {
+                        binding.lytFacturas.visibility = View.VISIBLE
+                        binding.lytSaldos.visibility = View.GONE
+                    }
+                    1 -> {
+                        binding.lytFacturas.visibility = View.GONE
+                        binding.lytSaldos.visibility = View.VISIBLE
+                    }
+                }
+            }
+            override fun onTabUnselected(tab: com.google.android.material.tabs.TabLayout.Tab) {}
+            override fun onTabReselected(tab: com.google.android.material.tabs.TabLayout.Tab) {}
+        })
     }
 }
