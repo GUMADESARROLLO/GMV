@@ -34,79 +34,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:letterSpacing="0"
+            android:fontFamily="sans-serif" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:scrollbars="none">
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_categorias"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            app:chipSpacingHorizontal="6dp"
-            app:singleLine="true"
-            app:singleSelection="true">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_todos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Todos"
-                app:chipBackgroundColor="@color/accent_primary"
-                app:chipStrokeWidth="0dp" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_cardiovascular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cardiovascular" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_neurologico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Neurológico" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_pediatrico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pediátrico" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_oncologico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Oncológico" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_dermatologico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dermatológico" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_gastrointestinal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gastrointestinal" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_endocrinologico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Endocrinológico" />
-
-        </com.google.android.material.chip.ChipGroup>
-
-    </HorizontalScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_productos"
@@ -115,6 +47,38 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:padding="6dp"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/lyt_loading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="60dp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:indeterminateTint="@color/accent_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Cargando productos..."
+                android:textColor="@color/text_label"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

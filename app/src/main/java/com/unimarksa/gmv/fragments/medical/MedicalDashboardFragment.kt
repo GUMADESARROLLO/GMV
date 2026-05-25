@@ -1,6 +1,5 @@
 package com.unimarksa.gmv.fragments.medical
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.unimarksa.gmv.R
@@ -55,20 +54,20 @@ class MedicalDashboardFragment : Fragment() {
         view.findViewById<TextView>(R.id.tv_progress_label).text = "$progress% completado"
 
         val rv = view.findViewById<RecyclerView>(R.id.rv_acciones)
-        rv.layoutManager = GridLayoutManager(requireContext(), 2)
+        rv.layoutManager = LinearLayoutManager(requireContext())
         rv.isNestedScrollingEnabled = false
 
         val tiles = listOf(
-            ActionTile(R.drawable.ic_person, "Mis Médicos", Color.parseColor("#4361EE")) {
+            ActionTile(R.drawable.ic_person, "Mis Médicos") {
                 findNavController().navigate(R.id.doctorListFragment)
             },
-            ActionTile(R.drawable.ic_add, "Nuevo Médico", Color.parseColor("#22C55E")) {
+            ActionTile(R.drawable.ic_add, "Nuevo Médico") {
                 AddDoctorBottomSheet().show(childFragmentManager, "AddDoctor")
             },
-            ActionTile(R.drawable.ic_premium, "Productos", Color.parseColor("#8B5CF6")) {
+            ActionTile(R.drawable.ic_premium, "Productos") {
                 findNavController().navigate(R.id.productCatalogFragment)
             },
-            ActionTile(R.drawable.ic_history, "Mis Visitas", Color.parseColor("#F59E0B")) {
+            ActionTile(R.drawable.ic_history, "Mis Visitas") {
                 findNavController().navigate(R.id.visitHistoryFragment)
             }
         )
