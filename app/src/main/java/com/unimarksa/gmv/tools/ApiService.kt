@@ -4,6 +4,7 @@ import com.google.gson.JsonElement
 import com.unimarksa.gmv.models.ItemCliente
 import com.unimarksa.gmv.models.ItemDetalleFactura
 import com.unimarksa.gmv.models.ItemFacturaPendiente
+import com.unimarksa.gmv.models.ItemLoteHistorial
 import com.unimarksa.gmv.models.ItemPerfilCliente
 import com.unimarksa.gmv.models.ItemProducto
 import com.unimarksa.gmv.models.ItemReporteFactura
@@ -307,6 +308,52 @@ object ApiService {
                 onError("Error de conexión: ${t.message}")
             }
         })
+    }
+
+    fun fetchHistoryLotes(
+        lote: String,
+        codCliente: String,
+        onResult: (List<ItemLoteHistorial>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.getHistoryLotes(lote, codCliente).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) {
+                    onError("Error del servidor: ${response.code()}")
+                    return
+                }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try {
+                    onResult(parseHistoryLotes(body.toString()))
+                } catch (e: Exception) {
+                    onError("Error al procesar datos: ${e.message}")
+                }
+            }
+
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError("Error de conexión: ${t.message}")
+            }
+        })
+    }
+
+    private fun parseHistoryLotes(json: String): List<ItemLoteHistorial> {
+        val lista = mutableListOf<ItemLoteHistorial>()
+        val array = extractArray(json)
+        for (i in 0 until array.length()) {
+            val item = array.getJSONObject(i)
+            val opt: (String) -> String? = { k -> item.optString(k, null) }
+            lista.add(
+                ItemLoteHistorial(
+                    lote = opt("mLote") ?: opt("lote") ?: "",
+                    factura = opt("mFactura") ?: opt("factura") ?: "",
+                    fecha = opt("mDia") ?: opt("fecha") ?: "",
+                    descripcion = opt("mDescripcion") ?: opt("descripcion") ?: "",
+                    articulo = opt("mArticulo") ?: opt("articulo") ?: ""
+                )
+            )
+        }
+        return lista
     }
 
     private fun extractArray(json: String): JSONArray {

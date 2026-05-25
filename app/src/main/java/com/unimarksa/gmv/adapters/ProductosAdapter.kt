@@ -18,8 +18,23 @@ import java.text.DecimalFormatSymbols
 import java.util.Locale
 
 class ProductosAdapter(
-    private val items: List<ItemProducto>
+    private val items: MutableList<ItemProducto>,
+    private val originalItems: List<ItemProducto> = items.toList()
 ) : RecyclerView.Adapter<ProductosAdapter.ViewHolder>() {
+
+    fun filter(query: String) {
+        val q = query.trim().lowercase(Locale.ROOT)
+        items.clear()
+        if (q.isEmpty()) {
+            items.addAll(originalItems)
+        } else {
+            items.addAll(originalItems.filter {
+                it.nombre.lowercase(Locale.ROOT).contains(q) ||
+                it.codArticulo.lowercase(Locale.ROOT).contains(q)
+            })
+        }
+        notifyDataSetChanged()
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val card: CardView = view as CardView

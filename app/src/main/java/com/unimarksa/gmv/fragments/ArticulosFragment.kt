@@ -119,6 +119,6 @@ class ArticulosFragment : Fragment(), Searchable {
         swipeRefresh.visibility = View.VISIBLE
         lytEmpty.visibility = View.GONE
         swipeRefresh.isRefreshing = false
-        recyclerView.adapter = ProductosAdapter(productos)
+        recyclerView.adapter = ProductosAdapter(productos.toMutableList())
     }
 }

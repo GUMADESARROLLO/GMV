@@ -72,6 +72,12 @@ class ClienteDetailActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
+        binding.idSearchLotes.setOnClickListener {
+            startActivity(Intent(this, HistorialLotesActivity::class.java)
+                .putExtra("codCliente", cliente?.codCliente ?: ""))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
         binding.lytReciboColector.setOnClickListener {
             startActivity(Intent(this, ListadoPagosActivity::class.java))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

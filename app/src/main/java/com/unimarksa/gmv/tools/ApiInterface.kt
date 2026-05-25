@@ -44,4 +44,11 @@ interface ApiInterface {
         @Query("post_historico_factura") codCliente: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getHistoryLotes(
+        @Query("get_history_lotes") lote: String,
+        @Query("Cliente") cliente: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
 }

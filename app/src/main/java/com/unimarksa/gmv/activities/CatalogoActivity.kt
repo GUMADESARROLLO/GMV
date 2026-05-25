@@ -3,7 +3,9 @@ package com.unimarksa.gmv.activities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.widget.TextView
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ProductosAdapter
 import com.unimarksa.gmv.databinding.ActivityCatalogoBinding
-import com.unimarksa.gmv.models.ItemProducto
 import com.unimarksa.gmv.tools.ApiService
 import com.unimarksa.gmv.tools.CartManager
 
@@ -35,6 +36,7 @@ class CatalogoActivity : AppCompatActivity() {
 
         setupToolbar()
         setupRecyclerView()
+        setupSearch()
         observeCart()
         loadProductos()
     }
@@ -57,20 +59,35 @@ class CatalogoActivity : AppCompatActivity() {
     }
 
     private fun loadProductos() {
-        binding.lytEmpty.visibility = android.view.View.GONE
+        binding.lytEmpty.visibility = View.GONE
         ApiService.fetchProductos(
             onResult = { productos ->
                 if (productos.isEmpty()) {
-                    binding.lytEmpty.visibility = android.view.View.VISIBLE
+                    binding.lytEmpty.visibility = View.VISIBLE
                 } else {
-                    adapter = ProductosAdapter(productos)
+                    adapter = ProductosAdapter(productos.toMutableList())
                     binding.rvArticulos.adapter = adapter
                 }
             },
             onError = {
-                binding.lytEmpty.visibility = android.view.View.VISIBLE
+                binding.lytEmpty.visibility = View.VISIBLE
             }
         )
+    }
+
+    private fun setupSearch() {
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter?.filter(s?.toString() ?: "")
+                binding.btnClearSearch.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+        binding.btnClearSearch.setOnClickListener {
+            binding.etSearch.text.clear()
+            binding.btnClearSearch.visibility = View.GONE
+        }
     }
 
     private fun observeCart() {

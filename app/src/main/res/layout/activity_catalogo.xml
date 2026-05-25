@@ -39,15 +39,29 @@
                     android:src="@drawable/ic_arrow_back"
                     android:tint="@color/on_primary" />
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_search"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Artículos"
+                    android:background="@android:color/transparent"
+                    android:hint="Buscar por nombre o código"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:textColor="@color/on_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/btn_clear_search"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Limpiar"
+                    android:src="@drawable/ic_close"
+                    android:tint="#80FFFFFF"
+                    android:visibility="gone" />
 
                 <FrameLayout
                     android:id="@+id/lyt_cart_toolbar"

@@ -37,7 +37,20 @@ class ListadoPagosActivity : AppCompatActivity() {
 
         binding.btnContinuar.setOnClickListener {
             startActivity(android.content.Intent(this, ReciboColectorActivity::class.java))
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        binding.btnClearPagos.setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Vaciar pagos")
+                .setMessage("Se eliminarán todos los pagos registrados. ¿Continuar?")
+                .setIcon(R.drawable.ic_trash)
+                .setPositiveButton("Vaciar") { _, _ ->
+                    PagoManager.clear()
+                    refreshPagos()
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
         }
 
         refreshPagos()
@@ -51,6 +64,7 @@ class ListadoPagosActivity : AppCompatActivity() {
     private fun refreshPagos() {
         val pagos = PagoManager.pagos
         binding.tvPagoCount.text = pagos.size.toString()
+        binding.btnClearPagos.visibility = if (pagos.isEmpty()) View.GONE else View.VISIBLE
         binding.lytPagos.removeAllViews()
 
         if (pagos.isEmpty()) {

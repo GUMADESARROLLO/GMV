@@ -80,6 +80,11 @@
             android:exported="false"
             android:theme="@style/Theme.GMV" />
 
+        <activity
+            android:name=".activities.HistorialLotesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
     </application>
 
 </manifest>
