@@ -5,23 +5,24 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ProductosAdapter
 import com.unimarksa.gmv.databinding.ActivityCatalogoBinding
-import com.unimarksa.gmv.tools.ApiService
-import com.unimarksa.gmv.tools.CartManager
+
 
 class CatalogoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCatalogoBinding
     private var adapter: ProductosAdapter? = null
+    private var menuCartItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -34,11 +35,30 @@ class CatalogoActivity : AppCompatActivity() {
         }
         ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
 
+        setSupportActionBar(binding.toolbar)
+
         setupToolbar()
         setupRecyclerView()
         setupSearch()
-        observeCart()
         loadProductos()
+        updateCartBadge()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.toolbar_catalogo, menu)
+        menuCartItem = menu.findItem(R.id.action_cart)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_cart -> {
+                startActivity(Intent(this, CartActivity::class.java))
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onResume() {
@@ -48,10 +68,6 @@ class CatalogoActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         binding.btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
-        binding.btnCart.setOnClickListener {
-            startActivity(Intent(this, CartActivity::class.java))
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
     }
 
     private fun setupRecyclerView() {
@@ -60,7 +76,7 @@ class CatalogoActivity : AppCompatActivity() {
 
     private fun loadProductos() {
         binding.lytEmpty.visibility = View.GONE
-        ApiService.fetchProductos(
+        com.unimarksa.gmv.tools.ApiService.fetchProductos(
             onResult = { productos ->
                 if (productos.isEmpty()) {
                     binding.lytEmpty.visibility = View.VISIBLE
@@ -90,17 +106,10 @@ class CatalogoActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeCart() {
-        CartManager.cartCount.observe(this) { updateCartBadge() }
-    }
-
     private fun updateCartBadge() {
-        val count = CartManager.itemCount
-        if (count > 0) {
-            binding.tvCartBadge.text = if (count > 99) "99+" else count.toString()
-            binding.tvCartBadge.visibility = android.view.View.VISIBLE
-        } else {
-            binding.tvCartBadge.visibility = android.view.View.GONE
+        val count = com.unimarksa.gmv.tools.CartManager.itemCount
+        menuCartItem?.let {
+            if (count > 0) it.setTitle("Carrito ($count)") else it.setTitle("Carrito")
         }
     }
 }

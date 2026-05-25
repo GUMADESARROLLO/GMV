@@ -1,11 +1,12 @@
 package com.unimarksa.gmv.activities
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -33,12 +34,12 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var lytSearchMode: View
     private lateinit var etToolbarSearch: EditText
     private lateinit var btnSearchClear: ImageButton
-    private lateinit var btnSearchIcon: ImageButton
     private lateinit var floatingNav: View
     private var isSearchOpen = false
     private var isNavHidden = false
     private var currentScrollListener: RecyclerView.OnScrollListener? = null
     private var currentScrollableView: View? = null
+    private var menuCartItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -65,10 +66,10 @@ class DashboardActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         toolbar.setTitleTextColor(android.graphics.Color.WHITE)
         toolbar.title = getTabTitle(0)
+        setSupportActionBar(toolbar)
         lytSearchMode = findViewById(R.id.lyt_search_mode)
         etToolbarSearch = findViewById(R.id.et_toolbar_search)
         btnSearchClear = findViewById(R.id.btn_search_clear)
-        btnSearchIcon = findViewById(R.id.btn_toolbar_search)
 
         floatingNav = findViewById(R.id.floating_nav)
 
@@ -99,7 +100,6 @@ class DashboardActivity : AppCompatActivity() {
                 iconViews[i].setColorFilter(if (isActive) activeColor else inactiveColor)
                 tabLayout.background = if (isActive) activeBg else null
             }
-            btnSearchIcon.visibility = if (tab == 2) View.GONE else View.VISIBLE
             if (!isSearchOpen) toolbar.title = getTabTitle(tab)
         }
 
@@ -115,11 +115,9 @@ class DashboardActivity : AppCompatActivity() {
             }
         })
 
-        btnSearchIcon.setOnClickListener { openSearch() }
-
         findViewById<ImageButton>(R.id.btn_search_back).setOnClickListener { closeSearch() }
 
-        setupCartButton()
+        setupCartObserver()
 
         btnSearchClear.setOnClickListener {
             etToolbarSearch.setText("")
@@ -140,10 +138,30 @@ class DashboardActivity : AppCompatActivity() {
         attachScrollBehavior(0)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.toolbar_dashboard, menu)
+        menuCartItem = menu.findItem(R.id.action_cart)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_search -> {
+                openSearch()
+                true
+            }
+            R.id.action_cart -> {
+                startActivity(Intent(this, CartActivity::class.java))
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun openSearch() {
         isSearchOpen = true
         toolbar.title = ""
-        btnSearchIcon.visibility = View.GONE
         lytSearchMode.visibility = View.VISIBLE
         etToolbarSearch.requestFocus()
         (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)
@@ -154,7 +172,6 @@ class DashboardActivity : AppCompatActivity() {
         isSearchOpen = false
         etToolbarSearch.setText("")
         lytSearchMode.visibility = View.GONE
-        btnSearchIcon.visibility = View.VISIBLE
         toolbar.title = getTabTitle(viewPager.currentItem)
         (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)
             ?.hideSoftInputFromWindow(etToolbarSearch.windowToken, 0)
@@ -221,22 +238,15 @@ class DashboardActivity : AppCompatActivity() {
         (fragment as? Searchable)?.onSearchQuery(query)
     }
 
-    private fun setupCartButton() {
-        val goToCart = {
-            startActivity(Intent(this, CartActivity::class.java))
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
-        findViewById<View>(R.id.btn_toolbar_cart).setOnClickListener { goToCart() }
-        findViewById<View>(R.id.btn_search_cart)?.setOnClickListener { goToCart() }
-
+    private fun setupCartObserver() {
         fun updateBadge(count: Int) {
-            val badge1 = findViewById<TextView>(R.id.tv_cart_badge_dashboard)
-            val badge2 = findViewById<TextView>(R.id.tv_cart_badge_search)
-            val txt = if (count > 99) "99+" else count.toString()
-            val vis = if (count > 0) View.VISIBLE else View.GONE
-            badge1?.let { it.text = txt; it.visibility = vis }
-            badge2?.let { it.text = txt; it.visibility = vis }
+            menuCartItem?.let {
+                if (count > 0) {
+                    it.title = "Carrito ($count)"
+                } else {
+                    it.title = "Carrito"
+                }
+            }
         }
 
         CartManager.cartCount.observe(this) { updateBadge(it) }
