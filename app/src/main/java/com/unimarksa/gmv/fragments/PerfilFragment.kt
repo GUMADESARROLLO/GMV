@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.activities.MedicalDashboardActivity
 import com.unimarksa.gmv.activities.OrdenesClienteActivity
 import com.unimarksa.gmv.activities.ReporteFacturacionActivity
 import com.unimarksa.gmv.activities.SellerMetricsActivity
@@ -43,6 +44,9 @@ class PerfilFragment : Fragment() {
         }
         view.findViewById<View>(R.id.id_mis_stat).setOnClickListener {
             startActivity(Intent(requireContext(), SellerMetricsActivity::class.java))
+        }
+        view.findViewById<View>(R.id.id_visitador_medico).setOnClickListener {
+            startActivity(Intent(requireContext(), MedicalDashboardActivity::class.java))
         }
     }
 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_medical"
+    app:startDestination="@id/medicalDashboardFragment">
+
+    <fragment
+        android:id="@+id/medicalDashboardFragment"
+        android:name="com.unimarksa.gmv.fragments.medical.MedicalDashboardFragment"
+        android:label="Visitador Médico"
+        tools:layout="@layout/fragment_medical_dashboard">
+        <action
+            android:id="@+id/action_medicalDashboard_to_doctorList"
+            app:destination="@id/doctorListFragment" />
+        <action
+            android:id="@+id/action_medicalDashboard_to_productCatalog"
+            app:destination="@id/productCatalogFragment" />
+        <action
+            android:id="@+id/action_medicalDashboard_to_visitHistory"
+            app:destination="@id/visitHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/doctorListFragment"
+        android:name="com.unimarksa.gmv.fragments.medical.DoctorListFragment"
+        android:label="Mis Médicos"
+        tools:layout="@layout/fragment_doctor_list">
+        <action
+            android:id="@+id/action_doctorList_to_doctorDetail"
+            app:destination="@id/doctorDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/doctorDetailFragment"
+        android:name="com.unimarksa.gmv.fragments.medical.DoctorDetailFragment"
+        android:label="Detalle Médico"
+        tools:layout="@layout/fragment_doctor_detail">
+        <argument
+            android:name="doctorId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productCatalogFragment"
+        android:name="com.unimarksa.gmv.fragments.medical.ProductCatalogFragment"
+        android:label="Catálogo de Productos"
+        tools:layout="@layout/fragment_product_catalog" />
+
+    <fragment
+        android:id="@+id/visitHistoryFragment"
+        android:name="com.unimarksa.gmv.fragments.medical.VisitHistoryFragment"
+        android:label="Mis Visitas"
+        tools:layout="@layout/fragment_visit_history" />
+
+</navigation>
