@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.models.ItemReporteFactura
 
@@ -14,10 +15,13 @@ class ReporteFacturaAdapter(
 ) : RecyclerView.Adapter<ReporteFacturaAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvNumero: TextView = view.findViewById(R.id.tv_factura_numero)
-        val tvCliente: TextView = view.findViewById(R.id.tv_factura_cliente)
-        val tvFecha: TextView = view.findViewById(R.id.tv_factura_fecha)
-        val tvTotal: TextView = view.findViewById(R.id.tv_factura_total)
+        val cardFactura: MaterialCardView = view.findViewById(R.id.cardFactura)
+        val tvClientInitial: TextView = view.findViewById(R.id.tvClientInitial)
+        val tvClientName: TextView = view.findViewById(R.id.tvClientName)
+        val tvClientCode: TextView = view.findViewById(R.id.tvClientCode)
+        val tvFacturaNumero: TextView = view.findViewById(R.id.tvFacturaNumero)
+        val tvFacturaTotal: TextView = view.findViewById(R.id.tvFacturaTotal)
+        val tvVencimiento: TextView = view.findViewById(R.id.tvVencimiento)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,12 +32,18 @@ class ReporteFacturaAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.tvNumero.text = item.numero
-        holder.tvCliente.text = item.cliente
-        holder.tvFecha.text = item.fecha
         val total = item.total.replace(",", "").trim().toDoubleOrNull() ?: 0.0
-        holder.tvTotal.text = "C$ ${"%,.2f".format(total)}"
-        holder.itemView.setOnClickListener { onClick(item) }
+        val saldo = item.saldo.replace(",", "").trim().toDoubleOrNull() ?: 0.0
+
+        val initial = item.cliente.firstOrNull()?.uppercaseChar()?.toString() ?: "C"
+        holder.tvClientInitial.text = initial
+        holder.tvClientName.text = item.cliente.ifEmpty { "Cliente" }
+        holder.tvClientCode.text = item.numero
+        holder.tvFacturaNumero.text = item.numero
+        holder.tvFacturaTotal.text = "C$ ${"%,.2f".format(total)}"
+        holder.tvVencimiento.text = item.vencimiento.ifEmpty { item.fecha }
+
+        holder.cardFactura.setOnClickListener { onClick(item) }
     }
 
     override fun getItemCount() = items.size

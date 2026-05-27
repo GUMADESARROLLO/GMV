@@ -47,21 +47,15 @@ class RecibosActivity : AppCompatActivity() {
         findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
             .setNavigationOnClickListener { finish() }
 
-        // Date pickers
         findViewById<View>(R.id.cardDateFrom).setOnClickListener { showDatePicker { updateDesde(it) } }
         findViewById<View>(R.id.cardDateTo).setOnClickListener { showDatePicker { updateHasta(it) } }
 
-        // RecyclerView
         val rv = findViewById<RecyclerView>(R.id.recyclerRecibos)
         rv.layoutManager = LinearLayoutManager(this)
         adapter = ReporteReciboAdapter(
             items = items,
-            onClick = { recibo ->
-                mostrarDetalle(recibo)
-            },
-            onDelete = { recibo, position ->
-                confirmarEliminar(recibo, position)
-            }
+            onClick = { recibo -> mostrarDetalle(recibo) },
+            onDelete = { recibo, position -> confirmarEliminar(recibo, position) }
         )
         rv.adapter = adapter
 
@@ -87,12 +81,10 @@ class RecibosActivity : AppCompatActivity() {
         val loading = findViewById<View>(R.id.lyt_loading)
         val empty = findViewById<View>(R.id.lyt_empty_result)
         val rv = findViewById<RecyclerView>(R.id.recyclerRecibos)
-        val banner = findViewById<View>(R.id.layout_summary_banner)
 
         loading.visibility = View.VISIBLE
         empty.visibility = View.GONE
         rv.visibility = View.GONE
-        banner.visibility = View.GONE
 
         ApiService.fetchRecibos(
             desde = desde,
@@ -115,26 +107,24 @@ class RecibosActivity : AppCompatActivity() {
         val loading = findViewById<View>(R.id.lyt_loading)
         val empty = findViewById<View>(R.id.lyt_empty_result)
         val rv = findViewById<RecyclerView>(R.id.recyclerRecibos)
-        val banner = findViewById<View>(R.id.layout_summary_banner)
 
         loading.visibility = View.GONE
+
+        val fmt = java.text.DecimalFormat("#,##0.00", java.text.DecimalFormatSymbols(Locale.US))
+        val total = items.sumOf {
+            it.orderTotal.replace("C$", "").replace(",", "").trim().toDoubleOrNull() ?: 0.0
+        }
+        findViewById<TextView>(R.id.tvTotalAmount).text = "C$ ${fmt.format(total)}"
+        findViewById<TextView>(R.id.tvReceiptCount).text = "${items.size}"
+
         if (items.isEmpty()) {
             empty.visibility = View.VISIBLE
             rv.visibility = View.GONE
-            banner.visibility = View.GONE
             return
         }
 
         empty.visibility = View.GONE
         rv.visibility = View.VISIBLE
-        banner.visibility = View.VISIBLE
-
-        val total = items.sumOf {
-            it.orderTotal.replace("C$", "").replace(",", "").trim().toDoubleOrNull() ?: 0.0
-        }
-        val fmt = java.text.DecimalFormat("#,##0.00", java.text.DecimalFormatSymbols(Locale.US))
-        findViewById<TextView>(R.id.tvTotalAmount).text = "C$ ${fmt.format(total)}"
-        findViewById<TextView>(R.id.tvReceiptCount).text = "${items.size}"
     }
 
     private fun mostrarDetalle(recibo: ItemReporteRecibo) {
@@ -206,7 +196,7 @@ class RecibosActivity : AppCompatActivity() {
     private fun confirmarEliminar(recibo: ItemReporteRecibo, position: Int) {
         MaterialAlertDialogBuilder(this)
             .setTitle("Eliminar recibo")
-            .setMessage("¿Eliminar recibo #${recibo.recibo} de ${recibo.nombreCliente}?")
+            .setMessage("Eliminar recibo #${recibo.recibo} de ${recibo.nombreCliente}?")
             .setIcon(R.drawable.ic_trash)
             .setPositiveButton("Eliminar") { _, _ ->
                 items.removeAt(position)

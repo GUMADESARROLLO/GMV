@@ -6,13 +6,9 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ReporteFacturaAdapter
@@ -29,7 +25,6 @@ class ReporteFacturacionActivity : AppCompatActivity() {
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reporte_facturacion)
 
@@ -37,46 +32,41 @@ class ReporteFacturacionActivity : AppCompatActivity() {
             val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
             val h = if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
             val scrim = View(this)
-            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.colorUmkPrimaryDark))
+            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.brand_primary_dark))
             val content = findViewById<ViewGroup>(android.R.id.content)
             scrim.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h)
             content.addView(scrim)
         } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
+            window.statusBarColor = ContextCompat.getColor(this, R.color.brand_primary_dark)
         }
-
-        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
 
         findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
             .setNavigationOnClickListener { finish() }
 
-        findViewById<EditText>(R.id.id_desde).setOnClickListener { showDatePicker { selectDesde(it) } }
-        findViewById<EditText>(R.id.id_hasta).setOnClickListener { showDatePicker { selectHasta(it) } }
-        findViewById<View>(R.id.id_img_desde).setOnClickListener { showDatePicker { selectDesde(it) } }
-        findViewById<View>(R.id.id_img_hasta).setOnClickListener { showDatePicker { selectHasta(it) } }
+        findViewById<View>(R.id.cardDateFrom).setOnClickListener { showDatePicker { selectDesde(it) } }
+        findViewById<View>(R.id.cardDateTo).setOnClickListener { showDatePicker { selectHasta(it) } }
 
         val hoy = dateFormat.format(Calendar.getInstance().time)
-        findViewById<EditText>(R.id.id_desde).setText(hoy)
-        findViewById<EditText>(R.id.id_hasta).setText(hoy)
+        findViewById<TextView>(R.id.id_desde).text = hoy
+        findViewById<TextView>(R.id.id_hasta).text = hoy
         buscar(hoy, hoy)
     }
 
     private fun selectDesde(date: String) {
-        findViewById<EditText>(R.id.id_desde).setText(date)
-        val hasta = findViewById<EditText>(R.id.id_hasta).text?.toString()?.trim()
+        findViewById<TextView>(R.id.id_desde).text = date
+        val hasta = findViewById<TextView>(R.id.id_hasta).text?.toString()?.trim()
         if (!hasta.isNullOrEmpty()) buscar(date, hasta)
     }
 
     private fun selectHasta(date: String) {
-        findViewById<EditText>(R.id.id_hasta).setText(date)
-        val desde = findViewById<EditText>(R.id.id_desde).text?.toString()?.trim()
+        findViewById<TextView>(R.id.id_hasta).text = date
+        val desde = findViewById<TextView>(R.id.id_desde).text?.toString()?.trim()
         if (!desde.isNullOrEmpty()) buscar(desde, date)
     }
 
     private fun buscar(desde: String, hasta: String) {
         findViewById<View>(R.id.lyt_loading).visibility = View.VISIBLE
         findViewById<View>(R.id.lyt_empty_result).visibility = View.GONE
-        findViewById<View>(R.id.card_recycler).visibility = View.GONE
         findViewById<View>(R.id.recycler_view).visibility = View.GONE
 
         ApiService.fetchReporteFacturacion(
@@ -98,15 +88,13 @@ class ReporteFacturacionActivity : AppCompatActivity() {
         findViewById<View>(R.id.lyt_loading).visibility = View.GONE
         if (facturas.isEmpty()) {
             findViewById<View>(R.id.lyt_empty_result).visibility = View.VISIBLE
-            findViewById<View>(R.id.card_recycler).visibility = View.GONE
+            findViewById<View>(R.id.recycler_view).visibility = View.GONE
             findViewById<TextView>(R.id.id_factura_total).text = "C$ 0.00"
             findViewById<TextView>(R.id.id_factura_count).text = "0"
-            findViewById<TextView>(R.id.id_results_count_label).text = "0 resultados"
             return
         }
 
         findViewById<View>(R.id.lyt_empty_result).visibility = View.GONE
-        findViewById<View>(R.id.card_recycler).visibility = View.VISIBLE
         findViewById<View>(R.id.recycler_view).visibility = View.VISIBLE
 
         val total = facturas.sumOf {
@@ -114,7 +102,6 @@ class ReporteFacturacionActivity : AppCompatActivity() {
         }
         findViewById<TextView>(R.id.id_factura_total).text = "C$ ${"%,.2f".format(total)}"
         findViewById<TextView>(R.id.id_factura_count).text = "${facturas.size}"
-        findViewById<TextView>(R.id.id_results_count_label).text = "${facturas.size} resultados"
 
         val rv = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recycler_view)
         rv.layoutManager = LinearLayoutManager(this)

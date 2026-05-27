@@ -1,400 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F6F9"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:background="@color/bg_surface"
+    tools:context=".ReporteFacturacionActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorUmkPrimaryDark"
-        app:navigationIcon="@drawable/ic_arrow_left"
-        app:title="Reporte de Facturación"
-        app:titleTextColor="@android:color/white"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingBottom="24dp"
-        android:scrollbars="none">
+        android:layout_height="wrap_content"
+        android:background="@color/brand_primary"
+        app:elevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="16dp">
+            app:layout_scrollFlags="scroll|enterAlways">
 
-            <!-- ============== SECCIÓN: FILTROS DE FECHA ============== -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="10dp"
-                android:text="FILTRAR POR FECHA"
-                android:textColor="#9BA3AF"
-                android:textSize="11sp"
-                android:letterSpacing="0.12"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-medium" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+                app:navigationIcon="@drawable/ic_arrow_back_white"
+                app:title="Reporte de Facturación"
+                app:titleTextColor="@android:color/white" />
 
-            <!-- Cards: DESDE + HASTA en la misma fila -->
             <LinearLayout
+                android:id="@+id/layoutDateFilter"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardDateFrom"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#26FFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_calendar_small"
+                            android:tint="@android:color/white" />
+
+                        <TextView
+                            android:id="@+id/id_desde"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text=""
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_right"
+                    android:tint="#80FFFFFF" />
+
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardDateTo"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#26FFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_calendar_small"
+                            android:tint="@android:color/white" />
+
+                        <TextView
+                            android:id="@+id/id_hasta"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text=""
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/summaryBanner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp"
+                app:cardBackgroundColor="@color/brand_primary"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="#E8ECF0"
-                    app:strokeWidth="1dp">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="4dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp">
-
-                        <LinearLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_circle_blue"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:src="@drawable/ic_event"
-                                app:tint="@color/colorPrimary" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:paddingStart="8dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Desde"
-                                android:textColor="#9BA3AF"
-                                android:textSize="10sp"
-                                android:fontFamily="sans-serif-medium" />
-
-                            <EditText
-                                android:id="@+id/id_desde"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
-                                android:cursorVisible="false"
-                                android:focusable="false"
-                                android:inputType="none"
-                                android:maxLines="1"
-                                android:paddingTop="2dp"
-                                android:paddingBottom="2dp"
-                                android:singleLine="true"
-                                android:textColor="#1F2937"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <ImageButton
-                            android:id="@+id/id_img_desde"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_search"
-                            app:tint="#9BA3AF" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="#E8ECF0"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="4dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp">
-
-                        <LinearLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_circle_blue"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:src="@drawable/ic_event"
-                                app:tint="@color/colorPrimary" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:paddingStart="8dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Hasta"
-                                android:textColor="#9BA3AF"
-                                android:textSize="10sp"
-                                android:fontFamily="sans-serif-medium" />
-
-                            <EditText
-                                android:id="@+id/id_hasta"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
-                                android:cursorVisible="false"
-                                android:focusable="false"
-                                android:inputType="none"
-                                android:maxLines="1"
-                                android:paddingTop="2dp"
-                                android:paddingBottom="2dp"
-                                android:singleLine="true"
-                                android:textColor="#1F2937"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <ImageButton
-                            android:id="@+id/id_img_hasta"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_search"
-                            app:tint="#9BA3AF" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <!-- ============== SECCIÓN: RESUMEN ============== -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="10dp"
-                android:text="RESUMEN"
-                android:textColor="#9BA3AF"
-                android:textSize="11sp"
-                android:letterSpacing="0.12"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-medium" />
-
-            <!-- Cards de estadísticas en fila -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-
-                <!-- Card Total -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="#E8ECF0"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Total Facturado"
-                            android:textColor="#9BA3AF"
-                            android:textSize="11sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="@drawable/bg_icon_circle_green"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:layout_width="18dp"
-                                    android:layout_height="18dp"
-                                    android:src="@drawable/ic_attach_money"
-                                    app:tint="#16A34A" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/id_factura_total"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:textAlignment="textEnd"
-                                android:layout_weight="1"
-                                android:layout_marginStart="10dp"
-                                android:text="C$ 0.00"
-                                android:textColor="#16A34A"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Card Cantidad de facturas -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="#E8ECF0"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:textAllCaps="true" />
 
                         <TextView
+                            android:id="@+id/id_factura_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Nº Facturas"
-                            android:textColor="#9BA3AF"
-                            android:textSize="11sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="@drawable/bg_icon_circle_blue"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:layout_width="18dp"
-                                    android:layout_height="18dp"
-                                    android:src="@drawable/ic_receipt_long"
-                                    app:tint="@color/colorPrimary" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/id_factura_count"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="10dp"
-                                android:text="0"
-                                android:textAlignment="textEnd"
-                                android:textColor="#1F2937"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            android:text="C$ 0.00"
+                            android:textColor="@android:color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-            </LinearLayout>
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="#33FFFFFF"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
 
-            <!-- ============== SECCIÓN: RESULTADOS ============== -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="FACTURAS"
-                    android:textColor="#9BA3AF"
-                    android:textSize="11sp"
-                    android:letterSpacing="0.12"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium" />
+                                <TextView
+                                    android:id="@+id/id_factura_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/id_results_count_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_badge_blue"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:text="0 resultados"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="facturas"
+                                    android:textColor="#CCFFFFFF"
+                                    android:textSize="10sp" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Loading indicator -->
             <LinearLayout
                 android:id="@+id/lyt_loading"
                 android:layout_width="match_parent"
@@ -414,43 +248,47 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Buscando facturas..."
-                    android:textColor="#9BA3AF"
+                    android:textColor="@color/text_hint_new"
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <!-- Estado vacío -->
-            <include
+            <LinearLayout
                 android:id="@+id/lyt_empty_result"
-                layout="@layout/include_empty_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="40dp"
+                android:visibility="gone">
 
-            <!-- Lista de facturas -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_recycler"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:visibility="visible"
-                    app:cardBackgroundColor="@android:color/transparent"
-                    app:cardCornerRadius="0dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="0dp">
+                    android:text="Sin resultados"
+                    android:textColor="@color/text_hint_new"
+                    android:textSize="16sp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never"
-                    android:scrollbars="none" />
+                    android:layout_marginTop="8dp"
+                    android:text="No hay facturas en este rango de fechas"
+                    android:textColor="@color/text_hint_new"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="24dp" />
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
