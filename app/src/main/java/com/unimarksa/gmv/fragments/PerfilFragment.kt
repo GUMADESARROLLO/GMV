@@ -14,12 +14,14 @@ import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.activities.LoginActivity
 import com.unimarksa.gmv.activities.MedicalDashboardActivity
 import com.unimarksa.gmv.activities.OrdenesClienteActivity
 import com.unimarksa.gmv.activities.RecibosActivity
 import com.unimarksa.gmv.activities.ReporteFacturacionActivity
 import com.unimarksa.gmv.activities.SellerMetricsActivity
 import com.unimarksa.gmv.tools.Config
+import com.unimarksa.gmv.tools.SessionManager
 
 class PerfilFragment : Fragment() {
 
@@ -51,6 +53,11 @@ class PerfilFragment : Fragment() {
         }
         view.findViewById<View>(R.id.btn_recibos_history).setOnClickListener {
             startActivity(Intent(requireContext(), RecibosActivity::class.java))
+        }
+        view.findViewById<View>(R.id.btn_edit_user).setOnClickListener {
+            SessionManager.logout()
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finishAffinity()
         }
     }
 

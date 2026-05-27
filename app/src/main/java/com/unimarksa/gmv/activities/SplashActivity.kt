@@ -9,12 +9,22 @@ import android.os.Bundle
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.SessionManager
 
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        SessionManager.init(this)
+
+        if (SessionManager.isLoggedIn()) {
+            startActivity(Intent(this, DashboardActivity::class.java))
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            finish()
+            return
+        }
 
         window?.decorView?.apply {
             systemUiVisibility = android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or

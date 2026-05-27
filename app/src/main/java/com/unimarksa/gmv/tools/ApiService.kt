@@ -14,6 +14,7 @@ import com.unimarksa.gmv.models.ItemReporteRecibo
 import com.unimarksa.gmv.models.ItemStatArticulo
 import com.unimarksa.gmv.models.ItemStatRecup
 import com.unimarksa.gmv.models.ItemStatVenta
+import com.unimarksa.gmv.tools.SessionManager
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -23,6 +24,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiService {
+    private val currentUser: String get() = SessionManager.getUsername().ifEmpty { "F10" }
     private val api: ApiInterface
 
     init {
@@ -35,7 +37,7 @@ object ApiService {
     }
 
     fun fetchProductos(onResult: (List<ItemProducto>) -> Unit, onError: (String) -> Unit) {
-        api.getRecent().enqueue(object : Callback<JsonElement> {
+        api.getRecent(getRecent = currentUser).enqueue(object : Callback<JsonElement> {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                 if (!response.isSuccessful) {
                     onError("Error del servidor: ${response.code()}")
@@ -57,7 +59,7 @@ object ApiService {
     }
 
     fun fetchClientes(onResult: (List<ItemCliente>) -> Unit, onError: (String) -> Unit) {
-        api.getClientes().enqueue(object : Callback<JsonElement> {
+        api.getClientes(clientsId = currentUser).enqueue(object : Callback<JsonElement> {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                 if (!response.isSuccessful) {
                     onError("Error del servidor: ${response.code()}")
@@ -245,7 +247,7 @@ object ApiService {
         onResult: (List<ItemReporteFactura>) -> Unit,
         onError: (String) -> Unit
     ) {
-        api.getReporteFacturacion(desde = desde, hasta = hasta).enqueue(object : Callback<JsonElement> {
+        api.getReporteFacturacion(ruta = currentUser, desde = desde, hasta = hasta).enqueue(object : Callback<JsonElement> {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                 if (!response.isSuccessful) {
                     onError("Error del servidor: ${response.code()}")
@@ -296,7 +298,7 @@ object ApiService {
         onResult: (List<ItemReporteRecibo>) -> Unit,
         onError: (String) -> Unit
     ) {
-        api.getRecibosColector(desde = desde, hasta = hasta).enqueue(object : Callback<JsonElement> {
+        api.getRecibosColector(ruta = currentUser, desde = desde, hasta = hasta).enqueue(object : Callback<JsonElement> {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                 if (!response.isSuccessful) {
                     onError("Error del servidor: ${response.code()}")
@@ -447,7 +449,7 @@ object ApiService {
         onResult: (List<ItemPedidoCliente>) -> Unit,
         onError: (String) -> Unit
     ) {
-        api.getOrdenes().enqueue(object : Callback<JsonElement> {
+        api.getOrdenes(getOrdenes = currentUser).enqueue(object : Callback<JsonElement> {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                 if (!response.isSuccessful) {
                     onError("Error del servidor: ${response.code()}")
@@ -518,7 +520,7 @@ object ApiService {
         onResult: (ItemStatArticulo) -> Unit,
         onError: (String) -> Unit
     ) {
-        api.getStatArticulo().enqueue(object : Callback<JsonElement> {
+        api.getStatArticulo(ruta = currentUser).enqueue(object : Callback<JsonElement> {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                 if (!response.isSuccessful) { onError("Error del servidor: ${response.code()}"); return }
                 val body = response.body()
@@ -537,7 +539,7 @@ object ApiService {
         onResult: (ItemStatVenta) -> Unit,
         onError: (String) -> Unit
     ) {
-        api.getStatRuta(mes = mes, anno = anno).enqueue(object : Callback<JsonElement> {
+        api.getStatRuta(ruta = currentUser, mes = mes, anno = anno).enqueue(object : Callback<JsonElement> {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                 if (!response.isSuccessful) { onError("Error del servidor: ${response.code()}"); return }
                 val body = response.body()
@@ -556,7 +558,7 @@ object ApiService {
         onResult: (ItemStatRecup) -> Unit,
         onError: (String) -> Unit
     ) {
-        api.getStatRecup(mes = mes, anno = anno).enqueue(object : Callback<JsonElement> {
+        api.getStatRecup(ruta = currentUser, mes = mes, anno = anno).enqueue(object : Callback<JsonElement> {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                 if (!response.isSuccessful) { onError("Error del servidor: ${response.code()}"); return }
                 val body = response.body()
@@ -626,5 +628,50 @@ object ApiService {
             ?: obj.optJSONArray("lista")
             ?: obj.optJSONArray("list")
             ?: JSONArray()
+    }
+    fun fetchLogin(
+        usuario: String,
+        contrasena: String,
+        onSuccess: (String, String, String, String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val cred = "[$usuario@$contrasena]"
+        api.getLogin(usuario = cred).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) {
+                    onError("Error del servidor: ${response.code()}")
+                    return
+                }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try {
+                    val json = body.toString()
+                    val obj = JSONObject(json)
+                    val array = obj.optJSONArray("result") ?: JSONArray()
+                    if (array.length() > 0) {
+                        val item = array.getJSONObject(0)
+                        val success = item.optString("success", "0")
+                        if (success == "1") {
+                            onSuccess(
+                                item.optString("name", usuario),
+                                item.optString("FullName", ""),
+                                item.optString("Tele", ""),
+                                item.optString("Correo", "")
+                            )
+                        } else {
+                            onError("Credenciales incorrectas")
+                        }
+                    } else {
+                        onError("Credenciales incorrectas")
+                    }
+                } catch (e: Exception) {
+                    onError("Error al procesar datos: ${e.message}")
+                }
+            }
+
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError("Error de conexión: ${t.message}")
+            }
+        })
     }
 }

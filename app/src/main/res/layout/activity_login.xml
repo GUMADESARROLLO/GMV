@@ -24,7 +24,7 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="150dp"
                 android:src="@drawable/unimark"
                 android:padding="6dp"
                 tools:ignore="ContentDescription"/>
@@ -61,25 +61,26 @@
             android:layout_marginBottom="6dp"/>
 
         <!-- USERNAME FIELD -->
+
+        <!-- LABEL: CONTRASEÑA -->
         <EditText
             android:id="@+id/edtUsername"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginBottom="18dp"
             android:background="@drawable/bg_input_dark"
-            android:hint="nombre@empresa.com"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_hint"
-            android:textSize="14sp"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
             android:drawableStart="@drawable/ic_user"
             android:drawablePadding="10dp"
             android:drawableTint="@color/icon_muted"
+            android:hint="F00"
             android:inputType="textEmailAddress"
-            android:singleLine="true"/>
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:singleLine="true"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
+            android:textSize="14sp" />
 
-        <!-- LABEL: CONTRASEÑA -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,46 +109,47 @@
             android:inputType="textPassword"
             android:singleLine="true"/>
 
-        <!-- LOGIN BUTTON -->
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_button_primary"
-            android:text="Entrar"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.04"/>
-
-        <!-- LINKS ROW -->
-        <LinearLayout
+        <!-- ERROR TEXT -->
+        <TextView
+            android:id="@+id/tvError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="8dp"
+            android:text=""
+            android:textColor="@color/accent_red"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:visibility="gone" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="¿Olvidaste tu contraseña?"
-                android:textSize="11sp"
-                android:textColor="@color/text_hint"/>
+        <!-- LOGIN BUTTON -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="24dp">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_button_primary"
+                android:text="Entrar"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.04"
+                android:visibility="visible" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ayuda"
-                android:textSize="11sp"
-                android:textColor="@color/text_hint"/>
-        </LinearLayout>
+            <ProgressBar
+                android:id="@+id/lytLoading"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/white"
+                android:visibility="gone" />
+        </FrameLayout>
+
+
 
         <!-- DIVIDER -->
         <View
@@ -167,18 +169,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="¿No tienes cuenta?  "
+                android:text="GMV 4"
                 android:textColor="@color/text_hint"
                 android:textSize="13sp"/>
 
-            <TextView
-                android:id="@+id/tvCreateAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Crear cuenta"
-                android:textColor="@color/accent_blue"
-                android:textStyle="bold"
-                android:textSize="13sp"/>
         </LinearLayout>
 
     </LinearLayout>

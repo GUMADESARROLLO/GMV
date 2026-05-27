@@ -568,6 +568,7 @@ android:textColor="?attr/colorOnSurface"
                     android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/btn_dark_mode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -611,6 +612,7 @@ android:textColor="?attr/colorOnSurface"
                     android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/btn_inteligencia_mercado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

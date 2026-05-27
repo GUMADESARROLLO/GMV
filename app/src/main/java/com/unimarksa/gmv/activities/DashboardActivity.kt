@@ -26,6 +26,7 @@ import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ViewPagerAdapter
 import com.unimarksa.gmv.tools.CartManager
 import com.unimarksa.gmv.tools.Searchable
+import com.unimarksa.gmv.tools.SessionManager
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -42,6 +43,7 @@ class DashboardActivity : AppCompatActivity() {
     private var menuCartItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        SessionManager.init(this)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)

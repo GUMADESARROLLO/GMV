@@ -8,14 +8,14 @@ import retrofit2.http.Query
 interface ApiInterface {
     @GET("api/api.php")
     fun getRecent(
-        @Query("get_recent") getRecent: String = "F10",
+        @Query("get_recent") getRecent: String,
         @Query("Cliente") cliente: String = "01097",
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
 
     @GET("api/api.php")
     fun getClientes(
-        @Query("clients_id") clientsId: String = "F10",
+        @Query("clients_id") clientsId: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
 
@@ -33,7 +33,7 @@ interface ApiInterface {
 
     @GET("api/api.php")
     fun getReporteFacturacion(
-        @Query("post_rpt_ruta") ruta: String = "F10",
+        @Query("post_rpt_ruta") ruta: String,
         @Query("desde") desde: String,
         @Query("hasta") hasta: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
@@ -60,19 +60,19 @@ interface ApiInterface {
 
     @GET("api/api.php")
     fun getOrdenes(
-        @Query("get_ordenes") getOrdenes: String = "F10",
+        @Query("get_ordenes") getOrdenes: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
 
     @GET("api/api.php")
     fun getStatArticulo(
-        @Query("get_stat_articulo") ruta: String = "F10",
+        @Query("get_stat_articulo") ruta: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
 
     @GET("api/api.php")
     fun getStatRuta(
-        @Query("get_stat_ruta") ruta: String = "F10",
+        @Query("get_stat_ruta") ruta: String,
         @Query("sMes") mes: Int,
         @Query("sAnno") anno: Int,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
@@ -80,7 +80,7 @@ interface ApiInterface {
 
     @GET("api/api.php")
     fun getStatRecup(
-        @Query("stat_recup") ruta: String = "F10",
+        @Query("stat_recup") ruta: String,
         @Query("sMes") mes: Int,
         @Query("sAnno") anno: Int,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
@@ -88,7 +88,7 @@ interface ApiInterface {
 
     @GET("api/api.php")
     fun getRecibos(
-        @Query("get_recibos") ruta: String = "F10",
+        @Query("get_recibos") ruta: String,
         @Query("desde") desde: String,
         @Query("hasta") hasta: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
@@ -96,10 +96,16 @@ interface ApiInterface {
 
     @GET("api/api.php")
     fun getRecibosColector(
-        @Query("get_recibos_colector") ruta: String = "F10",
+        @Query("get_recibos_colector") ruta: String,
         @Query("OrderBy") orderBy: String = "Desc",
         @Query("Desde") desde: String,
         @Query("Hasta") hasta: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getLogin(
+        @Query("post_usuario") usuario: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
 }
