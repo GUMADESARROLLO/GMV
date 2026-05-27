@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.models.ItemPedidoCliente
 import java.text.DecimalFormat
@@ -17,11 +18,14 @@ class OrdenesAdapter(
 ) : RecyclerView.Adapter<OrdenesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvNumero: TextView = view.findViewById(R.id.tv_lote)
-        val tvEstado: TextView = view.findViewById(R.id.tv_estado)
-        val tvArticulos: TextView = view.findViewById(R.id.tv_articulos)
-        val tvMonto: TextView = view.findViewById(R.id.tv_monto)
-        val tvFecha: TextView = view.findViewById(R.id.tv_fecha)
+        val cardOrden: MaterialCardView = view.findViewById(R.id.cardOrden)
+        val tvClientInitial: TextView = view.findViewById(R.id.tvClientInitial)
+        val tvClientName: TextView = view.findViewById(R.id.tvClientName)
+        val tvOrderNumber: TextView = view.findViewById(R.id.tvOrderNumber)
+        val tvOrderAmount: TextView = view.findViewById(R.id.tvOrderAmount)
+        val tvEstado: TextView = view.findViewById(R.id.tvEstado)
+        val tvArticulos: TextView = view.findViewById(R.id.tvArticulos)
+        val tvMonto: TextView = view.findViewById(R.id.tvMonto)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,33 +36,40 @@ class OrdenesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
         val ctx = holder.itemView.context
+        val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
 
-        holder.tvNumero.text = "PED-${item.numero}"
+        val initial = item.cliente.firstOrNull()?.uppercaseChar()?.toString() ?: "O"
+        holder.tvClientInitial.text = initial
+        holder.tvClientName.text = item.cliente.ifEmpty { "Cliente" }
+        holder.tvOrderNumber.text = "PED-${item.numero}"
+
+        val monto = item.monto.replace(",", "").toDoubleOrNull() ?: 0.0
+        holder.tvOrderAmount.text = "C$ ${fmt.format(monto)}"
+        holder.tvMonto.text = "C$ ${fmt.format(monto)}"
         holder.tvArticulos.text = item.articulos
-        holder.tvMonto.text = "C$ ${fmt.format(item.monto.replace(",", "").toDoubleOrNull() ?: 0.0)}"
-        holder.tvFecha.text = item.fecha.ifEmpty { "--" }
 
         val estado = item.estado.lowercase()
         when {
             estado.contains("entreg") || estado.contains("complet") || estado.contains("pagado") -> {
                 holder.tvEstado.text = "Completado"
-                holder.tvEstado.setBackgroundResource(R.drawable.bg_badge_green)
-                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.green_500))
+                holder.tvEstado.setBackgroundColor(ContextCompat.getColor(ctx, R.color.status_active_bg))
+                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.status_active_text))
             }
             estado.contains("proceso") || estado.contains("pendiente") || estado.contains("envi") -> {
                 holder.tvEstado.text = "En proceso"
-                holder.tvEstado.setBackgroundResource(R.drawable.bg_badge_amber)
-                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.orange_500))
+                holder.tvEstado.setBackgroundColor(ContextCompat.getColor(ctx, R.color.status_pending_bg))
+                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.status_pending_text))
             }
             estado.contains("cancel") -> {
                 holder.tvEstado.text = "Cancelado"
-                holder.tvEstado.setBackgroundResource(R.drawable.bg_badge_red)
-                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.red_400))
+                holder.tvEstado.setBackgroundColor(ContextCompat.getColor(ctx, R.color.status_cancel_bg))
+                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.status_cancel_text))
             }
             else -> {
                 holder.tvEstado.text = item.estado.ifEmpty { "—" }
+                holder.tvEstado.setBackgroundColor(ContextCompat.getColor(ctx, R.color.chip_bg_neutral))
+                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.text_secondary_new))
             }
         }
     }

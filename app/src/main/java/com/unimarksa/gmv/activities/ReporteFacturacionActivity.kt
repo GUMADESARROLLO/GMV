@@ -46,10 +46,13 @@ class ReporteFacturacionActivity : AppCompatActivity() {
         findViewById<View>(R.id.cardDateFrom).setOnClickListener { showDatePicker { selectDesde(it) } }
         findViewById<View>(R.id.cardDateTo).setOnClickListener { showDatePicker { selectHasta(it) } }
 
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        val lunes = dateFormat.format(cal.time)
         val hoy = dateFormat.format(Calendar.getInstance().time)
-        findViewById<TextView>(R.id.id_desde).text = hoy
+        findViewById<TextView>(R.id.id_desde).text = lunes
         findViewById<TextView>(R.id.id_hasta).text = hoy
-        buscar(hoy, hoy)
+        buscar(lunes, hoy)
     }
 
     private fun selectDesde(date: String) {

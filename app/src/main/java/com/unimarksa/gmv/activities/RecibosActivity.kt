@@ -59,10 +59,13 @@ class RecibosActivity : AppCompatActivity() {
         )
         rv.adapter = adapter
 
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        val lunes = dateFormat.format(cal.time)
         val hoy = dateFormat.format(Calendar.getInstance().time)
-        findViewById<TextView>(R.id.tvDateFrom).text = hoy
+        findViewById<TextView>(R.id.tvDateFrom).text = lunes
         findViewById<TextView>(R.id.tvDateTo).text = hoy
-        buscar(hoy, hoy)
+        buscar(lunes, hoy)
     }
 
     private fun updateDesde(date: String) {
