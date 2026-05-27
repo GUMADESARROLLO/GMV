@@ -115,6 +115,16 @@
             android:exported="false"
             android:theme="@style/Theme.GMV" />
 
+        <activity
+            android:name=".activities.SolicitarIncrementoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
+        <activity
+            android:name=".activities.SolicitarIncrementoAutorizadoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
     </application>
 
 </manifest>

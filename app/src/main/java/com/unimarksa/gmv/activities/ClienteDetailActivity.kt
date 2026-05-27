@@ -58,14 +58,6 @@ class ClienteDetailActivity : AppCompatActivity() {
         val cliente = intent.getSerializableExtra("cliente") as? ItemCliente
         cliente?.let { bindData(it) }
 
-        binding.btnSolicitarIncremento.setOnClickListener {
-            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
-                .setTitle("Solicitar Incremento")
-                .setMessage("En construcción")
-                .setPositiveButton("Cerrar", null)
-                .show()
-        }
-
         binding.btnListArticulos.setOnClickListener {
             CartManager.setCliente(cliente)
             startActivity(Intent(this, CatalogoActivity::class.java))
@@ -112,6 +104,17 @@ class ClienteDetailActivity : AppCompatActivity() {
         binding.idPerfilPedido.text = fmtNum(pedido)
         binding.idPerfilLimite.text = fmtNum(limite)
         binding.idProgressCredito.progress = ((saldo / limite) * 100).toInt().coerceIn(0, 100)
+        binding.btnSolicitarIncremento.setOnClickListener {
+            val intent = Intent(this, com.unimarksa.gmv.activities.SolicitarIncrementoActivity::class.java).apply {
+                putExtra("disponible", disponible)
+                putExtra("saldo", saldo)
+                putExtra("limite", limite)
+                putExtra("clienteNombre", cliente.nombre)
+                putExtra("codCliente", cliente.codCliente)
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
 
         val esMoroso = cliente.moroso.equals("S", ignoreCase = true) || cliente.moroso == "1" || cliente.moroso.equals("SI", ignoreCase = true)
         if (esMoroso) {
