@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.viewpager2)
     implementation(libs.materialdatetimepicker)
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
