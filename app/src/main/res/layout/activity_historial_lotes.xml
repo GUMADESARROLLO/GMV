@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/white"
+            android:background="@color/colorUmkPrimary"
             app:contentInsetStart="0dp"
             app:contentInsetEnd="0dp">
 
@@ -37,7 +37,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Regresar"
                     android:src="@drawable/ic_arrow_left"
-                    android:tint="#1A1A18" />
+                    android:tint="@color/white" />
 
                 <EditText
                     android:id="@+id/et_search"
@@ -49,8 +49,8 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textColor="#1A1A18"
-                    android:textColorHint="#9A9890"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textSize="15sp" />
 
                 <ImageButton

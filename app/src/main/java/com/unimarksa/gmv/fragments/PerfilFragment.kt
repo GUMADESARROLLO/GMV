@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.activities.MedicalDashboardActivity
 import com.unimarksa.gmv.activities.OrdenesClienteActivity
+import com.unimarksa.gmv.activities.RecibosActivity
 import com.unimarksa.gmv.activities.ReporteFacturacionActivity
 import com.unimarksa.gmv.activities.SellerMetricsActivity
 import com.unimarksa.gmv.tools.Config
@@ -47,6 +48,9 @@ class PerfilFragment : Fragment() {
         }
         view.findViewById<View>(R.id.id_visitador_medico).setOnClickListener {
             startActivity(Intent(requireContext(), MedicalDashboardActivity::class.java))
+        }
+        view.findViewById<View>(R.id.btn_recibos_history).setOnClickListener {
+            startActivity(Intent(requireContext(), RecibosActivity::class.java))
         }
     }
 

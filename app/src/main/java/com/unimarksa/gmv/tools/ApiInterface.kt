@@ -85,4 +85,21 @@ interface ApiInterface {
         @Query("sAnno") anno: Int,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getRecibos(
+        @Query("get_recibos") ruta: String = "F10",
+        @Query("desde") desde: String,
+        @Query("hasta") hasta: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getRecibosColector(
+        @Query("get_recibos_colector") ruta: String = "F10",
+        @Query("OrderBy") orderBy: String = "Desc",
+        @Query("Desde") desde: String,
+        @Query("Hasta") hasta: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
 }

@@ -92,6 +92,34 @@
     <color name="nav_active_icon">#FFFFFF</color>
     <color name="nav_active_text">#FFFFFF</color>
 
+    <!-- Recibos Colector palette -->
+    <color name="brand_primary">#1A73C8</color>
+    <color name="brand_primary_dark">#1558A0</color>
+    <color name="brand_primary_light">#E8F1FB</color>
+    <color name="brand_accent">#00C49A</color>
+    <color name="bg_surface">#F0F4F9</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_stroke_new">#E8EDF3</color>
+    <color name="avatar_bg">#EBF3FD</color>
+    <color name="text_secondary_new">#4A5568</color>
+    <color name="text_hint_new">#9AA5B4</color>
+    <color name="icon_secondary">#9AA5B4</color>
+    <color name="amount_positive">#0A9E72</color>
+    <color name="amount_zero">#9AA5B4</color>
+    <color name="amount_negative">#E53E3E</color>
+    <color name="status_cancel_bg">#FFF0F0</color>
+    <color name="status_cancel_text">#C53030</color>
+    <color name="status_active_bg">#E8F8F0</color>
+    <color name="status_active_text">#1A6B45</color>
+    <color name="status_pending_bg">#FFF8E6</color>
+    <color name="status_pending_text">#B45309</color>
+    <color name="chip_bg_neutral">#F7FAFC</color>
+    <color name="chip_stroke_neutral">#E8EDF3</color>
+    <color name="chip_bg_active">#EBF3FD</color>
+    <color name="chip_stroke_active">#BDD4EE</color>
+    <color name="divider_color">#EEF2F7</color>
+    <color name="error_color">#E53E3E</color>
+
     <!-- Mora semafórica -->
     <color name="mora_ok">#639922</color>
     <color name="mora_warn">#BA7517</color>

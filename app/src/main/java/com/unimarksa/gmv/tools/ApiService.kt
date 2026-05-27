@@ -8,7 +8,9 @@ import com.unimarksa.gmv.models.ItemLoteHistorial
 import com.unimarksa.gmv.models.ItemPedidoCliente
 import com.unimarksa.gmv.models.ItemPerfilCliente
 import com.unimarksa.gmv.models.ItemProducto
+import com.unimarksa.gmv.models.ItemReciboDetalle
 import com.unimarksa.gmv.models.ItemReporteFactura
+import com.unimarksa.gmv.models.ItemReporteRecibo
 import com.unimarksa.gmv.models.ItemStatArticulo
 import com.unimarksa.gmv.models.ItemStatRecup
 import com.unimarksa.gmv.models.ItemStatVenta
@@ -284,6 +286,87 @@ object ApiService {
                     vencimiento = opt("vence") ?: opt("VENCE") ?: ""
                 )
             )
+        }
+        return lista
+    }
+
+    fun fetchRecibos(
+        desde: String,
+        hasta: String,
+        onResult: (List<ItemReporteRecibo>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.getRecibosColector(desde = desde, hasta = hasta).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) {
+                    onError("Error del servidor: ${response.code()}")
+                    return
+                }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try {
+                    onResult(parseRecibos(body.toString()))
+                } catch (e: Exception) {
+                    onError("Error al procesar datos: ${e.message}")
+                }
+            }
+
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError("Error de conexión: ${t.message}")
+            }
+        })
+    }
+
+    private fun parseRecibos(json: String): List<ItemReporteRecibo> {
+        val lista = mutableListOf<ItemReporteRecibo>()
+        val array = extractArray(json)
+        for (i in 0 until array.length()) {
+            val item = array.getJSONObject(i)
+            val opt: (String) -> String? = { k -> item.optString(k, null) }
+            val orderTotal = opt("mOrderTotal") ?: "C$ 0.00"
+            val detalles = parseOrderList(opt("mOrderList") ?: "")
+            lista.add(
+                ItemReporteRecibo(
+                    id = opt("mId") ?: "",
+                    ruta = opt("mRuta") ?: "",
+                    recibo = opt("mRecibo") ?: "",
+                    codCliente = opt("mCod_Cliente") ?: "",
+                    nombreCliente = opt("mName_Cliente") ?: "",
+                    fecha = opt("mFecha") ?: "",
+                    beneficiario = opt("mBenificiario") ?: "",
+                    orderTotal = orderTotal,
+                    comentario = opt("mComentario") ?: "",
+                    status = opt("mStatus") ?: "",
+                    detalles = detalles,
+                    commentAnul = opt("mComment_anul") ?: ""
+                )
+            )
+        }
+        return lista
+    }
+
+    private fun parseOrderList(orderListStr: String): List<ItemReciboDetalle> {
+        val lista = mutableListOf<ItemReciboDetalle>()
+        if (orderListStr.isBlank()) return lista
+        val cleaned = orderListStr.trim('[', ']', ',')
+        val orders = cleaned.split("],")
+        for (orderStr in orders) {
+            val parts = orderStr.trim('[', ']', ',').split(";")
+            if (parts.size >= 9) {
+                lista.add(
+                    ItemReciboDetalle(
+                        numeroFactura = parts[0],
+                        total = parts[1].toDoubleOrNull() ?: 0.0,
+                        nc = parts[2].toDoubleOrNull() ?: 0.0,
+                        retencion = parts[3].toDoubleOrNull() ?: 0.0,
+                        descuento = parts[4].toDoubleOrNull() ?: 0.0,
+                        valorRecibido = parts[5].toDoubleOrNull() ?: 0.0,
+                        saldoPendiente = parts[6].toDoubleOrNull() ?: 0.0,
+                        codCliente = if (parts.size > 7) parts[7] else "",
+                        tipoAccion = if (parts.size > 8) parts[8] else ""
+                    )
+                )
+            }
         }
         return lista
     }

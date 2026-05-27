@@ -4,7 +4,7 @@
     android:id="@+id/nested_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_5"
+    android:background="@color/greyUmk_10"
     android:clipToPadding="false"
     android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -20,6 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="@color/colorUmkPrimary"
             android:paddingStart="4dp"
             android:paddingEnd="16dp">
 
@@ -29,7 +30,7 @@
                 android:layout_height="44dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Regresar"
-                android:tint="@color/black"
+                android:tint="@color/white"
                 app:srcCompat="@drawable/ic_arrow_left" />
 
             <TextView
@@ -38,13 +39,14 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
                 android:text="Perfil del cliente"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Header card -->
         <androidx.cardview.widget.CardView
+            android:layout_marginTop="@dimen/m3_corner_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -121,7 +123,7 @@
                                 android:id="@+id/id_condicion_pago"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Contado"
+                                android:text="Credito 00 Dias"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
@@ -138,7 +140,7 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="Activo"
-                        android:textColor="#3B6D11"
+                        android:textColor="@color/white"
                         android:textSize="11sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -334,7 +336,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Rec. Colector"
+                        android:text="Recibos"
                         android:textSize="10sp"
                         android:textColor="@color/grey_60" />
                 </LinearLayout>
@@ -436,10 +438,10 @@
                         android:insetTop="0dp"
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
-                        android:text="Solicitar Incremento"
+                        android:text="Solic. Increm."
                         android:textAllCaps="false"
                         android:textSize="10sp"
-                        android:textColor="#80FFFFFF"
+                        android:textColor="@color/white"
                         app:cornerRadius="16dp"
                         app:strokeColor="#80FFFFFF"
                         app:strokeWidth="1dp" />
@@ -564,16 +566,17 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Facturas Pendientes" />
+                android:text="FACTURAS" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Saldos en Mora" />
+                android:text="MORA" />
 
         </com.google.android.material.tabs.TabLayout>
 
         <FrameLayout
+            android:layout_marginTop="@dimen/m3_corner_large"
             android:id="@+id/lyt_facturas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

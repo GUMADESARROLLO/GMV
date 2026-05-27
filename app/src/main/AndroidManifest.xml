@@ -100,6 +100,16 @@
             android:exported="false"
             android:theme="@style/Theme.GMV" />
 
+        <activity
+            android:name=".activities.RecibosActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
+        <activity
+            android:name=".activities.AdjuntarComprobanteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
+
     </application>
 
 </manifest>
