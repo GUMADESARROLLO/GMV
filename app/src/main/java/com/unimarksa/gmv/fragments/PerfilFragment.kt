@@ -20,6 +20,7 @@ import com.unimarksa.gmv.activities.OrdenesClienteActivity
 import com.unimarksa.gmv.activities.RecibosActivity
 import com.unimarksa.gmv.activities.ReporteFacturacionActivity
 import com.unimarksa.gmv.activities.SellerMetricsActivity
+import com.unimarksa.gmv.activities.SolicitudesActivity
 import com.unimarksa.gmv.tools.Config
 import com.unimarksa.gmv.tools.SessionManager
 
@@ -44,6 +45,9 @@ class PerfilFragment : Fragment() {
         }
         view.findViewById<View>(R.id.btn_order_history).setOnClickListener {
             startActivity(Intent(requireContext(), OrdenesClienteActivity::class.java))
+        }
+        view.findViewById<View>(R.id.id_solicitudes).setOnClickListener {
+            startActivity(Intent(requireContext(), SolicitudesActivity::class.java))
         }
         view.findViewById<View>(R.id.id_mis_stat).setOnClickListener {
             startActivity(Intent(requireContext(), SellerMetricsActivity::class.java))

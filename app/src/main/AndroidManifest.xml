@@ -125,6 +125,10 @@
             android:exported="false"
             android:theme="@style/Theme.GMV" />
 
+        <activity
+            android:name=".activities.SolicitudesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
     </application>
 
 </manifest>
