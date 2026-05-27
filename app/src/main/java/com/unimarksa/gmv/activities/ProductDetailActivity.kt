@@ -1,6 +1,8 @@
 package com.unimarksa.gmv.activities
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -58,14 +60,53 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun setupToolbar() {
         binding.btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         binding.btnShare.setOnClickListener {
-            val sendIntent = android.content.Intent().apply {
-                action = android.content.Intent.ACTION_SEND
-                putExtra(android.content.Intent.EXTRA_TEXT,
-                    "${binding.productName.text} - SKU: ${binding.productSku.text}")
-                type = "text/plain"
-            }
-            startActivity(android.content.Intent.createChooser(sendIntent, null))
+            compartirProducto()
         }
+    }
+
+    private fun compartirProducto() {
+        val texto = "${binding.productName.text} - SKU: ${binding.productSku.text}"
+
+        try {
+            val bmp = binding.imgProduct.drawable?.let {
+                if (it is android.graphics.drawable.BitmapDrawable) it.bitmap
+                else {
+                    val w = it.intrinsicWidth.coerceAtLeast(1)
+                    val h = it.intrinsicHeight.coerceAtLeast(1)
+                    val b = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+                    val c = android.graphics.Canvas(b)
+                    it.setBounds(0, 0, w, h)
+                    it.draw(c)
+                    b
+                }
+            }
+
+            if (bmp != null) {
+                val uri = Uri.parse(
+                    android.provider.MediaStore.Images.Media.insertImage(
+                        contentResolver, bmp, "producto_${System.currentTimeMillis()}", null
+                    )
+                )
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "image/*"
+                    putExtra(Intent.EXTRA_TEXT, texto)
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                }
+                startActivity(Intent.createChooser(intent, null))
+            } else {
+                shareTextOnly(texto)
+            }
+        } catch (_: Exception) {
+            shareTextOnly(texto)
+        }
+    }
+
+    private fun shareTextOnly(texto: String) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_TEXT, texto)
+            type = "text/plain"
+        }
+        startActivity(Intent.createChooser(intent, null))
     }
 
     private fun setupFab() {
