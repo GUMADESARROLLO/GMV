@@ -127,11 +127,20 @@ class ProductDetailActivity : AppCompatActivity() {
         val tvStock = view.findViewById<TextView>(R.id.tv_stock_calc)
         val tvPrice = view.findViewById<TextView>(R.id.tv_price_calc)
         val tvBonus = view.findViewById<TextView>(R.id.tv_bonus_calc)
+        val tvCantidad = view.findViewById<TextView>(R.id.tv_cantidad_calc)
         val tvName = view.findViewById<TextView>(R.id.tv_product_name_calc)
         val precioUni = prod.precio.replace(",", "").toDoubleOrNull() ?: 0.0
         val priceFmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
         tvName.text = prod.nombre
         tvStock.text = "Stock Disp. ${formatNumero(stock.toString())} UND"
+
+        val bonifParts = prod.bonificado?.split(",")
+            ?.map { it.trim() }?.filter { it.isNotEmpty() && it != "0" && it != "0.00" }
+            ?: emptyList()
+        val bonifMap = bonifParts.mapNotNull { parte ->
+            val paid = parte.split("+").firstOrNull()?.trim()?.toIntOrNull()
+            if (paid != null) paid to parte else null
+        }.toMap()
 
         fun parseBonificado(b: String): Pair<Double, Double>? {
             val parts = b.split("+").map { it.trim().toDoubleOrNull() }
@@ -139,14 +148,27 @@ class ProductDetailActivity : AppCompatActivity() {
                 Pair(parts[0]!!, parts[1]!!) else null
         }
 
-        val bonif = selectedBonificado?.let { parseBonificado(it) }
-
-        var input = if (bonif != null) bonif.first.toInt().toString() else "1"
-        var userStarted = bonif != null
+        var liveBonificado: String? = selectedBonificado
+        var input = if (liveBonificado != null) {
+            parseBonificado(liveBonificado!!)?.first?.toInt()?.toString() ?: "1"
+        } else "1"
+        var userStarted = liveBonificado != null
         tvDisplay.text = input
+
+        fun updateBonificadoMatch() {
+            if (selectedBonificado == null) {
+                val qty = input.toIntOrNull()
+                if (qty != null && bonifMap.containsKey(qty)) {
+                    liveBonificado = bonifMap[qty]
+                } else {
+                    liveBonificado = null
+                }
+            }
+        }
 
         fun updatePrice() {
             val qty = input.toDoubleOrNull() ?: 1.0
+            val bonif = liveBonificado?.let { parseBonificado(it) }
             val (paidQty, freeQty) = bonif ?: Pair(qty, 0.0)
             val cycleSize = paidQty + freeQty
             val effectivePaid = if (bonif != null && cycleSize > 0) {
@@ -158,9 +180,15 @@ class ProductDetailActivity : AppCompatActivity() {
             tvPrice.text = "C$ ${priceFmt.format(total)}"
             if (bonif != null && qty >= cycleSize) {
                 tvBonus.visibility = android.view.View.VISIBLE
-                tvBonus.text = "Bonif: ${paidQty.toInt()}+${freeQty.toInt()} (paga ${effectivePaid.toInt()} uds)"
+                val qtyStr = if (qty == qty.toLong().toDouble()) qty.toLong().toString() else qty.toString()
+                tvBonus.text = "$qtyStr | ${paidQty.toInt()}+${freeQty.toInt()}"
             } else {
                 tvBonus.visibility = android.view.View.GONE
+            }
+            tvCantidad.text = if (bonif != null) {
+                "Cantidad | ${paidQty.toInt()}+${freeQty.toInt()}"
+            } else {
+                "Cantidad"
             }
         }
         updatePrice()
@@ -172,6 +200,7 @@ class ProductDetailActivity : AppCompatActivity() {
             tvDisplay.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
             tvStock.setTextColor(ContextCompat.getColor(this, R.color.available))
             tvStock.text = "Stock Disp. ${formatNumero(stock.toString())} UND"
+            updateBonificadoMatch()
             updatePrice()
         }
 
@@ -229,7 +258,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 }, 3000)
                 return@setOnClickListener
             }
-            CartManager.add(prod, qty, selectedBonificado)
+            CartManager.add(prod, qty, liveBonificado)
             updateCartBadge()
             dialog.dismiss()
             val fmtQty = if (qty == qty.toLong().toDouble()) qty.toLong().toString() else qty.toString()
