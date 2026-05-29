@@ -14,22 +14,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.SolicitudesAdapter
 import com.unimarksa.gmv.models.SolicitudItem
+import com.unimarksa.gmv.tools.ApiService
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 class SolicitudesActivity : AppCompatActivity() {
 
-    private val items = mutableListOf(
-        SolicitudItem("1", "FARMACIA SANTA FE", "00592", "39709.86", "26/05/2026", "Aprobada", "Incremento de limite para temporada"),
-        SolicitudItem("2", "FARMACIA GUANUCA", "03359", "30545.30", "26/05/2026", "Pendiente", "Compra de inventario"),
-        SolicitudItem("3", "FARMACIA SINAI", "03859", "13636.80", "25/05/2026", "Pendiente", "Aumento de credito"),
-        SolicitudItem("4", "FARMACIA EL HOGAR", "03514", "2263.94", "25/05/2026", "Rechazada", "Solicitud fuera de plazo"),
-        SolicitudItem("5", "FARMACIA LUNSA", "00561", "32709.52", "24/05/2026", "Aprobada", "Incremento estacional"),
-        SolicitudItem("6", "FARMACIA RIJAS", "04787", "21533.10", "24/05/2026", "Pendiente", "Nuevo limite"),
-        SolicitudItem("7", "FARMACIA MORAZAN", "04760", "2800.44", "23/05/2026", "Pendiente", "Aumento de credito"),
-        SolicitudItem("8", "FARMACIA VIDA", "00572", "3546.98", "23/05/2026", "Aprobada", "Renovacion de credito")
-    )
+    private val todasLasSolicitudes = mutableListOf<SolicitudItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,30 +47,30 @@ class SolicitudesActivity : AppCompatActivity() {
         findViewById<View>(R.id.cardDateFrom).setOnClickListener { showDatePicker { updateDesde(it) } }
         findViewById<View>(R.id.cardDateTo).setOnClickListener { showDatePicker { updateHasta(it) } }
 
-        val rv = findViewById<RecyclerView>(R.id.rvSolicitudes)
-        rv.layoutManager = LinearLayoutManager(this)
-        rv.adapter = SolicitudesAdapter(items) { solicitud ->
-            val monto = solicitud.monto.replace(",", "").toDoubleOrNull() ?: 0.0
-            val intent = Intent(this, SolicitarIncrementoAutorizadoActivity::class.java).apply {
-                putExtra("monto", monto)
-                putExtra("clienteNombre", solicitud.cliente)
-                putExtra("clienteCodigo", solicitud.codCliente)
-                putExtra("motivo", solicitud.motivo)
-                putExtra("saldo", 0.0)
-                putExtra("limite", 0.0)
-                putExtra("disponible", 0.0)
-            }
-            startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
-        mostrarResultados()
-
         val cal = Calendar.getInstance()
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
         val dateFmt = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         findViewById<TextView>(R.id.tvDateFrom).text = dateFmt.format(cal.time)
         findViewById<TextView>(R.id.tvDateTo).text = dateFmt.format(Calendar.getInstance().time)
+
+        cargarSolicitudes()
+    }
+
+    private fun cargarSolicitudes() {
+        findViewById<View>(R.id.lyt_loading).visibility = View.VISIBLE
+        ApiService.fetchSolicitudes(
+            onResult = { items ->
+                findViewById<View>(R.id.lyt_loading).visibility = View.GONE
+                todasLasSolicitudes.clear()
+                todasLasSolicitudes.addAll(items)
+                mostrarResultados()
+            },
+            onError = {
+                findViewById<View>(R.id.lyt_loading).visibility = View.GONE
+                todasLasSolicitudes.clear()
+                mostrarResultados()
+            }
+        )
     }
 
     private fun updateDesde(date: String) {
@@ -90,10 +84,30 @@ class SolicitudesActivity : AppCompatActivity() {
     }
 
     private fun mostrarResultados() {
-        val fmt = java.text.DecimalFormat("#,##0.00", java.text.DecimalFormatSymbols(Locale.US))
-        val total = items.sumOf { it.monto.replace(",", "").toDoubleOrNull() ?: 0.0 }
+        val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
+        val total = todasLasSolicitudes.sumOf { it.monto.replace(",", "").toDoubleOrNull() ?: 0.0 }
         findViewById<TextView>(R.id.tvTotalMonto).text = "C$ ${fmt.format(total)}"
-        findViewById<TextView>(R.id.tvCount).text = "${items.size}"
+        findViewById<TextView>(R.id.tvCount).text = "${todasLasSolicitudes.size}"
+
+        val rv = findViewById<RecyclerView>(R.id.rvSolicitudes)
+        rv.layoutManager = LinearLayoutManager(this)
+        rv.adapter = SolicitudesAdapter(todasLasSolicitudes) { solicitud ->
+            val monto = solicitud.monto.replace(",", "").toDoubleOrNull() ?: 0.0
+            val saldo = solicitud.saldoActual.replace(",", "").toDoubleOrNull() ?: 0.0
+            val limite = solicitud.limiteActual.replace(",", "").toDoubleOrNull() ?: 0.0
+            val disponible = solicitud.disponibleActual.replace(",", "").toDoubleOrNull() ?: 0.0
+            val intent = Intent(this, SolicitarIncrementoAutorizadoActivity::class.java).apply {
+                putExtra("monto", monto)
+                putExtra("clienteNombre", solicitud.cliente)
+                putExtra("clienteCodigo", solicitud.codCliente)
+                putExtra("motivo", solicitud.motivo)
+                putExtra("saldo", saldo)
+                putExtra("limite", limite)
+                putExtra("disponible", disponible)
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
     }
 
     private fun showDatePicker(onDateSelected: (String) -> Unit) {

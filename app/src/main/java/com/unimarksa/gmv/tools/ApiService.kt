@@ -16,7 +16,9 @@ import com.unimarksa.gmv.models.ItemReporteRecibo
 import com.unimarksa.gmv.models.ItemStatArticulo
 import com.unimarksa.gmv.models.ItemStatRecup
 import com.unimarksa.gmv.models.ItemStatVenta
+import com.unimarksa.gmv.models.SolicitudItem
 import com.unimarksa.gmv.tools.SessionManager
+import okhttp3.MediaType.Companion.toMediaType
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -667,6 +669,101 @@ object ApiService {
                     onSuccess()
                 } else {
                     onError("Error del servidor: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onError(t.message ?: "Error de conexión")
+            }
+        })
+    }
+
+    fun fetchSolicitudes(
+        onResult: (List<SolicitudItem>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.getSolicitudes(ruta = currentUser).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) {
+                    onError("Error del servidor: ${response.code()}")
+                    return
+                }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try {
+                    onResult(parseSolicitudes(body.toString()))
+                } catch (e: Exception) {
+                    onError("Error al procesar datos: ${e.message}")
+                }
+            }
+
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError("Error de conexión: ${t.message}")
+            }
+        })
+    }
+
+    private fun parseSolicitudes(json: String): List<SolicitudItem> {
+        val lista = mutableListOf<SolicitudItem>()
+        val array = extractArray(json)
+        for (i in 0 until array.length()) {
+            val item = array.getJSONObject(i)
+            val opt: (String) -> String? = { k -> item.optString(k, null) }
+            lista.add(
+                SolicitudItem(
+                    id = opt("id") ?: "",
+                    cliente = opt("cliente") ?: opt("nombre") ?: "",
+                    codCliente = opt("cod_cliente") ?: opt("codCliente") ?: "",
+                    monto = opt("monto") ?: "0.00",
+                    fecha = opt("fecha") ?: "",
+                    estado = opt("estado") ?: "Pendiente",
+                    motivo = opt("motivo") ?: "",
+                    saldoActual = opt("saldo_actual") ?: "0.00",
+                    limiteActual = opt("limite_actual") ?: "0.00",
+                    disponibleActual = opt("disponible_actual") ?: "0.00"
+                )
+            )
+        }
+        return lista
+    }
+
+    fun enviarIncremento(
+        monto: Double,
+        disponible: Double,
+        saldo: Double,
+        limite: Double,
+        motivo: String,
+        clienteNombre: String,
+        clienteCodigo: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val ruta = currentUser
+        val codigo = "${ruta}-${System.currentTimeMillis().toString().takeLast(6)}"
+
+        val json = JSONObject().apply {
+            put("codigo", codigo)
+            put("ruta", ruta)
+            put("cliente", clienteNombre)
+            put("cod_cliente", clienteCodigo)
+            put("monto", "%.2f".format(monto))
+            put("motivo", motivo)
+            put("saldo_actual", "%.2f".format(saldo))
+            put("limite_actual", "%.2f".format(limite))
+            put("disponible", "%.2f".format(disponible))
+        }
+        val requestBody = okhttp3.RequestBody.create(
+            "application/json; charset=utf-8".toMediaType(),
+            json.toString()
+        )
+
+        api.postIncremento(body = requestBody).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val bodyStr = try { response.body()?.string() ?: "" } catch (_: Exception) { "" }
+                if (response.isSuccessful && bodyStr.contains("Success", ignoreCase = true)) {
+                    onSuccess()
+                } else {
+                    onError("Servidor: ${bodyStr.ifEmpty { "Error ${response.code()}" }}")
                 }
             }
 

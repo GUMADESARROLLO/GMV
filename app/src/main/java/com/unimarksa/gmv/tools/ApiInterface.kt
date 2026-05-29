@@ -3,6 +3,7 @@ package com.unimarksa.gmv.tools
 import com.google.gson.JsonElement
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -130,5 +131,18 @@ interface ApiInterface {
         @Field("date") date: String,
         @Field("server_url") serverUrl: String,
         @Field("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<ResponseBody>
+
+    @GET("api/api.php")
+    fun getSolicitudes(
+        @Query("request_incremento") ruta: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
+
+    @POST("api/api.php")
+    fun postIncremento(
+        @Query("request_incremento") action: String = "crear",
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1",
+        @Body body: okhttp3.RequestBody? = null
     ): Call<ResponseBody>
 }

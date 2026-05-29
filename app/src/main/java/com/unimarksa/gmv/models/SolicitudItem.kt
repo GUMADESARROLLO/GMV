@@ -7,5 +7,8 @@ data class SolicitudItem(
     val monto: String = "0.00",
     val fecha: String = "",
     val estado: String = "Pendiente",
-    val motivo: String = ""
+    val motivo: String = "",
+    val saldoActual: String = "0.00",
+    val limiteActual: String = "0.00",
+    val disponibleActual: String = "0.00"
 )

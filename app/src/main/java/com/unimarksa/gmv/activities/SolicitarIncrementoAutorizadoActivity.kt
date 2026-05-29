@@ -4,12 +4,20 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.ApiService
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class SolicitarIncrementoAutorizadoActivity : AppCompatActivity() {
+
+    private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +35,7 @@ class SolicitarIncrementoAutorizadoActivity : AppCompatActivity() {
         val clienteNombre = intent.getStringExtra("clienteNombre") ?: ""
         val clienteCodigo = intent.getStringExtra("clienteCodigo") ?: ""
 
-        val fmt = java.text.DecimalFormat("#,##0.00", java.text.DecimalFormatSymbols(java.util.Locale.US))
+        val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
 
         findViewById<TextView>(R.id.tv_monto).text = "C$ ${fmt.format(monto)}"
         findViewById<TextView>(R.id.tvDisponibleView).text = "C$ ${fmt.format(disponible)}"
@@ -47,7 +55,40 @@ class SolicitarIncrementoAutorizadoActivity : AppCompatActivity() {
             .setNavigationOnClickListener { finish() }
 
         findViewById<MaterialButton>(R.id.btn_enviar).setOnClickListener {
-            finish()
+            if (isLoading) return@setOnClickListener
+            isLoading = true
+
+            val btn = findViewById<MaterialButton>(R.id.btn_enviar)
+            btn.text = "Enviando..."
+            btn.isEnabled = false
+
+            ApiService.enviarIncremento(
+                monto = monto,
+                disponible = disponible,
+                saldo = saldo,
+                limite = limite,
+                motivo = motivo,
+                clienteNombre = clienteNombre,
+                clienteCodigo = clienteCodigo,
+                onSuccess = {
+                    runOnUiThread {
+                        AlertDialog.Builder(this)
+                            .setTitle("Solicitud enviada")
+                            .setMessage("La solicitud de incremento fue enviada correctamente.")
+                            .setPositiveButton("OK") { _, _ -> finish() }
+                            .setCancelable(false)
+                            .show()
+                    }
+                },
+                onError = { error ->
+                    runOnUiThread {
+                        isLoading = false
+                        btn.text = "Enviar solicitud"
+                        btn.isEnabled = true
+                        Toast.makeText(this, "Error: $error", Toast.LENGTH_LONG).show()
+                    }
+                }
+            )
         }
     }
 }
