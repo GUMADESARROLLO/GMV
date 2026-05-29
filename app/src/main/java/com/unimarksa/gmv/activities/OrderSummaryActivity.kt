@@ -1,10 +1,15 @@
 package com.unimarksa.gmv.activities
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -26,6 +31,7 @@ class OrderSummaryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOrderSummaryBinding
     private val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
+    private var progressDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -111,30 +117,76 @@ class OrderSummaryActivity : AppCompatActivity() {
                     ¿Deseas confirmar el pedido?
                 """.trimIndent())
                 .setPositiveButton("Confirmar") { _, _ ->
-                    showSuccess()
+                    enviarPedido()
                 }
                 .setNegativeButton("Cancelar", null)
                 .show()
         }
     }
 
-    private fun showSuccess() {
-        MaterialAlertDialogBuilder(this)
-            .setIcon(R.drawable.ic_check_circle_filled)
-            .setTitle("¡Pedido confirmado!")
-            .setMessage("Tu pedido ha sido registrado exitosamente.")
-            .setPositiveButton("Ir al inicio") { _, _ ->
-                CartManager.submitOrder(
-                    codigo = binding.tvOrderCode.text.toString(),
-                    observaciones = binding.etObservaciones.text.toString()
-                )
-                val intent = Intent(this, DashboardActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                finish()
+    private fun enviarPedido() {
+        showProgressDialog()
+
+        CartManager.submitOrder(
+            codigo = binding.tvOrderCode.text.toString(),
+            observaciones = binding.etObservaciones.text.toString(),
+            onServerSuccess = {
+                runOnUiThread {
+                    dismissProgressDialog()
+                    showSuccessDialog()
+                }
+            },
+            onServerError = { error ->
+                runOnUiThread {
+                    dismissProgressDialog()
+                    showSuccessDialog()
+                }
             }
-            .setCancelable(false)
-            .show()
+        )
+    }
+
+    private fun showProgressDialog() {
+        progressDialog = Dialog(this)
+        progressDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        progressDialog?.setContentView(R.layout.dialog_progress)
+        progressDialog?.setCancelable(false)
+        progressDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(progressDialog?.window?.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        progressDialog?.show()
+        progressDialog?.window?.attributes = lp
+    }
+
+    private fun dismissProgressDialog() {
+        progressDialog?.dismiss()
+        progressDialog = null
+    }
+
+    private fun showSuccessDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_info)
+        dialog.setCancelable(true)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window?.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+
+        dialog.findViewById<View>(R.id.bt_close).setOnClickListener {
+            val intent = Intent(this, DashboardActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+            dialog.dismiss()
+        }
+
+        dialog.show()
+        dialog.window?.attributes = lp
     }
 
     private fun updateTotals() {

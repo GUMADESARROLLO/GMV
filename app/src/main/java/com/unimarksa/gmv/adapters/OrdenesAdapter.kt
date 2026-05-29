@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.unimarksa.gmv.R
@@ -25,7 +24,6 @@ class OrdenesAdapter(
         val tvClientInitial: TextView = view.findViewById(R.id.tvClientInitial)
         val tvClientName: TextView = view.findViewById(R.id.tvClientName)
         val tvOrderNumber: TextView = view.findViewById(R.id.tvOrderNumber)
-        val tvEstado: TextView = view.findViewById(R.id.tvEstado)
         val tvMonto: TextView = view.findViewById(R.id.tvMonto)
         val ivDelete: ImageView = view.findViewById(R.id.ivDelete)
     }
@@ -38,7 +36,6 @@ class OrdenesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        val ctx = holder.itemView.context
         val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
 
         holder.cardOrden.setOnClickListener { onItemClick(item) }
@@ -56,30 +53,6 @@ class OrdenesAdapter(
 
         val monto = item.monto.replace(",", "").toDoubleOrNull() ?: 0.0
         holder.tvMonto.text = "C$ ${fmt.format(monto)}"
-
-        val estado = item.estado.lowercase()
-        when {
-            estado.contains("entreg") || estado.contains("complet") || estado.contains("pagado") -> {
-                holder.tvEstado.text = "Completado"
-                holder.tvEstado.setBackgroundColor(ContextCompat.getColor(ctx, R.color.status_active_bg))
-                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.status_active_text))
-            }
-            estado.contains("proceso") || estado.contains("pendiente") || estado.contains("envi") -> {
-                holder.tvEstado.text = "En proceso"
-                holder.tvEstado.setBackgroundColor(ContextCompat.getColor(ctx, R.color.status_pending_bg))
-                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.status_pending_text))
-            }
-            estado.contains("cancel") -> {
-                holder.tvEstado.text = "Cancelado"
-                holder.tvEstado.setBackgroundColor(ContextCompat.getColor(ctx, R.color.status_cancel_bg))
-                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.status_cancel_text))
-            }
-            else -> {
-                holder.tvEstado.text = item.estado.ifEmpty { "—" }
-                holder.tvEstado.setBackgroundColor(ContextCompat.getColor(ctx, R.color.chip_bg_neutral))
-                holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.text_secondary_new))
-            }
-        }
     }
 
     override fun getItemCount() = items.size

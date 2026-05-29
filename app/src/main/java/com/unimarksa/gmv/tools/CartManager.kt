@@ -132,7 +132,12 @@ object CartManager {
         return "$prefix-$ts$h$rnd"
     }
 
-    fun submitOrder(codigo: String? = null, observaciones: String = "") {
+    fun submitOrder(
+        codigo: String? = null,
+        observaciones: String = "",
+        onServerSuccess: () -> Unit = {},
+        onServerError: (String) -> Unit = {}
+    ) {
         val database = db ?: return
         val cliente = currentCliente ?: return
         val cartItems = currentItems
@@ -185,9 +190,11 @@ object CartManager {
                     scope.launch {
                         database.orderDao().updateEstado(orderId, "enviado")
                     }
+                    onServerSuccess()
                 },
                 onError = { error ->
                     android.util.Log.e("CartManager", "Error al enviar orden al servidor: $error")
+                    onServerError(error)
                 }
             )
         }

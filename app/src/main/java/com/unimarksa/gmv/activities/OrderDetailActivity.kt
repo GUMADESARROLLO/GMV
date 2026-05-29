@@ -86,30 +86,6 @@ class OrderDetailActivity : AppCompatActivity() {
         binding.tvClientName.text = "${order.clienteCodigo} - ${order.clienteNombre}"
         binding.tvOrderDate.text = dateFmt.format(Date(order.fechaCreacion))
 
-        val estado = order.estado.lowercase()
-        when {
-            estado.contains("complet") || estado.contains("entreg") || estado.contains("pagado") -> {
-                binding.tvOrderStatus.text = "Completado"
-                binding.tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.status_active_bg))
-                binding.tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.status_active_text))
-            }
-            estado.contains("proceso") || estado.contains("pendiente") || estado.contains("envi") -> {
-                binding.tvOrderStatus.text = "En proceso"
-                binding.tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.status_pending_bg))
-                binding.tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.status_pending_text))
-            }
-            estado.contains("cancel") -> {
-                binding.tvOrderStatus.text = "Cancelado"
-                binding.tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.status_cancel_bg))
-                binding.tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.status_cancel_text))
-            }
-            else -> {
-                binding.tvOrderStatus.text = order.estado.ifEmpty { "—" }
-                binding.tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.chip_bg_neutral))
-                binding.tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.text_secondary_new))
-            }
-        }
-
         binding.tvItemsTitle.text = "ARTÍCULOS (${items.size})"
         binding.lytItems.removeAllViews()
         val inflater = LayoutInflater.from(this)
