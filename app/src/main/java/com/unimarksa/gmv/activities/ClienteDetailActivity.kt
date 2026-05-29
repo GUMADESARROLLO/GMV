@@ -4,10 +4,12 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -60,6 +62,16 @@ class ClienteDetailActivity : AppCompatActivity() {
 
         binding.btnListArticulos.setOnClickListener {
             cliente?.let {
+                val esMoroso = it.moroso.equals("S", ignoreCase = true) || it.moroso == "1" || it.moroso.equals("SI", ignoreCase = true)
+                if (esMoroso) {
+                    val titleHtml = "<font color='#FF0000'>Cliente en Estado de Morosidad</font>"
+                    AlertDialog.Builder(this)
+                        .setTitle(Html.fromHtml(titleHtml, Html.FROM_HTML_MODE_LEGACY))
+                        .setMessage("No se le permite crear pedido.")
+                        .setPositiveButton("OK", null)
+                        .show()
+                    return@setOnClickListener
+                }
                 CartManager.switchToClient(it)
                 startActivity(Intent(this, CatalogoActivity::class.java))
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
@@ -81,7 +93,9 @@ class ClienteDetailActivity : AppCompatActivity() {
 
         binding.idHistoryLast3m.setOnClickListener {
             startActivity(Intent(this, HistoricoFacturaActivity::class.java)
-                .putExtra("codCliente", cliente?.codCliente ?: ""))
+                .putExtra("codCliente", cliente?.codCliente ?: "")
+                .putExtra("nomCliente", cliente?.nombre ?: "")
+                .putExtra("codTexto", "${cliente?.codCliente ?: ""} · ${cliente?.direccion?.take(30) ?: ""}"))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 

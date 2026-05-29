@@ -45,7 +45,7 @@ class FacturaHistoricoAdapter(
 
         if (esPagada) {
             holder.tvBadge.text = "Pagada"
-            holder.tvBadge.setTextColor(ContextCompat.getColor(ctx, R.color.mora_ok))
+            holder.tvBadge.setTextColor(ContextCompat.getColor(ctx, R.color.white))
             holder.tvBadge.setBackgroundResource(R.drawable.bg_badge_green)
             holder.ivIcon.setImageResource(R.drawable.ic_check)
             holder.ivIcon.setColorFilter(ContextCompat.getColor(ctx, R.color.mora_ok))

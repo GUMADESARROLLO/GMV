@@ -62,7 +62,7 @@
                     android:layout_weight="1"
                     android:text="FAC-2025-0118"
                     android:textColor="#1F2937"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:text="C$ 8,400.00"
                     android:textColor="#1F2937"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -91,7 +91,7 @@
                     android:layout_weight="1"
                     android:text="14 mayo 2025"
                     android:textColor="#9BA3AF"
-                    android:textSize="11sp" />
+                    android:textSize="13sp" />
 
                 <!-- Badge de estado (el color se cambia por código) -->
                 <TextView
@@ -104,8 +104,8 @@
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
                     android:text="Pagada"
-                    android:textColor="#15803D"
-                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
