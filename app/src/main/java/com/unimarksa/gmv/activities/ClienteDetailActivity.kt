@@ -72,6 +72,18 @@ class ClienteDetailActivity : AppCompatActivity() {
                         .show()
                     return@setOnClickListener
                 }
+                val saldo = it.saldo.replace(",", "").replace("C$", "").trim().toDoubleOrNull() ?: 0.0
+                val limite = it.limite.replace(",", "").replace("C$", "").trim().toDoubleOrNull() ?: 1.0
+                val disponibleReal = limite - saldo - CartManager.subtotal
+                if (disponibleReal < 0.0) {
+                    val titleHtml = "<font color='#FF0000'>Límite de crédito excedido</font>"
+                    AlertDialog.Builder(this)
+                        .setTitle(Html.fromHtml(titleHtml, Html.FROM_HTML_MODE_LEGACY))
+                        .setMessage("El cliente no tiene disponible para realizar un pedido.")
+                        .setPositiveButton("OK", null)
+                        .show()
+                    return@setOnClickListener
+                }
                 CartManager.switchToClient(it)
                 startActivity(Intent(this, CatalogoActivity::class.java))
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
