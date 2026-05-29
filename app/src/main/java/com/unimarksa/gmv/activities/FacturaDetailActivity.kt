@@ -83,9 +83,9 @@ class FacturaDetailActivity : AppCompatActivity() {
             val v = raw.replace(",", "").trim().toDoubleOrNull() ?: 0.0
             return "C$ ${"%,.2f".format(v)}"
         }
-        binding.tvToolbarTitle.text = "Fact. ${f.numero}"
+        binding.tvToolbarTitle.text = "${f.numero}"
         binding.tvFacturaSaldoBottom.text = fmt(f.saldo)
-        binding.tvDetailVencimiento.text = "Venc. ${f.vencimiento.replace("-", "/")}"
+        binding.tvDetailVencimiento.text = "${f.vencimiento.replace("-", "/")}"
         loadDetalle(f.numero)
     }
 

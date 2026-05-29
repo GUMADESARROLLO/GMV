@@ -51,14 +51,14 @@ class DetalleFacturaAdapter(
         if (item.esBonificado) {
             holder.tvPrecioUnitario.visibility = View.VISIBLE
             holder.tvPrecioUnitario.text = "(BONO)"
-            holder.tvPrecioUnitario.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.mora_ok))
+            holder.tvPrecioUnitario.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.available))
             holder.tvTotalLinea.visibility = View.GONE
         } else {
             holder.tvPrecioUnitario.visibility = View.VISIBLE
             holder.tvPrecioUnitario.text = "C$ ${"%,.2f".format(precio)}"
-            holder.tvPrecioUnitario.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.txt_price_color))
-            holder.tvTotalLinea.visibility = View.VISIBLE
-            holder.tvTotalLinea.text = "C$ ${"%,.2f".format(total)}"
+            holder.tvPrecioUnitario.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.available))
+            holder.tvTotalLinea.visibility = View.GONE
+
         }
     }
 
