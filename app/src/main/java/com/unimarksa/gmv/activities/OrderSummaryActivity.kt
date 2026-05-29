@@ -63,8 +63,7 @@ class OrderSummaryActivity : AppCompatActivity() {
     }
 
     private fun setupOrderInfo() {
-        val code = "PED-${System.currentTimeMillis().toString().takeLast(6)}"
-        binding.tvOrderCode.text = code
+        binding.tvOrderCode.text = CartManager.generarCodigoPedido()
 
         val dateFmt = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale("es", "NI"))
         binding.tvOrderDate.text = dateFmt.format(Date())
@@ -125,7 +124,10 @@ class OrderSummaryActivity : AppCompatActivity() {
             .setTitle("¡Pedido confirmado!")
             .setMessage("Tu pedido ha sido registrado exitosamente.")
             .setPositiveButton("Ir al inicio") { _, _ ->
-                CartManager.clear()
+                CartManager.submitOrder(
+                    codigo = binding.tvOrderCode.text.toString(),
+                    observaciones = binding.etObservaciones.text.toString()
+                )
                 val intent = Intent(this, DashboardActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)

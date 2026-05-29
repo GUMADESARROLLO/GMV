@@ -6,9 +6,12 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.data.local.AppDatabase
+import com.unimarksa.gmv.tools.CartManager
 import com.unimarksa.gmv.tools.SessionManager
 
 class SplashActivity : AppCompatActivity() {
@@ -18,6 +21,8 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         SessionManager.init(this)
+        val androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        CartManager.init(AppDatabase.getInstance(this), androidId)
 
         if (SessionManager.isLoggedIn()) {
             startActivity(Intent(this, SessionScreenActivity::class.java))

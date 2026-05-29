@@ -59,9 +59,11 @@ class ClienteDetailActivity : AppCompatActivity() {
         cliente?.let { bindData(it) }
 
         binding.btnListArticulos.setOnClickListener {
-            CartManager.setCliente(cliente)
-            startActivity(Intent(this, CatalogoActivity::class.java))
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            cliente?.let {
+                CartManager.switchToClient(it)
+                startActivity(Intent(this, CatalogoActivity::class.java))
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
 
         binding.idSearchLotes.setOnClickListener {

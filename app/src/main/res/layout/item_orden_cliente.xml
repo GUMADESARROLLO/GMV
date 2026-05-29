@@ -71,42 +71,6 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/brand_primary"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="6dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ORDEN"
-                        android:textColor="#99FFFFFF"
-                        android:textSize="8sp"
-                        android:textStyle="bold"
-                        android:textAllCaps="true" />
-
-                    <TextView
-                        android:id="@+id/tvOrderAmount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="C$ 0.00"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
 
         <View
@@ -133,42 +97,28 @@
                 android:textSize="10sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Art:"
-                android:textColor="@color/text_hint_new"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/tvArticulos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:text="0"
-                android:textColor="@color/text_secondary_new"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
             <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Monto:"
-                android:textColor="@color/text_hint_new"
-                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/tvMonto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:text="C$ 0.00"
                 android:textColor="@color/amount_positive"
-                android:textSize="12sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivDelete"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_trash"
+                android:scaleType="centerInside"
+                android:visibility="gone"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Eliminar" />
 
         </LinearLayout>
 

@@ -28,7 +28,30 @@
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
                 app:navigationIcon="@drawable/ic_arrow_back_white"
                 app:title="Órdenes"
-                app:titleTextColor="@android:color/white" />
+                app:titleTextColor="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:id="@+id/ivDeleteAll"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_trash"
+                        android:tint="@android:color/white"
+                        android:scaleType="centerInside"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:contentDescription="Eliminar todo" />
+
+                </LinearLayout>
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
             <LinearLayout
                 android:id="@+id/layoutDateFilter"

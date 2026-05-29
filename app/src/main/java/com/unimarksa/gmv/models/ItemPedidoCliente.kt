@@ -1,6 +1,7 @@
 package com.unimarksa.gmv.models
 
 data class ItemPedidoCliente(
+    val id: Long = -1,
     val numero: String = "",
     val fecha: String = "",
     val monto: String = "0.00",

@@ -1,6 +1,7 @@
 package com.unimarksa.gmv.activities
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,14 +11,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.OrdenesAdapter
+import com.unimarksa.gmv.data.local.AppDatabase
+import com.unimarksa.gmv.data.local.OrderEntity
 import com.unimarksa.gmv.models.ItemPedidoCliente
 import com.unimarksa.gmv.tools.ApiService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class OrdenesClienteActivity : AppCompatActivity() {
@@ -25,10 +34,15 @@ class OrdenesClienteActivity : AppCompatActivity() {
     private var todasLasOrdenes = mutableListOf<ItemPedidoCliente>()
     private val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
     private val dateFmt = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val displayFmt = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+    private val scope = CoroutineScope(Dispatchers.IO)
+    private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ordenes_cliente)
+
+        db = AppDatabase.getInstance(this)
 
         if (Build.VERSION.SDK_INT >= 35) {
             val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
@@ -46,6 +60,7 @@ class OrdenesClienteActivity : AppCompatActivity() {
             .setNavigationOnClickListener { finish() }
 
         setupDatePickers()
+        setupDeleteAll()
 
         val codCliente = intent.getStringExtra("codCliente")
         if (codCliente != null) {
@@ -101,37 +116,54 @@ class OrdenesClienteActivity : AppCompatActivity() {
 
     private fun cargarTodas() {
         findViewById<View>(R.id.lyt_loading).visibility = View.VISIBLE
-        ApiService.fetchOrdenes(
-            onResult = { items ->
-                todasLasOrdenes.clear()
-                todasLasOrdenes.addAll(items)
-                findViewById<View>(R.id.lyt_loading).visibility = View.GONE
-                filtrar()
-            },
-            onError = {
-                todasLasOrdenes.clear()
-                findViewById<View>(R.id.lyt_loading).visibility = View.GONE
-                filtrar()
-            }
-        )
+        // Load local orders from Room
+        scope.launch {
+            val localOrdenes = db.orderDao().getAllOrders().map { orderEntityToItem(it) }
+            // Load API orders
+            ApiService.fetchOrdenes(
+                onResult = { items ->
+                    todasLasOrdenes.clear()
+                    todasLasOrdenes.addAll(localOrdenes)
+                    todasLasOrdenes.addAll(items)
+                    findViewById<View>(R.id.lyt_loading).visibility = View.GONE
+                    filtrar()
+                },
+                onError = {
+                    todasLasOrdenes.clear()
+                    todasLasOrdenes.addAll(localOrdenes)
+                    findViewById<View>(R.id.lyt_loading).visibility = View.GONE
+                    filtrar()
+                }
+            )
+        }
     }
 
     private fun cargarOrdenesCliente(codCliente: String) {
         findViewById<View>(R.id.lyt_loading).visibility = View.VISIBLE
-        ApiService.fetchOrdenesCliente(
-            codCliente = codCliente,
-            onResult = { items ->
-                todasLasOrdenes.clear()
-                todasLasOrdenes.addAll(items)
-                findViewById<View>(R.id.lyt_loading).visibility = View.GONE
-                filtrar()
-            },
-            onError = {
-                todasLasOrdenes.clear()
-                findViewById<View>(R.id.lyt_loading).visibility = View.GONE
-                filtrar()
-            }
-        )
+        // Load local orders from Room filtered by client
+        scope.launch {
+            val allOrders = db.orderDao().getAllOrders()
+            val localOrdenes = allOrders
+                .filter { it.clienteCodigo == codCliente }
+                .map { orderEntityToItem(it) }
+
+            ApiService.fetchOrdenesCliente(
+                codCliente = codCliente,
+                onResult = { items ->
+                    todasLasOrdenes.clear()
+                    todasLasOrdenes.addAll(localOrdenes)
+                    todasLasOrdenes.addAll(items)
+                    findViewById<View>(R.id.lyt_loading).visibility = View.GONE
+                    filtrar()
+                },
+                onError = {
+                    todasLasOrdenes.clear()
+                    todasLasOrdenes.addAll(localOrdenes)
+                    findViewById<View>(R.id.lyt_loading).visibility = View.GONE
+                    filtrar()
+                }
+            )
+        }
     }
 
     private fun mostrarResultados(items: List<ItemPedidoCliente>) {
@@ -152,6 +184,66 @@ class OrdenesClienteActivity : AppCompatActivity() {
 
         val rv = findViewById<RecyclerView>(R.id.rv_ordenes)
         rv.layoutManager = LinearLayoutManager(this)
-        rv.adapter = OrdenesAdapter(items)
+        rv.adapter = OrdenesAdapter(
+            items = items,
+            onItemClick = { orden ->
+                if (orden.id != -1L) {
+                    startActivity(Intent(this, OrderDetailActivity::class.java)
+                        .putExtra("orderId", orden.id))
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
+            },
+            onDeleteClick = { orden -> eliminarOrden(orden) }
+        )
+    }
+
+    private fun setupDeleteAll() {
+        findViewById<View>(R.id.ivDeleteAll).setOnClickListener {
+            val locales = todasLasOrdenes.count { it.id != -1L }
+            if (locales == 0) return@setOnClickListener
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Eliminar todo")
+                .setMessage("¿Eliminar $locales órdenes locales?")
+                .setPositiveButton("Eliminar") { _, _ ->
+                    scope.launch {
+                        db.orderDao().deleteAllOrders()
+                        todasLasOrdenes.removeAll { it.id != -1L }
+                        withContext(Dispatchers.Main) { filtrar() }
+                    }
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
+        }
+    }
+
+    private fun eliminarOrden(orden: ItemPedidoCliente) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Eliminar orden")
+            .setMessage("¿Eliminar ${orden.numero}?")
+            .setPositiveButton("Eliminar") { _, _ ->
+                scope.launch {
+                    db.orderDao().deleteOrderById(orden.id)
+                    todasLasOrdenes.removeAll { it.numero == orden.numero && it.id == orden.id }
+                    withContext(Dispatchers.Main) { filtrar() }
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private suspend fun orderEntityToItem(order: OrderEntity): ItemPedidoCliente {
+        val fechaStr = try {
+            displayFmt.format(Date(order.fechaCreacion))
+        } catch (_: Exception) { "" }
+        val displayNumero = order.codigo.ifEmpty { "LOC-${order.id}" }
+        return ItemPedidoCliente(
+            id = order.id,
+            numero = displayNumero,
+            fecha = fechaStr,
+            monto = String.format("%.2f", order.total),
+            estado = "Completado",
+            articulos = db.orderDao().getItemsByOrderId(order.id).size.toString(),
+            cliente = order.clienteNombre
+        )
     }
 }

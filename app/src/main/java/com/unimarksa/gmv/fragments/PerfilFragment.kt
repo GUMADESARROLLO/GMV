@@ -39,6 +39,13 @@ class PerfilFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         nestedScroll = view.findViewById(R.id.nested_content)
+
+        view.findViewById<TextView>(R.id.txt_user_address).text =
+            "${SessionManager.getUsername().uppercase()} - ${SessionManager.getFullName()}"
+        view.findViewById<TextView>(R.id.txt_user_email).text = SessionManager.getEmail()
+        view.findViewById<TextView>(R.id.txt_user_phone).text = SessionManager.getPhone()
+        view.findViewById<TextView>(R.id.nv_precio).text = "Nv. Prec. N/D"
+
         view.findViewById<View>(R.id.AboutUs).setOnClickListener { showDialogAbout() }
         view.findViewById<View>(R.id.Reportes).setOnClickListener {
             startActivity(Intent(requireContext(), ReporteFacturacionActivity::class.java))
