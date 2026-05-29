@@ -236,12 +236,17 @@ class OrdenesClienteActivity : AppCompatActivity() {
             displayFmt.format(Date(order.fechaCreacion))
         } catch (_: Exception) { "" }
         val displayNumero = order.codigo.ifEmpty { "LOC-${order.id}" }
+        val estadoDisplay = when {
+            order.estado == "enviado" -> "Completado"
+            order.estado == "pendiente" -> "Pendiente"
+            else -> order.estado
+        }
         return ItemPedidoCliente(
             id = order.id,
             numero = displayNumero,
+            estado = estadoDisplay,
             fecha = fechaStr,
             monto = String.format("%.2f", order.total),
-            estado = "Completado",
             articulos = db.orderDao().getItemsByOrderId(order.id).size.toString(),
             cliente = order.clienteNombre
         )

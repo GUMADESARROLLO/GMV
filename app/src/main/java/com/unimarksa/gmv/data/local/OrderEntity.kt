@@ -12,6 +12,6 @@ data class OrderEntity(
     val clienteNombre: String,
     val fechaCreacion: Long = System.currentTimeMillis(),
     val total: Double = 0.0,
-    val estado: String = "enviado",
+    val estado: String = "pendiente",
     val observaciones: String = ""
 )

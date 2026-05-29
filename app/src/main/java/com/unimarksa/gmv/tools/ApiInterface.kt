@@ -1,8 +1,12 @@
 package com.unimarksa.gmv.tools
 
 import com.google.gson.JsonElement
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiInterface {
@@ -108,4 +112,23 @@ interface ApiInterface {
         @Query("post_usuario") usuario: String,
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<JsonElement>
+
+    @FormUrlEncoded
+    @POST("api/api.php")
+    fun postOrder(
+        @Query("post_order") postOrder: String = "1",
+        @Field("code") code: String,
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("phone") phone: String,
+        @Field("address") address: String,
+        @Field("shipping") shipping: String,
+        @Field("order_list") orderList: String,
+        @Field("order_total") orderTotal: String,
+        @Field("comment") comment: String,
+        @Field("player_id") playerId: String,
+        @Field("date") date: String,
+        @Field("server_url") serverUrl: String,
+        @Field("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<ResponseBody>
 }

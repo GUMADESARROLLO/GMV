@@ -1,7 +1,9 @@
 package com.unimarksa.gmv.tools
 
 import com.google.gson.JsonElement
+import com.unimarksa.gmv.data.local.OrderItemEntity
 import com.unimarksa.gmv.models.ItemCliente
+import okhttp3.ResponseBody
 import com.unimarksa.gmv.models.ItemDetalleFactura
 import com.unimarksa.gmv.models.ItemFacturaPendiente
 import com.unimarksa.gmv.models.ItemLoteHistorial
@@ -22,6 +24,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object ApiService {
     private val currentUser: String get() = SessionManager.getUsername().ifEmpty { "F10" }
@@ -612,6 +617,63 @@ object ApiService {
             recupTotal = item.optDouble("Recup_Total", 0.0),
             recupCumple = item.optDouble("Recup_cumple", 100.0)
         )
+    }
+
+    fun formatearOrderList(items: List<OrderItemEntity>, subtotal: Double, iva: Double, total: Double, currency: String = "C$"): String {
+        val sb = StringBuilder()
+        for (item in items) {
+            val bonif = item.bonificado ?: ""
+            sb.append("[${item.cantidad};${item.codArticulo};${item.nombre};$bonif;${"%.2f".format(item.lineaSubtotal)} $currency],")
+        }
+        val taxPct = if (subtotal > 0) (iva / subtotal * 100).toInt() else 0
+        sb.append("\n[${"Subtotal %.2f".format(subtotal)} $currency;\nIVA $taxPct% : ${"%.2f".format(iva)} $currency;\nTotal ${"%.2f".format(total)} $currency]")
+        return sb.toString()
+    }
+
+    fun enviarOrden(
+        codigo: String,
+        clienteNombre: String,
+        clienteCodigo: String,
+        clienteTelefono: String,
+        clienteDireccion: String,
+        items: List<OrderItemEntity>,
+        total: Double,
+        subtotal: Double,
+        iva: Double,
+        observaciones: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val orderList = formatearOrderList(items, subtotal, iva, total)
+        val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Date())
+        val playerId = "N/A"
+
+        api.postOrder(
+            code = codigo,
+            name = SessionManager.getUsername().uppercase(),
+            email = "${clienteCodigo} - ",
+            phone = clienteNombre,
+            address = clienteDireccion,
+            shipping = "str_shipping",
+            orderList = orderList,
+            orderTotal = "%.2f".format(total),
+            comment = observaciones,
+            playerId = playerId,
+            date = date,
+            serverUrl = Config.BASE_URL
+        ).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onError("Error del servidor: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onError(t.message ?: "Error de conexión")
+            }
+        })
     }
 
     private fun extractArray(json: String): JSONArray {

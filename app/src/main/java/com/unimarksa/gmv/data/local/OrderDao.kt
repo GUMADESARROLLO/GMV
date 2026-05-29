@@ -27,4 +27,7 @@ interface OrderDao {
 
     @Query("DELETE FROM orders")
     suspend fun deleteAllOrders()
+
+    @Query("UPDATE orders SET estado = :estado WHERE id = :id")
+    suspend fun updateEstado(id: Long, estado: String)
 }

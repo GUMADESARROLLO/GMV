@@ -10,6 +10,7 @@ import com.unimarksa.gmv.data.local.OrderItemEntity
 import com.unimarksa.gmv.models.ItemCarrito
 import com.unimarksa.gmv.models.ItemCliente
 import com.unimarksa.gmv.models.ItemProducto
+import com.unimarksa.gmv.tools.ApiService
 import com.unimarksa.gmv.tools.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -138,13 +139,16 @@ object CartManager {
         if (cartItems.isEmpty()) return
         val cartIdToDelete = currentCartId
         val orderCodigo = codigo ?: generarCodigoPedido()
+        val orderTotal = total
+        val orderSubtotal = subtotal
+        val orderIva = iva
 
         scope.launch {
             val order = OrderEntity(
                 codigo = orderCodigo,
                 clienteCodigo = cliente.codCliente,
                 clienteNombre = cliente.nombre,
-                total = total,
+                total = orderTotal,
                 observaciones = observaciones
             )
             val orderId = database.orderDao().insertOrder(order)
@@ -164,6 +168,28 @@ object CartManager {
             cartIdToDelete?.let { id ->
                 database.cartDao().deleteCartById(id)
             }
+
+            // Send to server
+            ApiService.enviarOrden(
+                codigo = orderCodigo,
+                clienteNombre = cliente.nombre,
+                clienteCodigo = cliente.codCliente,
+                clienteTelefono = cliente.telefono,
+                clienteDireccion = cliente.direccion,
+                items = orderItems,
+                total = orderTotal,
+                subtotal = orderSubtotal,
+                iva = orderIva,
+                observaciones = observaciones,
+                onSuccess = {
+                    scope.launch {
+                        database.orderDao().updateEstado(orderId, "enviado")
+                    }
+                },
+                onError = { error ->
+                    android.util.Log.e("CartManager", "Error al enviar orden al servidor: $error")
+                }
+            )
         }
 
         // Clear UI immediately
