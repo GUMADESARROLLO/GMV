@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.fragments.medical
+package com.unimarksa.gmv.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.adapters.medical.ProductAdapter
+import com.unimarksa.gmv.adapters.ProductAdapter
 import com.unimarksa.gmv.tools.ApiService
 
 class ProductCatalogFragment : Fragment() {

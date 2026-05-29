@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.data.model
+package com.unimarksa.gmv.models
 
 enum class DoctorStatus(val label: String, val colorRes: Int) {
     ACTIVO("ACTIVO", android.R.color.holo_green_dark),

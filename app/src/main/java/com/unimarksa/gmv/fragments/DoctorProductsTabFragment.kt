@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.fragments.medical
+package com.unimarksa.gmv.fragments
 
 import android.os.Bundle
 import android.view.Gravity
@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.adapters.medical.ProductAdapter
+import com.unimarksa.gmv.adapters.ProductAdapter
 import com.unimarksa.gmv.tools.ApiService
 
 class DoctorProductsTabFragment : Fragment() {

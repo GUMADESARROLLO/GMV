@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.ui
+package com.unimarksa.gmv.tools
 
 import android.content.res.ColorStateList
 import android.os.Bundle

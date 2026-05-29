@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.fragments.medical
+package com.unimarksa.gmv.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,10 +17,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.data.model.Doctor
-import com.unimarksa.gmv.data.model.MedicalVisit
-import com.unimarksa.gmv.data.model.VisitResult
-import com.unimarksa.gmv.data.repository.FakeMedicalRepository
+import com.unimarksa.gmv.models.Doctor
+import com.unimarksa.gmv.models.DoctorStatus
+import com.unimarksa.gmv.models.MedicalVisit
+import com.unimarksa.gmv.models.VisitResult
+import com.unimarksa.gmv.tools.FakeMedicalRepository
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -64,7 +65,7 @@ class RegisterVisitBottomSheet : BottomSheetDialogFragment() {
             especialidad = arguments?.getString(ARG_DOCTOR_ESPECIALIDAD) ?: "",
             telefono = "",
             email = "",
-            estado = com.unimarksa.gmv.data.model.DoctorStatus.ACTIVO
+            estado = DoctorStatus.ACTIVO
         )
 
         view.findViewById<TextView>(R.id.tv_doctor_nombre).text = doctor?.nombre

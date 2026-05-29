@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.fragments.medical
+package com.unimarksa.gmv.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.adapters.medical.DoctorAdapter
-import com.unimarksa.gmv.data.model.Doctor
-import com.unimarksa.gmv.data.repository.FakeMedicalRepository
+import com.unimarksa.gmv.adapters.DoctorAdapter
+import com.unimarksa.gmv.models.Doctor
+import com.unimarksa.gmv.tools.FakeMedicalRepository
 
 class DoctorListFragment : Fragment() {
 

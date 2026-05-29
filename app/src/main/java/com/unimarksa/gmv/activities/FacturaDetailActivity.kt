@@ -19,7 +19,7 @@ import com.unimarksa.gmv.models.ItemFacturaPendiente
 import com.unimarksa.gmv.models.ItemPagoFactura
 import com.unimarksa.gmv.tools.ApiService
 import com.unimarksa.gmv.tools.PagoManager
-import com.unimarksa.gmv.ui.PagoFacturaDialog
+import com.unimarksa.gmv.tools.PagoFacturaDialog
 
 class FacturaDetailActivity : AppCompatActivity() {
 

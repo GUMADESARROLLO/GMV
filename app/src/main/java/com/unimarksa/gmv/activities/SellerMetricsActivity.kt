@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.ui.metrics.SellerMetricsFragment
+import com.unimarksa.gmv.fragments.SellerMetricsFragment
 
 class SellerMetricsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

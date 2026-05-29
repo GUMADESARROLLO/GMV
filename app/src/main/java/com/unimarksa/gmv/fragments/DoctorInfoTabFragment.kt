@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.fragments.medical
+package com.unimarksa.gmv.fragments
 
 import android.content.Intent
 import android.net.Uri
@@ -10,8 +10,8 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.data.model.Doctor
-import com.unimarksa.gmv.data.repository.FakeMedicalRepository
+import com.unimarksa.gmv.models.Doctor
+import com.unimarksa.gmv.tools.FakeMedicalRepository
 
 class DoctorInfoTabFragment : Fragment() {
 

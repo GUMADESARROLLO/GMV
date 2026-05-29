@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.fragments.medical
+package com.unimarksa.gmv.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.adapters.medical.ActionTile
-import com.unimarksa.gmv.adapters.medical.ActionTileAdapter
-import com.unimarksa.gmv.data.repository.FakeMedicalRepository
+import com.unimarksa.gmv.adapters.ActionTile
+import com.unimarksa.gmv.adapters.ActionTileAdapter
+import com.unimarksa.gmv.tools.FakeMedicalRepository
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

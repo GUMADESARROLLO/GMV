@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.fragments.medical
+package com.unimarksa.gmv.fragments
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -15,9 +15,9 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.adapters.medical.VisitHistoryAdapter
-import com.unimarksa.gmv.data.model.MedicalVisit
-import com.unimarksa.gmv.data.repository.FakeMedicalRepository
+import com.unimarksa.gmv.adapters.VisitHistoryAdapter
+import com.unimarksa.gmv.models.MedicalVisit
+import com.unimarksa.gmv.tools.FakeMedicalRepository
 import java.util.Calendar
 
 class VisitHistoryFragment : Fragment() {

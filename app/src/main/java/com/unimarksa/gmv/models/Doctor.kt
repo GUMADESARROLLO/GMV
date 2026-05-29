@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.data.model
+package com.unimarksa.gmv.models
 
 data class Doctor(
     val id: String,

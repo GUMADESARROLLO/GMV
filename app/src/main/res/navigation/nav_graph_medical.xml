@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/medicalDashboardFragment"
-        android:name="com.unimarksa.gmv.fragments.medical.MedicalDashboardFragment"
+        android:name="com.unimarksa.gmv.fragments.MedicalDashboardFragment"
         android:label="Visitador Médico"
         tools:layout="@layout/fragment_medical_dashboard">
         <action
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/doctorListFragment"
-        android:name="com.unimarksa.gmv.fragments.medical.DoctorListFragment"
+        android:name="com.unimarksa.gmv.fragments.DoctorListFragment"
         android:label="Mis Médicos"
         tools:layout="@layout/fragment_doctor_list">
         <action
@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/doctorDetailFragment"
-        android:name="com.unimarksa.gmv.fragments.medical.DoctorDetailFragment"
+        android:name="com.unimarksa.gmv.fragments.DoctorDetailFragment"
         android:label="Detalle Médico"
         tools:layout="@layout/fragment_doctor_detail">
         <argument
@@ -43,13 +43,13 @@
 
     <fragment
         android:id="@+id/productCatalogFragment"
-        android:name="com.unimarksa.gmv.fragments.medical.ProductCatalogFragment"
+        android:name="com.unimarksa.gmv.fragments.ProductCatalogFragment"
         android:label="Catálogo de Productos"
         tools:layout="@layout/fragment_product_catalog" />
 
     <fragment
         android:id="@+id/visitHistoryFragment"
-        android:name="com.unimarksa.gmv.fragments.medical.VisitHistoryFragment"
+        android:name="com.unimarksa.gmv.fragments.VisitHistoryFragment"
         android:label="Mis Visitas"
         tools:layout="@layout/fragment_visit_history" />
 

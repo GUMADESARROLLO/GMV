@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.adapters.medical
+package com.unimarksa.gmv.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.data.model.Doctor
-import com.unimarksa.gmv.data.model.DoctorStatus
+import com.unimarksa.gmv.models.Doctor
+import com.unimarksa.gmv.models.DoctorStatus
 
 class DoctorAdapter(
     private val onClick: (Doctor) -> Unit

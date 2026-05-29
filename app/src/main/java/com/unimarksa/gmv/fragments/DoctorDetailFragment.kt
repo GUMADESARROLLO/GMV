@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.fragments.medical
+package com.unimarksa.gmv.fragments
 
 import android.graphics.Color
 import android.os.Bundle
@@ -17,9 +17,9 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager2.widget.ViewPager2
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.data.model.Doctor
-import com.unimarksa.gmv.data.model.DoctorStatus
-import com.unimarksa.gmv.data.repository.FakeMedicalRepository
+import com.unimarksa.gmv.models.Doctor
+import com.unimarksa.gmv.models.DoctorStatus
+import com.unimarksa.gmv.tools.FakeMedicalRepository
 
 class DoctorDetailFragment : Fragment() {
 

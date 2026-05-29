@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.ui.metrics
+package com.unimarksa.gmv.fragments
 
 import android.os.Bundle
 import android.graphics.drawable.GradientDrawable

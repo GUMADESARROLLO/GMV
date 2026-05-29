@@ -1,10 +1,10 @@
-package com.unimarksa.gmv.data.repository
+package com.unimarksa.gmv.tools
 
-import com.unimarksa.gmv.data.model.Doctor
-import com.unimarksa.gmv.data.model.DoctorStatus
-import com.unimarksa.gmv.data.model.MedicalVisit
-import com.unimarksa.gmv.data.model.Product
-import com.unimarksa.gmv.data.model.VisitResult
+import com.unimarksa.gmv.models.Doctor
+import com.unimarksa.gmv.models.DoctorStatus
+import com.unimarksa.gmv.models.MedicalVisit
+import com.unimarksa.gmv.models.Product
+import com.unimarksa.gmv.models.VisitResult
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

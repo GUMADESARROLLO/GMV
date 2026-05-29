@@ -1,4 +1,4 @@
-package com.unimarksa.gmv.adapters.medical
+package com.unimarksa.gmv.adapters
 
 import android.view.LayoutInflater
 import android.view.View
