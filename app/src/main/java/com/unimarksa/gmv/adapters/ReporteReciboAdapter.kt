@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.unimarksa.gmv.R
@@ -48,12 +49,16 @@ class ReporteReciboAdapter(
 
     private fun bind(holder: ViewHolder, position: Int) {
         val item = items[position]
+        val ctx = holder.itemView.context
         val fmt = java.text.DecimalFormat("#,##0.00", java.text.DecimalFormatSymbols(Locale.US))
 
+        val esAnulado = item.status == "4" || item.status.contains("Anul", ignoreCase = true)
+
         val name = item.nombreCliente.replace(Regex("^\\d+\\s*-\\s*"), "")
-        val initial = name.firstOrNull()?.uppercaseChar()?.toString() ?: "F"
+        val displayName = if (esAnulado) "ANULADO" else name.replace(Regex(" - RUC.*"), "").trim()
+        val initial = if (esAnulado) "X" else (name.firstOrNull()?.uppercaseChar()?.toString() ?: "F")
         holder.tvClientInitial.text = initial
-        holder.tvClientName.text = name.replace(Regex(" - RUC.*"), "").trim()
+        holder.tvClientName.text = displayName
         holder.tvClientCode.text = item.codCliente.replace(Regex("[^\\d]"), "").ifEmpty { item.codCliente }
         val rucMatch = Regex("RUC[\\s\\-]*([\\dA-Z]+)").find(item.nombreCliente)
         holder.tvRuc.text = if (rucMatch != null) "RUC ${rucMatch.groupValues[1]}" else ""
@@ -61,6 +66,14 @@ class ReporteReciboAdapter(
 
         val total = item.orderTotal.replace("C$", "").replace(",", "").trim().toDoubleOrNull() ?: 0.0
         holder.tvFooterAmount.text = "C$ ${fmt.format(total)}"
+
+        if (esAnulado) {
+            holder.cardRecibo.setCardBackgroundColor(android.graphics.Color.parseColor("#FFEBEE"))
+            holder.cardRecibo.setStrokeColor(android.graphics.Color.parseColor("#EF9A9A"))
+        } else {
+            holder.cardRecibo.setCardBackgroundColor(ContextCompat.getColor(ctx, R.color.card_background))
+            holder.cardRecibo.setStrokeColor(ContextCompat.getColor(ctx, R.color.card_stroke_new))
+        }
 
         try {
             val dateStr = item.fecha.replace(" ", "T")

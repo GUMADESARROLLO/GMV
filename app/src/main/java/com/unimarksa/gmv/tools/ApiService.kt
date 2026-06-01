@@ -361,7 +361,9 @@ object ApiService {
         val orders = cleaned.split("],")
         for (orderStr in orders) {
             val parts = orderStr.trim('[', ']', ',').split(";")
-            if (parts.size >= 9) {
+            if (parts.size >= 8) {
+                val actionRaw = if (parts.size >= 9) parts[8] else parts.getOrElse(7) { "" }
+                val tipoAccion = actionRaw.split(" ").first().trim()
                 lista.add(
                     ItemReciboDetalle(
                         numeroFactura = parts[0],
@@ -372,7 +374,7 @@ object ApiService {
                         valorRecibido = parts[5].toDoubleOrNull() ?: 0.0,
                         saldoPendiente = parts[6].toDoubleOrNull() ?: 0.0,
                         codCliente = if (parts.size > 7) parts[7] else "",
-                        tipoAccion = if (parts.size > 8) parts[8] else ""
+                        tipoAccion = tipoAccion
                     )
                 )
             }
@@ -731,7 +733,7 @@ object ApiService {
         val sb = StringBuilder()
         for (pago in pagos) {
             val saldoPendiente = pago.saldo - pago.valorRecibido
-            sb.append("[${pago.numero};${"%.2f".format(pago.saldo)};${"%.2f".format(pago.nc)};${"%.2f".format(pago.retencion)};${"%.2f".format(pago.descuento)};${"%.2f".format(pago.valorRecibido)};${"%.2f".format(saldoPendiente)};${pago.action} $currency],")
+            sb.append("[${pago.numero};${"%.2f".format(pago.saldo)};${"%.2f".format(pago.nc)};${"%.2f".format(pago.retencion)};${"%.2f".format(pago.descuento)};${"%.2f".format(pago.valorRecibido)};${"%.2f".format(saldoPendiente)};;${pago.action}],")
         }
         return sb.toString().trimEnd(',')
     }
@@ -764,6 +766,50 @@ object ApiService {
             playerId = playerId,
             date = date
         ).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val bodyStr = try { response.body()?.string() ?: "" } catch (_: Exception) { "" }
+                if (response.isSuccessful) {
+                    onResult(bodyStr.trim())
+                } else {
+                    onError("Error del servidor: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onError(t.message ?: "Error de conexión")
+            }
+        })
+    }
+
+    fun eliminarRecibo(
+        reciboNumero: String,
+        onResult: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.deleteRecibo(reciboNumero = reciboNumero).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val bodyStr = try { response.body()?.string() ?: "" } catch (_: Exception) { "" }
+                if (response.isSuccessful) {
+                    onResult(bodyStr.trim())
+                } else {
+                    onError("Error del servidor: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onError(t.message ?: "Error de conexión")
+            }
+        })
+    }
+
+    fun anularReciboPorNumero(
+        recibo: String,
+        fechaRecibo: String,
+        ruta: String,
+        onResult: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.anularRecibo(recibo = recibo, fechaRecibo = fechaRecibo, ruta = ruta).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 val bodyStr = try { response.body()?.string() ?: "" } catch (_: Exception) { "" }
                 if (response.isSuccessful) {

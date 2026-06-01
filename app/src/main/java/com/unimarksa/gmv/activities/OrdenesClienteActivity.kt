@@ -62,6 +62,13 @@ class OrdenesClienteActivity : AppCompatActivity() {
         setupDatePickers()
         setupDeleteAll()
 
+        findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh)
+            .setOnRefreshListener {
+                val codCliente = intent.getStringExtra("codCliente")
+                if (codCliente != null) cargarOrdenesCliente(codCliente)
+                else cargarTodas()
+            }
+
         val codCliente = intent.getStringExtra("codCliente")
         if (codCliente != null) {
             cargarOrdenesCliente(codCliente)
@@ -167,6 +174,7 @@ class OrdenesClienteActivity : AppCompatActivity() {
     }
 
     private fun mostrarResultados(items: List<ItemPedidoCliente>) {
+        findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh).isRefreshing = false
         val total = items.size
         val monto = items.sumOf { it.monto.replace(",", "").toDoubleOrNull() ?: 0.0 }
 

@@ -53,6 +53,12 @@ class ReporteFacturacionActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.id_desde).text = lunes
         findViewById<TextView>(R.id.id_hasta).text = hoy
         buscar(lunes, hoy)
+        val swipeRefresh = findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh)
+        swipeRefresh.setOnRefreshListener {
+            val d = findViewById<TextView>(R.id.id_desde).text.toString()
+            val h = findViewById<TextView>(R.id.id_hasta).text.toString()
+            buscar(d, h, true)
+        }
     }
 
     private fun selectDesde(date: String) {
@@ -67,8 +73,11 @@ class ReporteFacturacionActivity : AppCompatActivity() {
         if (!desde.isNullOrEmpty()) buscar(desde, date)
     }
 
-    private fun buscar(desde: String, hasta: String) {
-        findViewById<View>(R.id.lyt_loading).visibility = View.VISIBLE
+    private fun buscar(desde: String, hasta: String, isRefresh: Boolean = false) {
+        if (!isRefresh) {
+            findViewById<View>(R.id.lyt_loading).visibility = View.VISIBLE
+        }
+        findViewById<View>(R.id.lyt_empty_result).visibility = View.GONE
         findViewById<View>(R.id.lyt_empty_result).visibility = View.GONE
         findViewById<View>(R.id.recycler_view).visibility = View.GONE
 
@@ -88,6 +97,7 @@ class ReporteFacturacionActivity : AppCompatActivity() {
     }
 
     private fun mostrarResultados() {
+        findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh).isRefreshing = false
         findViewById<View>(R.id.lyt_loading).visibility = View.GONE
         if (facturas.isEmpty()) {
             findViewById<View>(R.id.lyt_empty_result).visibility = View.VISIBLE

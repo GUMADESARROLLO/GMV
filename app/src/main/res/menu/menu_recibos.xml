@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_export"
+        android:id="@+id/action_anular_recibo"
         android:title="Exportar"
         android:icon="@drawable/ic_card_off"
         app:iconTint="@android:color/white"

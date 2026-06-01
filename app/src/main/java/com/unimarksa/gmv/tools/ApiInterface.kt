@@ -162,4 +162,21 @@ interface ApiInterface {
         @Field("date") date: String,
         @Field("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/api.php")
+    fun deleteRecibo(
+        @Query("del_recibo_colector") delRecibo: String = "1",
+        @Field("ID") reciboNumero: String,
+        @Field("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<ResponseBody>
+
+    @GET("api/api.php")
+    fun anularRecibo(
+        @Query("recibo_anular") recibo: String,
+        @Query("Fecha_Recibo") fechaRecibo: String,
+        @Query("Ruta") ruta: String,
+        @Query("Player_Id") playerId: String = "N/A",
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<ResponseBody>
 }

@@ -54,6 +54,9 @@ class SolicitudesActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvDateTo).text = dateFmt.format(Calendar.getInstance().time)
 
         cargarSolicitudes()
+
+        findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh)
+            .setOnRefreshListener { cargarSolicitudes() }
     }
 
     private fun cargarSolicitudes() {
@@ -84,6 +87,7 @@ class SolicitudesActivity : AppCompatActivity() {
     }
 
     private fun mostrarResultados() {
+        findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh).isRefreshing = false
         val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
         val total = todasLasSolicitudes.sumOf { it.monto.replace(",", "").toDoubleOrNull() ?: 0.0 }
         findViewById<TextView>(R.id.tvTotalMonto).text = "C$ ${fmt.format(total)}"
