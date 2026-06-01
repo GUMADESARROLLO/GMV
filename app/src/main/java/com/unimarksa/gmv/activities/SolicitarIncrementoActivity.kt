@@ -106,22 +106,15 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
         val display = findViewById<TextView>(R.id.tvMontoDisplay)
         updateDisplay()
 
-        val keys = listOf(
-            R.id.btnK0, R.id.btnK1, R.id.btnK2, R.id.btnK3, R.id.btnK4,
-            R.id.btnK5, R.id.btnK6, R.id.btnK7, R.id.btnK8, R.id.btnK9,
-            R.id.btnKDot, R.id.btnKDel
+        val keys = mapOf(
+            R.id.btnK0 to "0", R.id.btnK1 to "1", R.id.btnK2 to "2", R.id.btnK3 to "3",
+            R.id.btnK4 to "4", R.id.btnK5 to "5", R.id.btnK6 to "6", R.id.btnK7 to "7",
+            R.id.btnK8 to "8", R.id.btnK9 to "9", R.id.btnKDot to "."
         )
 
-        for (id in keys) {
+        for ((id, digit) in keys) {
             findViewById<Button>(id).setOnClickListener {
-                val text = (it as? Button)?.text?.toString() ?: return@setOnClickListener
-                when (text) {
-                    "<" -> {
-                        if (currentInput.isNotEmpty()) {
-                            if (currentInput.last() == '.') hasDecimal = false
-                            currentInput = currentInput.dropLast(1)
-                        }
-                    }
+                when (digit) {
                     "." -> {
                         if (!hasDecimal) {
                             if (currentInput.isEmpty()) currentInput = "0."
@@ -130,15 +123,23 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
                         }
                     }
                     else -> {
-                        if (text == "0" && currentInput.isEmpty()) return@setOnClickListener
+                        if (digit == "0" && currentInput.isEmpty()) return@setOnClickListener
                         if (hasDecimal) {
                             val parts = currentInput.split(".")
                             if (parts.size == 2 && parts[1].length >= 2) return@setOnClickListener
                         }
                         if (currentInput.length >= 12) return@setOnClickListener
-                        currentInput += text
+                        currentInput += digit
                     }
                 }
+                updateDisplay()
+            }
+        }
+
+        findViewById<Button>(R.id.btnKDel).setOnClickListener {
+            if (currentInput.isNotEmpty()) {
+                if (currentInput.last() == '.') hasDecimal = false
+                currentInput = currentInput.dropLast(1)
                 updateDisplay()
             }
         }

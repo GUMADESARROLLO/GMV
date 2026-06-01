@@ -1,260 +1,364 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Comprobante de Transacción - Full Screen Elegante
+
+    Dependencias:
+    implementation("com.google.android.material:material:1.11.0")
+
+    Colores:
+    header_dark  = #0F2D52
+    green_avail  = #0F6E56
+    red_balance  = #993C1D
+    avatar_bg    = #E6F1FB
+    avatar_text  = #185FA5
+    note_bg      = #F0F4F8
+    white        = #FFFFFF
+-->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_surface"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#0F2D52">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/brand_primary"
-        app:navigationIcon="@drawable/ic_arrow_back_white"
-        app:title="Confirmar envio"
-        app:titleTextColor="@android:color/white" />
+    <!-- ═════════ HEADER (40%) ═════════ -->
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingStart="28dp"
+        android:paddingEnd="28dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="24dp">
+
+        <!-- Toolbar -->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:paddingBottom="24dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="32dp">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_btn_back"
+                android:src="@drawable/ic_arrow_left"
+                android:contentDescription="Volver"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="8dp"
-                app:cardUseCompatPadding="true">
+                android:layout_weight="1"
+                android:text="Confirmar Solicitud"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:gravity="center" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+            <!-- Spacer -->
 
-                    <TextView
-                        android:id="@+id/tv_monto"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="C$ 0.00"
-                        android:textColor="@color/text_primary"
-                        android:textSize="48sp"
-                        android:textStyle="bold" />
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="4dp"
-                        android:text="Estas a punto de enviar"
-                        android:textColor="@color/text_secondary_new"
-                        android:textSize="14sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="20dp"
-                        android:background="@color/divider_color" />
-
-                    <!-- Cliente -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Cliente:"
-                        android:textColor="@color/text_secondary_new"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tvAvatarCliente"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginEnd="12dp"
-                            android:background="@drawable/bg_avatar"
-                            android:gravity="center"
-                            android:text="C"
-                            android:textColor="@color/brand_primary"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tvClienteNombre"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Cliente"
-                                android:textColor="@color/text_primary"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tvClienteCodigo"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text=""
-                                android:textColor="@color/text_secondary_new"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="16dp"
-                        android:background="@color/divider_color" />
-
-                    <!-- Saldos -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Disponible"
-                                android:textColor="@color/text_hint_new"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:id="@+id/tvDisponibleView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="C$ 0.00"
-                                android:textColor="@color/amount_positive"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <View android:layout_width="1dp" android:layout_height="40dp"
-                            android:background="@color/divider_color" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Saldo"
-                                android:textColor="@color/text_hint_new"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:id="@+id/tvSaldoView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="C$ 0.00"
-                                android:textColor="@color/amount_negative"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <View android:layout_width="1dp" android:layout_height="40dp"
-                            android:background="@color/divider_color" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Limite"
-                                android:textColor="@color/text_hint_new"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:id="@+id/tvLimiteView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="C$ 0.00"
-                                android:textColor="@color/text_primary"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="16dp"
-                        android:background="@color/divider_color" />
-
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="10dp"
-                        app:cardBackgroundColor="#F9F8F6"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-
-                        <TextView
-                            android:id="@+id/tvMotivoView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:lineSpacingExtra="4dp"
-                            android:text="Escribe el motivo del Incremento"
-                            android:textColor="#555450"
-                            android:textSize="14sp" />
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_enviar"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:text="Enviar solicitud"
-                        android:textAllCaps="false"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="12dp" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
         </LinearLayout>
-    </ScrollView>
+
+        <!-- Icono -->
+
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:background="@drawable/bg_icon_circle">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_monetization_on"
+                app:tint="#FFFFFF" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ESTA A PUNTO DE SOLICITAR"
+            android:textColor="#8FAECB"
+            android:textSize="11sp"
+            android:letterSpacing="0.12"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvMonto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="C$ 60,000.00"
+            android:textColor="#FFFFFF"
+            android:textSize="44sp"
+            android:textStyle="bold"
+            android:letterSpacing="-0.02" />
+
+    </LinearLayout>
+
+    <!-- ═════════ TARJETA BLANCA (60%) ═════════ -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:orientation="vertical"
+        android:background="@drawable/bg_card_top_rounded"
+        android:paddingStart="28dp"
+        android:paddingEnd="28dp"
+        android:paddingTop="28dp"
+        android:paddingBottom="32dp">
+
+        <!-- Handle -->
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/bg_handle" />
+
+        <!-- Cliente -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="28dp">
+
+            <TextView
+                android:id="@+id/tvAvatar"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="C"
+                android:textColor="#185FA5"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_avatar_rounded" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cliente"
+                    android:textColor="#AAAAAA"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:id="@+id/tvNombreCliente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Clínica Centro Médico Belén"
+                    android:textColor="#1A1A1A"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvIdCliente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="# 00479"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Estadísticas -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_stats_rounded"
+            android:padding="16dp"
+            android:layout_marginBottom="28dp">
+
+            <!-- Disponible -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disponible"
+                    android:textColor="#AAAAAA"
+                    android:textSize="11sp"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/tvDisponible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C$ 42,782.40"
+                    android:textColor="#0F6E56"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:background="#E0E0E0" />
+
+            <!-- Saldo -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Saldo"
+                    android:textColor="#AAAAAA"
+                    android:textSize="11sp"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/tvSaldo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C$ 7,217.60"
+                    android:textColor="#993C1D"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:background="#E0E0E0" />
+
+            <!-- Límite -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Límite"
+                    android:textColor="#AAAAAA"
+                    android:textSize="11sp"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/tvLimite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C$ 50,000.00"
+                    android:textColor="#1A1A1A"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Referencia -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Referencia"
+            android:textColor="#AAAAAA"
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_note_rounded"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_message"
+                app:tint="#AAAAAA" />
+
+            <TextView
+                android:id="@+id/tvNota"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ksksksk"
+                android:textColor="#555555"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Spacer -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Botón -->
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEnviar"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Enviar solicitud"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.02"
+            app:backgroundTint="#0F2D52"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_send"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp" />
+
+    </LinearLayout>
+
 </LinearLayout>

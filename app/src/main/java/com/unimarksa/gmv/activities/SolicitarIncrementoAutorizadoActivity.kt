@@ -37,28 +37,27 @@ class SolicitarIncrementoAutorizadoActivity : AppCompatActivity() {
 
         val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
 
-        findViewById<TextView>(R.id.tv_monto).text = "C$ ${fmt.format(monto)}"
-        findViewById<TextView>(R.id.tvDisponibleView).text = "C$ ${fmt.format(disponible)}"
-        findViewById<TextView>(R.id.tvSaldoView).text = "C$ ${fmt.format(saldo)}"
-        findViewById<TextView>(R.id.tvLimiteView).text = "C$ ${fmt.format(limite)}"
+        findViewById<TextView>(R.id.tvMonto).text = "C$ ${fmt.format(monto)}"
+        findViewById<TextView>(R.id.tvDisponible).text = "C$ ${fmt.format(disponible)}"
+        findViewById<TextView>(R.id.tvSaldo).text = "C$ ${fmt.format(saldo)}"
+        findViewById<TextView>(R.id.tvLimite).text = "C$ ${fmt.format(limite)}"
 
         if (motivo.isNotEmpty()) {
-            findViewById<TextView>(R.id.tvMotivoView).text = "$motivo"
+            findViewById<TextView>(R.id.tvNota).text = "$motivo"
         }
 
         val initial = clienteNombre.firstOrNull()?.uppercaseChar()?.toString() ?: "C"
-        findViewById<TextView>(R.id.tvAvatarCliente).text = initial
-        findViewById<TextView>(R.id.tvClienteNombre).text = clienteNombre.ifEmpty { "Cliente" }
-        findViewById<TextView>(R.id.tvClienteCodigo).text = clienteCodigo
+        findViewById<TextView>(R.id.tvAvatar).text = initial
+        findViewById<TextView>(R.id.tvNombreCliente).text = clienteNombre.ifEmpty { "Cliente" }
+        findViewById<TextView>(R.id.tvIdCliente).text = clienteCodigo
 
-        findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-            .setNavigationOnClickListener { finish() }
+        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
 
-        findViewById<MaterialButton>(R.id.btn_enviar).setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnEnviar).setOnClickListener {
             if (isLoading) return@setOnClickListener
             isLoading = true
 
-            val btn = findViewById<MaterialButton>(R.id.btn_enviar)
+            val btn = findViewById<MaterialButton>(R.id.btnEnviar)
             btn.text = "Enviando..."
             btn.isEnabled = false
 
