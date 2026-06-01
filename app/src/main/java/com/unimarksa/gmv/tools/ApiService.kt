@@ -33,6 +33,7 @@ import java.util.Locale
 object ApiService {
     private val currentUser: String get() = SessionManager.getUsername().ifEmpty { "F10" }
     private val api: ApiInterface
+    private val apiAws: ApiInterface
 
     init {
         val baseUrl = Config.BASE_URL.trimEnd('/') + "/"
@@ -41,6 +42,13 @@ object ApiService {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         api = retrofit.create(ApiInterface::class.java)
+
+        val awsUrl = Config.BASE_AWS.trimEnd('/') + "/"
+        val retrofitAws = Retrofit.Builder()
+            .baseUrl(awsUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        apiAws = retrofitAws.create(ApiInterface::class.java)
     }
 
     fun fetchProductos(onResult: (List<ItemProducto>) -> Unit, onError: (String) -> Unit) {
@@ -820,6 +828,61 @@ object ApiService {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onError(t.message ?: "Error de conexión")
+            }
+        })
+    }
+
+    fun enviarAdjunto(
+        idRecibo: String,
+        nombre: String,
+        imagenBase64: String,
+        onResult: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        apiAws.postAdjunto(nombre = nombre, imagenBase64 = imagenBase64, idRecibo = idRecibo).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val bodyStr = try { response.body()?.string() ?: "" } catch (_: Exception) { "" }
+                if (response.isSuccessful && bodyStr.contains("Success", ignoreCase = true)) {
+                    onResult()
+                } else {
+                    onError(bodyStr.ifEmpty { "Error ${response.code()}" })
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onError(t.message ?: "Error de conexión")
+            }
+        })
+    }
+
+    fun fetchAdjuntos(
+        idRecibo: String,
+        onResult: (List<com.unimarksa.gmv.models.ItemAdjunto>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        apiAws.getAdjuntos(idRecibo = idRecibo).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) { onError("Error del servidor: ${response.code()}"); return }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try {
+                    val lista = mutableListOf<com.unimarksa.gmv.models.ItemAdjunto>()
+                    val array = body.asJsonArray
+                    for (element in array) {
+                        val obj = element.asJsonObject
+                        lista.add(com.unimarksa.gmv.models.ItemAdjunto(
+                            id = obj.get("mId")?.asString ?: "",
+                            idRecibo = obj.get("mRecibo")?.asString ?: "",
+                            nombreImagen = obj.get("mNombreImagen")?.asString ?: "",
+                            imagenUrl = obj.get("imagen_url")?.asString ?: ""
+                        ))
+                    }
+                    onResult(lista)
+                } catch (e: Exception) {
+                    onError("Error al procesar datos: ${e.message}")
+                }
+            }
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
                 onError(t.message ?: "Error de conexión")
             }
         })

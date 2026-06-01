@@ -8,6 +8,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiInterface {
@@ -179,4 +180,17 @@ interface ApiInterface {
         @Query("Player_Id") playerId: String = "N/A",
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
     ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/post_adjunto")
+    fun postAdjunto(
+        @Field("nom") nombre: String,
+        @Field("imagenes") imagenBase64: String,
+        @Field("Id_Recibo") idRecibo: String
+    ): Call<ResponseBody>
+
+    @GET("api/get_recibos_adjuntos/{id}")
+    fun getAdjuntos(
+        @Path("id") idRecibo: String
+    ): Call<JsonElement>
 }

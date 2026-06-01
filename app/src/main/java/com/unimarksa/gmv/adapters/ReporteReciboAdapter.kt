@@ -1,6 +1,5 @@
 package com.unimarksa.gmv.adapters
 
-import android.content.Intent
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.activities.AdjuntarComprobanteActivity
 import com.unimarksa.gmv.models.ItemReporteRecibo
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -20,7 +18,8 @@ import java.util.Locale
 class ReporteReciboAdapter(
     private val items: MutableList<ItemReporteRecibo>,
     private val onClick: (ItemReporteRecibo) -> Unit = {},
-    private val onDelete: ((ItemReporteRecibo, Int) -> Unit)? = null
+    private val onDelete: ((ItemReporteRecibo, Int) -> Unit)? = null,
+    private val onAttach: ((ItemReporteRecibo) -> Unit)? = null
 ) : RecyclerView.Adapter<ReporteReciboAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -95,10 +94,7 @@ class ReporteReciboAdapter(
         }
 
         holder.btnDelete.setOnClickListener { onDelete?.invoke(item, position) }
-        holder.btnAttach.setOnClickListener {
-            val ctx = holder.itemView.context
-            ctx.startActivity(Intent(ctx, AdjuntarComprobanteActivity::class.java))
-        }
+        holder.btnAttach.setOnClickListener { onAttach?.invoke(item) }
         holder.cardRecibo.setOnClickListener { onClick(item) }
     }
 

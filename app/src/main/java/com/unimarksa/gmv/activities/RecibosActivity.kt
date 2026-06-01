@@ -70,7 +70,11 @@ class RecibosActivity : AppCompatActivity() {
         adapter = ReporteReciboAdapter(
             items = items,
             onClick = { recibo -> mostrarDetalle(recibo) },
-            onDelete = { recibo, position -> confirmarEliminar(recibo, position) }
+            onDelete = { recibo, position -> confirmarEliminar(recibo, position) },
+            onAttach = { recibo ->
+                startActivity(Intent(this, AdjuntarComprobanteActivity::class.java)
+                    .putExtra("id_recibo", recibo.recibo.replace("#", "")))
+            }
         )
         rv.adapter = adapter
 
@@ -220,8 +224,63 @@ class RecibosActivity : AppCompatActivity() {
 
         view.findViewById<View>(R.id.btn_adjuntar).setOnClickListener {
             dialog.dismiss()
-            startActivity(Intent(this, AdjuntarComprobanteActivity::class.java))
+            startActivity(Intent(this, AdjuntarComprobanteActivity::class.java)
+                .putExtra("id_recibo", recibo.recibo.replace("#", "")))
         }
+
+        ApiService.fetchAdjuntos(
+            idRecibo = recibo.recibo.replace("#", ""),
+            onResult = { adjuntos ->
+                android.util.Log.d("Adjuntos", "Cargados ${adjuntos.size} adjuntos")
+                for (a in adjuntos) {
+                    android.util.Log.d("Adjuntos", "  URL: ${a.imagenUrl.take(80)}...")
+                }
+
+                val btnAdjuntar = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_adjuntar)
+                btnAdjuntar.text = if (adjuntos.isNotEmpty()) "Ver comprobantes (${adjuntos.size})" else "Adjuntar comprobante"
+
+                val rvAdjuntos = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rv_adjuntos)
+                val tvTitle = view.findViewById<TextView>(R.id.tv_adjuntos_title)
+                if (adjuntos.isEmpty()) {
+                    rvAdjuntos.visibility = View.GONE
+                    tvTitle.visibility = View.GONE
+                    return@fetchAdjuntos
+                }
+                tvTitle.visibility = View.VISIBLE
+                rvAdjuntos.visibility = View.VISIBLE
+                rvAdjuntos.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+                rvAdjuntos.adapter = object : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
+                    override fun getItemCount() = adjuntos.size
+                    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+                        val v = LayoutInflater.from(this@RecibosActivity).inflate(R.layout.item_photo_attachment, parent, false)
+                        return object : androidx.recyclerview.widget.RecyclerView.ViewHolder(v) {}
+                    }
+                    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+                        val img = holder.itemView.findViewById<android.widget.ImageView>(R.id.ivPhoto)
+                        val btnRemove = holder.itemView.findViewById<android.widget.ImageButton>(R.id.btnRemove)
+                        btnRemove.visibility = View.GONE
+                        val item = adjuntos[position]
+                        com.squareup.picasso.Picasso.get().load(item.imagenUrl)
+                            .placeholder(R.drawable.ic_placeholder_product)
+                            .resize(200, 150).centerCrop()
+                            .into(img, object : com.squareup.picasso.Callback {
+                                override fun onSuccess() {}
+                                override fun onError(e: Exception?) {
+                                    android.util.Log.e("Adjuntos", "Picasso error: ${e?.message} para URL: ${item.imagenUrl.take(80)}")
+                                }
+                            })
+                        holder.itemView.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(item.imagenUrl))
+                            startActivity(intent)
+                        }
+                    }
+                }
+            },
+            onError = { error ->
+                android.util.Log.e("Adjuntos", "Error al cargar adjuntos: $error")
+                Toast.makeText(this, "Error al cargar adjuntos: $error", Toast.LENGTH_LONG).show()
+            }
+        )
 
         view.findViewById<View>(R.id.btn_delete_recibo).setOnClickListener {
             dialog.dismiss()
