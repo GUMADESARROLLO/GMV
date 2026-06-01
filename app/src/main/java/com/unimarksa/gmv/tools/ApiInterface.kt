@@ -145,4 +145,21 @@ interface ApiInterface {
         @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1",
         @Body body: okhttp3.RequestBody? = null
     ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/api.php")
+    fun postRecibo(
+        @Query("post_order_recibo") postRecibo: String = "1",
+        @Field("ruta") ruta: String,
+        @Field("cod_cliente") codCliente: String,
+        @Field("fecha_recibo") fechaRecibo: String,
+        @Field("recibo") recibo: String,
+        @Field("name_cliente") nameCliente: String,
+        @Field("order_list") orderList: String,
+        @Field("order_total") orderTotal: String,
+        @Field("comment") comment: String,
+        @Field("player_id") playerId: String,
+        @Field("date") date: String,
+        @Field("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<ResponseBody>
 }

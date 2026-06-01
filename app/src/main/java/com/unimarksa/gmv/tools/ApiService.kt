@@ -727,6 +727,58 @@ object ApiService {
         return lista
     }
 
+    fun formatearOrderListRecibo(pagos: List<com.unimarksa.gmv.models.ItemPagoFactura>, currency: String = "C$"): String {
+        val sb = StringBuilder()
+        for (pago in pagos) {
+            val saldoPendiente = pago.saldo - pago.valorRecibido
+            sb.append("[${pago.numero};${"%.2f".format(pago.saldo)};${"%.2f".format(pago.nc)};${"%.2f".format(pago.retencion)};${"%.2f".format(pago.descuento)};${"%.2f".format(pago.valorRecibido)};${"%.2f".format(saldoPendiente)};${pago.action} $currency],")
+        }
+        return sb.toString().trimEnd(',')
+    }
+
+    fun enviarRecibo(
+        ruta: String,
+        codCliente: String,
+        clienteNombre: String,
+        fechaRecibo: String,
+        reciboNumero: String,
+        pagos: List<com.unimarksa.gmv.models.ItemPagoFactura>,
+        total: Double,
+        observaciones: String,
+        onResult: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val orderList = formatearOrderListRecibo(pagos)
+        val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Date())
+        val playerId = "N/A"
+
+        api.postRecibo(
+            ruta = ruta,
+            codCliente = codCliente,
+            fechaRecibo = fechaRecibo,
+            recibo = reciboNumero,
+            nameCliente = clienteNombre,
+            orderList = orderList,
+            orderTotal = "%.2f".format(total),
+            comment = observaciones,
+            playerId = playerId,
+            date = date
+        ).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val bodyStr = try { response.body()?.string() ?: "" } catch (_: Exception) { "" }
+                if (response.isSuccessful) {
+                    onResult(bodyStr.trim())
+                } else {
+                    onError("Error del servidor: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onError(t.message ?: "Error de conexión")
+            }
+        })
+    }
+
     fun enviarIncremento(
         monto: Double,
         disponible: Double,

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -60,6 +61,9 @@ class ClienteDetailActivity : AppCompatActivity() {
         val cliente = intent.getSerializableExtra("cliente") as? ItemCliente
         cliente?.let { bindData(it) }
 
+        val codClient = cliente?.codCliente ?: ""
+        val namClient = cliente?.nombre ?: ""
+
         binding.btnListArticulos.setOnClickListener {
             cliente?.let {
                 val esMoroso = it.moroso.equals("S", ignoreCase = true) || it.moroso == "1" || it.moroso.equals("SI", ignoreCase = true)
@@ -97,7 +101,9 @@ class ClienteDetailActivity : AppCompatActivity() {
         }
 
         binding.btnReciboColector.setOnClickListener {
-            startActivity(Intent(this, ListadoPagosActivity::class.java))
+            startActivity(Intent(this, ListadoPagosActivity::class.java)
+                .putExtra("codCliente", cliente?.codCliente ?: "")
+                .putExtra("nomCliente", cliente?.nombre ?: ""))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 

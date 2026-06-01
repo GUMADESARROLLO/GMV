@@ -1,10 +1,13 @@
 package com.unimarksa.gmv.activities
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -28,7 +31,19 @@ class ListadoPagosActivity : AppCompatActivity() {
         binding = ActivityListadoPagosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (Build.VERSION.SDK_INT < 35) {
+        val codClient = intent.getStringExtra("codCliente") ?: ""
+        val namClient = intent.getStringExtra("nomCliente") ?: ""
+
+
+        if (Build.VERSION.SDK_INT >= 35) {
+            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            val h = if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
+            val scrim = View(this)
+            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.colorUmkPrimaryDark))
+            val content = findViewById<ViewGroup>(android.R.id.content)
+            scrim.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h)
+            content.addView(scrim)
+        } else {
             window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
         }
         ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
@@ -36,7 +51,10 @@ class ListadoPagosActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         binding.btnContinuar.setOnClickListener {
-            startActivity(android.content.Intent(this, ReciboColectorActivity::class.java))
+            startActivity(
+                Intent(this, ReciboColectorActivity::class.java)
+                .putExtra("codCliente", codClient)
+                .putExtra("nomCliente", namClient))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.data.local.AppDatabase
 import com.unimarksa.gmv.tools.CartManager
+import com.unimarksa.gmv.tools.PagoManager
 import com.unimarksa.gmv.tools.SessionManager
 
 class SplashActivity : AppCompatActivity() {
@@ -23,6 +24,8 @@ class SplashActivity : AppCompatActivity() {
         SessionManager.init(this)
         val androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         CartManager.init(AppDatabase.getInstance(this), androidId)
+        PagoManager.init(AppDatabase.getInstance(this))
+        PagoManager.loadFromDb()
 
         if (SessionManager.isLoggedIn()) {
             startActivity(Intent(this, SessionScreenActivity::class.java))

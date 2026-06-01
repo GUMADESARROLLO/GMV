@@ -136,12 +136,7 @@ class FacturaDetailActivity : AppCompatActivity() {
             )
             PagoManager.add(pago)
 
-            Snackbar.make(binding.root, "Pago agregado a la lista", Snackbar.LENGTH_LONG)
-                .setAction("Ver listado") {
-                    startActivity(Intent(this, ListadoPagosActivity::class.java))
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-                }
-                .show()
+            Snackbar.make(binding.root, "Pago agregado a la lista", Snackbar.LENGTH_LONG).show()
         }
         dialog.setOnActionListener(actionListener)
         dialog.show(supportFragmentManager, "PagoFacturaDialog")

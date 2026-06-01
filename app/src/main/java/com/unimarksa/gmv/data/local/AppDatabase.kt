@@ -12,9 +12,10 @@ import androidx.room.RoomDatabase
         OrderEntity::class,
         OrderItemEntity::class,
         ReciboEntity::class,
-        ReciboDetalleEntity::class
+        ReciboDetalleEntity::class,
+        ReciboCartEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -22,6 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun cartDao(): CartDao
     abstract fun orderDao(): OrderDao
     abstract fun reciboDao(): ReciboDao
+    abstract fun reciboCartDao(): ReciboCartDao
 
     companion object {
         @Volatile

@@ -23,7 +23,7 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
         FIELD_RECIBIDO to "0.00"
     )
     private var selectedField = FIELD_NC
-    private var selectedAction = "contado"
+    private var selectedAction = "abono"
     private var saldo: Double = 0.0
     private var listener: ((action: String, values: Map<String, String>) -> Unit)? = null
 
@@ -86,7 +86,7 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
         val digits = mapOf(
             R.id.btn_0 to "0", R.id.btn_1 to "1", R.id.btn_2 to "2", R.id.btn_3 to "3",
             R.id.btn_4 to "4", R.id.btn_5 to "5", R.id.btn_6 to "6", R.id.btn_7 to "7",
-            R.id.btn_8 to "8", R.id.btn_9 to "9", R.id.btn_00 to "00", R.id.btn_dot to "."
+            R.id.btn_8 to "8", R.id.btn_9 to "9", R.id.btn_dot to "."
         )
 
         for ((id, digit) in digits) {
@@ -136,13 +136,25 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
             styleAsUnselected(btnCancelacion)
             styleAsUnselected(btnContado)
             when (action) {
-                "abono" -> styleAsSelected(btnAbono)
-                "cancelacion" -> styleAsSelected(btnCancelacion)
-                "contado" -> styleAsSelected(btnContado)
+                "abono" -> {
+                    styleAsSelected(btnAbono)
+                    values[FIELD_RECIBIDO] = "0.00"
+                    updateDisplay()
+                }
+                "cancelacion" -> {
+                    styleAsSelected(btnCancelacion)
+                    values[FIELD_RECIBIDO] = "0.00"
+                    updateDisplay()
+                }
+                "contado" -> {
+                    styleAsSelected(btnContado)
+                    values[FIELD_RECIBIDO] = "%.2f".format(saldo)
+                    updateDisplay()
+                }
             }
         }
 
-        selectAction("contado")
+        selectAction("abono")
 
         btnAbono.setOnClickListener { selectAction("abono") }
         btnCancelacion.setOnClickListener { selectAction("cancelacion") }
@@ -168,11 +180,6 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
                 return@setOnClickListener
             }
             listener?.invoke(selectedAction, values.toMap())
-            dismiss()
-        }
-
-        view.findViewById<MaterialButton>(R.id.btn_cancelar_accion).setOnClickListener {
-            resetValues()
             dismiss()
         }
     }
