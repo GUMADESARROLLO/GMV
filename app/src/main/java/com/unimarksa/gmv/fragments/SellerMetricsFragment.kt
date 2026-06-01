@@ -11,6 +11,7 @@ import com.google.android.material.chip.Chip
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.databinding.FragmentSellerMetricsBinding
 import com.unimarksa.gmv.tools.ApiService
+import com.unimarksa.gmv.tools.SessionManager
 import com.unimarksa.gmv.views.ArcProgressView
 import com.unimarksa.gmv.views.AnimatedProgressBar
 import com.unimarksa.gmv.views.CircularProgressMiniView
@@ -66,6 +67,8 @@ class SellerMetricsFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+        binding.txtSellerName.text = SessionManager.getFullName().ifEmpty { SessionManager.getUsername().uppercase() }
+        binding.txtSellerZone.text = "Ruta: ${SessionManager.getUsername().uppercase()}"
         actualizarLabelPeriodo()
 
         binding.chipPeriod.setOnClickListener { showMonthPickerDialog() }

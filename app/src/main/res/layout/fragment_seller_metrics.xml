@@ -4,75 +4,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_dashboard">
+    android:background="@color/surface_dark"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:fitsSystemWindows="true"
-        app:liftOnScroll="false">
+        android:layout_height="wrap_content"
+        android:background="@color/surface_dark"
+        app:elevation="0dp">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="@color/surface_dark"
-            app:expandedTitleMarginBottom="40dp"
-            app:expandedTitleMarginStart="24dp"
-            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="true">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <View
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_hero_gradient"
-                app:layout_collapseMode="parallax" />
-
-            <View
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="end|top"
-                android:layout_marginTop="-40dp"
-                android:layout_marginEnd="-40dp"
-                android:alpha="0.08"
-                android:background="@drawable/shape_circle_white"
-                app:layout_collapseMode="parallax" />
-
-            <View
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="start|bottom"
-                android:layout_marginStart="160dp"
-                android:layout_marginBottom="20dp"
-                android:alpha="0.06"
-                android:background="@drawable/shape_circle_white"
-                app:layout_collapseMode="parallax" />
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+                app:navigationIcon="@drawable/ic_arrow_back_white"
+                app:title="Mis Estadísticas"
+                app:titleTextColor="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
-                android:paddingHorizontal="24dp"
-                app:layout_collapseMode="parallax">
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="16dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/img_seller_avatar"
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:src="@drawable/ic_person"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Circle"
-                    android:background="@drawable/bg_avatar_ring" />
+                    android:background="@drawable/bg_avatar_ring"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Circle" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="14dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_gravity="center_vertical"
                     android:orientation="vertical">
 
                     <TextView
@@ -81,7 +57,7 @@
                         android:layout_height="wrap_content"
                         android:text="Carlos Mendoza"
                         android:textColor="@android:color/white"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -90,7 +66,8 @@
                         android:layout_height="wrap_content"
                         android:text="Zona Norte · Vendedor Senior"
                         android:textColor="#B0FFFFFF"
-                        android:textSize="12sp" />
+                        android:textSize="11sp"
+                        android:layout_marginTop="2dp" />
                 </LinearLayout>
 
                 <com.google.android.material.chip.Chip
@@ -109,23 +86,14 @@
 
             </LinearLayout>
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="top"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_arrow_back"
-                app:navigationIconTint="@android:color/white"
-                app:title=""
-                app:titleTextColor="@android:color/white" />
+        </LinearLayout>
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/bg_dashboard"
         android:clipToPadding="false"
         android:paddingBottom="32dp"
         android:scrollbars="none"
