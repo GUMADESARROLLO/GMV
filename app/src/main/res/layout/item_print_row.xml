@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="4dp">
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="AQUI TIENE QUE IR EL NOMBRE DEL ARTICULO"
+        android:textColor="#1A1A18"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tv_cant"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="10"
+        android:textColor="#1A1A18"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tv_precio"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text=",2"
+        android:textColor="#1A1A18"
+        android:textSize="13sp" />
+
+</LinearLayout>

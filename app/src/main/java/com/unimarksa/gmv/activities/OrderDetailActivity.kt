@@ -1,5 +1,6 @@
 package com.unimarksa.gmv.activities
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,6 +31,7 @@ class OrderDetailActivity : AppCompatActivity() {
     private val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
     private val scope = CoroutineScope(Dispatchers.IO)
     private lateinit var db: AppDatabase
+    private var currentOrderId: Long = -1L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -46,7 +48,15 @@ class OrderDetailActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
+        binding.btnPrint.setOnClickListener {
+            if (currentOrderId != -1L) {
+                startActivity(Intent(this, OrderPrintActivity::class.java)
+                    .putExtra("orderId", currentOrderId))
+            }
+        }
+
         val orderId = intent.getLongExtra("orderId", -1L)
+        currentOrderId = orderId
         if (orderId != -1L) {
             cargarDetalle(orderId)
         } else {

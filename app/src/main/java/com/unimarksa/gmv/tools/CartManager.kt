@@ -153,6 +153,7 @@ object CartManager {
                 codigo = orderCodigo,
                 clienteCodigo = cliente.codCliente,
                 clienteNombre = cliente.nombre,
+                clienteDireccion = cliente.direccion,
                 total = orderTotal,
                 observaciones = observaciones
             )

@@ -15,7 +15,7 @@ import androidx.room.RoomDatabase
         ReciboDetalleEntity::class,
         ReciboCartEntity::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

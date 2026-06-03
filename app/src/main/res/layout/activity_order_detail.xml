@@ -53,6 +53,17 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
+                <ImageView
+                    android:id="@+id/btn_print"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_printer"
+                    android:scaleType="centerInside"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Imprimir"
+                    android:tint="#555450" />
+
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>

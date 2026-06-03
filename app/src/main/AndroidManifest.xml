@@ -35,12 +35,16 @@
 
         <activity
             android:name=".activities.OrderDetailActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GMV" />
+            android:exported="false" />
 
         <activity
             android:name=".activities.ClienteDetailActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".activities.OrderPrintActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GMV" />
 
         <activity
             android:name=".activities.ProductDetailActivity"
