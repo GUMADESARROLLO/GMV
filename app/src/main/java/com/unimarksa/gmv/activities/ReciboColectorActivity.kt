@@ -77,6 +77,7 @@ class ReciboColectorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         refreshPayments()
         setupDatePicker()
         setupReceiptNumber()
+        autoAsignarRecibo()
         updateTotals()
         setupListeners()
     }
@@ -213,6 +214,21 @@ class ReciboColectorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
             dialog.show()
         }
+    }
+
+    private fun autoAsignarRecibo() {
+        val ruta = SessionManager.getUsername().uppercase()
+        if (ruta.isEmpty()) return
+        ApiService.fetchLastRecibo(
+            ruta = ruta,
+            onResult = { nextNum ->
+                if (nextNum.isNotBlank()) {
+                    receiptNumber = nextNum
+                    binding.tvReciboNumero.text = nextNum
+                }
+            },
+            onError = { /* silencio, se asigna manual */ }
+        )
     }
 
     private fun updateTotals() {

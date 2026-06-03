@@ -193,4 +193,10 @@ interface ApiInterface {
     fun getAdjuntos(
         @Path("id") idRecibo: String
     ): Call<JsonElement>
+
+    @GET("api/api.php")
+    fun getLastRecibo(
+        @Query("get_last_recibo") ruta: String,
+        @Query("APP_KEY") appKey: String = "C969C2E4E287B7A877FE193F785BF3D1"
+    ): Call<JsonElement>
 }

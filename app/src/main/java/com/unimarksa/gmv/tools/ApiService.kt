@@ -888,6 +888,30 @@ object ApiService {
         })
     }
 
+    fun fetchLastRecibo(
+        ruta: String,
+        onResult: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        api.getLastRecibo(ruta = ruta).enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                if (!response.isSuccessful) { onError("Error del servidor: ${response.code()}"); return }
+                val body = response.body()
+                if (body == null) { onError("Respuesta vacía"); return }
+                try {
+                    val json = body.toString()
+                    val obj = org.json.JSONObject(json)
+                    onResult(obj.optString("last_recibo", ""))
+                } catch (e: Exception) {
+                    onError("Error al procesar: ${e.message}")
+                }
+            }
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                onError(t.message ?: "Error de conexión")
+            }
+        })
+    }
+
     fun enviarIncremento(
         monto: Double,
         disponible: Double,
