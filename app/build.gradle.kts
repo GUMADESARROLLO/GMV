@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +10,7 @@ android {
     namespace = "com.unimarksa.gmv"
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     compileSdk {
         version = release(36)
@@ -21,6 +24,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val props = rootProject.file("local.properties")
+            .takeIf { it.exists() }
+            ?.inputStream()
+            ?.use { Properties().apply { load(it) } }
+        val appKey = props?.getProperty("gmv.app_key") ?: "MISSING_KEY"
+        buildConfigField("String", "APP_KEY", "\"$appKey\"")
     }
 
     buildTypes {
