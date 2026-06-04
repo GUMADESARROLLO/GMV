@@ -3,6 +3,7 @@ package com.unimarksa.gmv.tools
 import com.unimarksa.gmv.models.Doctor
 import com.unimarksa.gmv.models.DoctorStatus
 import com.unimarksa.gmv.models.MedicalVisit
+import com.unimarksa.gmv.tools.MedicalApiService
 import com.unimarksa.gmv.models.Product
 import com.unimarksa.gmv.models.VisitResult
 import java.text.SimpleDateFormat
@@ -12,14 +13,7 @@ import java.util.UUID
 
 object FakeMedicalRepository {
 
-    val doctors = mutableListOf(
-        Doctor("1", "Dr. Carlos Mejía", "Cardiología", "8888-0001", "cmejia@mail.com", DoctorStatus.ACTIVO),
-        Doctor("2", "Dra. Ana Torres", "Neurología", "8888-0002", "atorres@mail.com", DoctorStatus.ACTIVO),
-        Doctor("3", "Dr. Luis Ramos", "Pediatría", "8888-0003", "", DoctorStatus.PENDIENTE_ALTA),
-        Doctor("4", "Dra. María López", "Ginecología", "8888-0004", "mlopez@mail.com", DoctorStatus.PENDIENTE_BAJA),
-        Doctor("5", "Dr. Roberto Sánchez", "Medicina General", "8888-0005", "rsanchez@mail.com", DoctorStatus.ACTIVO),
-        Doctor("6", "Dra. Patricia Vega", "Oncología", "8888-0006", "pvega@mail.com", DoctorStatus.ACTIVO)
-    )
+    val doctors = mutableListOf<Doctor>()
 
     val products = listOf(
         Product("1", "Cardiomax", "Atorvastatina 40mg", "Cardiovascular", "Medicamento para reducción de colesterol LDL.", "Indicado para hipercolesterolemia y prevención cardiovascular."),
@@ -87,6 +81,19 @@ object FakeMedicalRepository {
     }
 
     fun getAllDoctors(): List<Doctor> = doctors.toList()
+
+    fun refreshDoctors(onResult: () -> Unit, onError: (String) -> Unit) {
+        MedicalApiService.fetchDoctors(
+            onResult = { list ->
+                if (list.isNotEmpty()) {
+                    doctors.clear()
+                    doctors.addAll(list)
+                }
+                onResult()
+            },
+            onError = onError
+        )
+    }
 
     fun getDoctorById(id: String): Doctor? = doctors.find { it.id == id }
 

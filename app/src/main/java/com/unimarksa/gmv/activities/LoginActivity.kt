@@ -77,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
             contrasena = contrasena,
             onSuccess = { name, fullName, phone, email ->
                 SessionManager.saveLogin(name, fullName, phone, email)
+                SessionManager.savePassword(contrasena)
                 startActivity(Intent(this, DashboardActivity::class.java))
                 finish()
             },

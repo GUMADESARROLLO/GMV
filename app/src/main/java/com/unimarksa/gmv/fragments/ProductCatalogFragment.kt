@@ -14,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ProductAdapter
-import com.unimarksa.gmv.tools.ApiService
+import com.unimarksa.gmv.tools.MedicalApiService
 
 class ProductCatalogFragment : Fragment() {
 
@@ -63,9 +63,9 @@ class ProductCatalogFragment : Fragment() {
         loading?.visibility = View.VISIBLE
         rv?.visibility = View.GONE
 
-        ApiService.fetchProductos(
+        MedicalApiService.fetchProductos(
             onResult = { productos ->
-                allProducts = productos.take(25)
+                allProducts = productos
                 adapter.submitList(allProducts)
                 loading?.visibility = View.GONE
                 rv?.visibility = View.VISIBLE

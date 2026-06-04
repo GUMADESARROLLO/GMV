@@ -14,15 +14,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.adapters.ProductAdapter
-import com.unimarksa.gmv.tools.ApiService
+import com.unimarksa.gmv.tools.MedicalApiService
 
 class DoctorProductsTabFragment : Fragment() {
+
+    private var doctorId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        doctorId = arguments?.getString("doctorId")
+
         val ctx = requireContext()
         val root = FrameLayout(ctx)
         root.setPadding(12, 12, 12, 12)
@@ -30,6 +34,14 @@ class DoctorProductsTabFragment : Fragment() {
         val rv = RecyclerView(ctx).apply {
             layoutManager = GridLayoutManager(ctx, 2)
             clipToPadding = false
+            visibility = View.GONE
+        }
+
+        val empty = TextView(ctx).apply {
+            text = "Sin productos asignados"
+            textSize = 14f
+            gravity = Gravity.CENTER
+            setTextColor(ctx.resources.getColor(R.color.text_label, null))
             visibility = View.GONE
         }
 
@@ -69,19 +81,31 @@ class DoctorProductsTabFragment : Fragment() {
         val productAdapter = ProductAdapter()
         rv.adapter = productAdapter
 
-        ApiService.fetchProductos(
-            onResult = { productos ->
-                productAdapter.submitList(productos.take(25))
-                loading.visibility = View.GONE
-                rv.visibility = View.VISIBLE
-            },
-            onError = {
-                loading.visibility = View.GONE
-                rv.visibility = View.VISIBLE
-            }
-        )
+        if (doctorId != null) {
+            MedicalApiService.fetchDoctorProductos(
+                doctorId = doctorId!!,
+                onResult = { productos ->
+                    loading.visibility = View.GONE
+                    if (productos.isEmpty()) {
+                        empty.visibility = View.VISIBLE
+                    } else {
+                        rv.visibility = View.VISIBLE
+                        productAdapter.submitList(productos)
+                    }
+                },
+                onError = {
+                    loading.visibility = View.GONE
+                    empty.visibility = View.VISIBLE
+                    empty.text = it
+                }
+            )
+        } else {
+            loading.visibility = View.GONE
+            empty.visibility = View.VISIBLE
+        }
 
         root.addView(rv)
+        root.addView(empty)
         root.addView(loading)
         return root
     }
