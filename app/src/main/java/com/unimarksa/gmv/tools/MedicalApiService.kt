@@ -1,20 +1,19 @@
 package com.unimarksa.gmv.tools
 
 import android.util.Log
-import com.google.gson.JsonElement
 import com.unimarksa.gmv.models.Doctor
 import com.unimarksa.gmv.models.DoctorStatus
 import com.unimarksa.gmv.models.ItemProducto
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 object MedicalApiService {
     private val JSON_MEDIA = "application/json; charset=utf-8".toMediaType()
@@ -22,11 +21,13 @@ object MedicalApiService {
 
     init {
         val baseUrl = Config.VisitaMedica.trimEnd('/') + "/"
+        Log.d("MedicalAPI", "Retrofit baseUrl: $baseUrl")
         val client = OkHttpClient.Builder()
             .addInterceptor { chain ->
+                val req = chain.request()
+                Log.d("MedicalAPI", "Request URL: ${req.url}")
                 val token = SessionManager.getMedicalToken()
-                val builder = chain.request().newBuilder()
-                    .addHeader("Content-Type", "application/json")
+                val builder = req.newBuilder()
                 if (token.isNotEmpty()) {
                     builder.addHeader("Authorization", "Bearer $token")
                 }
@@ -37,19 +38,12 @@ object MedicalApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         api = retrofit.create(MedicalApiInterface::class.java)
     }
 
     fun ensureAuth(onReady: () -> Unit, onError: (String) -> Unit) {
-        val existingToken = SessionManager.getMedicalToken()
-        if (existingToken.isNotEmpty()) {
-            Log.d("MedicalAPI", "Token existente, saltando login")
-            onReady()
-            return
-        }
         var username = SessionManager.getUsername()
         var password = SessionManager.getPassword()
         if (username.isEmpty() || password.isEmpty()) {
@@ -58,7 +52,10 @@ object MedicalApiService {
             password = "admin123"
         }
         Log.d("MedicalAPI", "ensureAuth — login con usuario: '$username'")
-        fetchLogin(username, password, onResult = onReady, onError = onError)
+        fetchLogin(username, password, onResult = {
+            Log.d("MedicalAPI", "Token fresco obtenido, continuando...")
+            onReady()
+        }, onError = onError)
     }
 
     fun fetchLogin(username: String, password: String, onResult: () -> Unit, onError: (String) -> Unit) {
@@ -68,8 +65,8 @@ object MedicalApiService {
             put("password", password)
         }
         val body = json.toString().toRequestBody(JSON_MEDIA)
-        api.login(body).enqueue(object : Callback<JsonElement> {
-            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+        api.login(body).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 Log.d("MedicalAPI", "Login response code: ${response.code()}")
                 if (!response.isSuccessful) {
                     val errorBody = try { response.errorBody()?.string() ?: "sin cuerpo" } catch (_: Exception) { "error al leer" }
@@ -80,10 +77,10 @@ object MedicalApiService {
                 val body = response.body()
                 if (body == null) { Log.e("MedicalAPI", "Login respuesta vacía"); onError("Respuesta vacía"); return }
                 try {
-                    val raw = body.toString()
+                    val raw = body.string()
                     Log.d("MedicalAPI", "Login response body: $raw")
-                    val obj = body.asJsonObject
-                    val token = obj.get("token")?.asString ?: ""
+                    val obj = JSONObject(raw)
+                    val token = obj.optString("token", "")
                     if (token.isEmpty()) { Log.e("MedicalAPI", "Token no encontrado en respuesta"); onError("Token no recibido"); return }
                     SessionManager.saveMedicalToken(token)
                     Log.d("MedicalAPI", "Token guardado exitosamente: ${token.take(20)}...")
@@ -94,7 +91,7 @@ object MedicalApiService {
                 }
             }
 
-            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("MedicalAPI", "Error de conexión en login: ${t.message}")
                 onError("Error de conexión: ${t.message}")
             }
@@ -105,8 +102,8 @@ object MedicalApiService {
         ensureAuth(
             onReady = {
                 Log.d("MedicalAPI", "Obteniendo médicos de /api/medicos")
-                api.getDoctors().enqueue(object : Callback<JsonElement> {
-                    override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                api.getDoctors().enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         Log.d("MedicalAPI", "Médicos response code: ${response.code()}")
                         if (!response.isSuccessful) {
                             val errorBody = try { response.errorBody()?.string() ?: "sin cuerpo" } catch (_: Exception) { "error al leer" }
@@ -117,7 +114,7 @@ object MedicalApiService {
                         val body = response.body()
                         if (body == null) { onError("Respuesta vacía"); return }
                         try {
-                            val raw = body.toString()
+                            val raw = body.string()
                             Log.d("MedicalAPI", "Médicos response: $raw")
                             onResult(parseDoctors(raw))
                         } catch (e: Exception) {
@@ -126,7 +123,7 @@ object MedicalApiService {
                         }
                     }
 
-                    override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Log.e("MedicalAPI", "Error de conexión en médicos: ${t.message}")
                         onError("Error de conexión: ${t.message}")
                     }
@@ -144,8 +141,8 @@ object MedicalApiService {
         ensureAuth(
             onReady = {
                 Log.d("MedicalAPI", "Obteniendo productos del médico $doctorId")
-                api.getDoctorProductos(doctorId).enqueue(object : Callback<JsonElement> {
-                    override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                api.getDoctorProductos(doctorId).enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         Log.d("MedicalAPI", "Productos médico response code: ${response.code()}")
                         if (!response.isSuccessful) {
                             val errorBody = try { response.errorBody()?.string() ?: "sin cuerpo" } catch (_: Exception) { "error al leer" }
@@ -156,14 +153,14 @@ object MedicalApiService {
                         val body = response.body()
                         if (body == null) { onError("Respuesta vacía"); return }
                         try {
-                            onResult(parseDoctorProductos(body.toString()))
+                            onResult(parseDoctorProductos(body.string()))
                         } catch (e: Exception) {
                             Log.e("MedicalAPI", "Error parseando productos médico: ${e.message}")
                             onError("Error al procesar datos: ${e.message}")
                         }
                     }
 
-                    override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Log.e("MedicalAPI", "Error de conexión en productos: ${t.message}")
                         onError("Error de conexión: ${t.message}")
                     }
@@ -206,8 +203,8 @@ object MedicalApiService {
         ensureAuth(
             onReady = {
                 Log.d("MedicalAPI", "Obteniendo catálogo de productos")
-                api.getProductos().enqueue(object : Callback<JsonElement> {
-                    override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                api.getProductos().enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         Log.d("MedicalAPI", "Catálogo response code: ${response.code()}")
                         if (!response.isSuccessful) {
                             val errorBody = try { response.errorBody()?.string() ?: "sin cuerpo" } catch (_: Exception) { "error al leer" }
@@ -218,14 +215,14 @@ object MedicalApiService {
                         val body = response.body()
                         if (body == null) { onError("Respuesta vacía"); return }
                         try {
-                            onResult(parseCatalogoProductos(body.toString()))
+                            onResult(parseCatalogoProductos(body.string()))
                         } catch (e: Exception) {
                             Log.e("MedicalAPI", "Error parseando catálogo: ${e.message}")
                             onError("Error al procesar datos: ${e.message}")
                         }
                     }
 
-                    override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Log.e("MedicalAPI", "Error de conexión en catálogo: ${t.message}")
                         onError("Error de conexión: ${t.message}")
                     }
