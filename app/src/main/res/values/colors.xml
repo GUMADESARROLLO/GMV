@@ -156,6 +156,22 @@
     <color name="icon_muted">#9E9E9E</color>
     <color name="divider">#D4D4D4</color>
 
+    <!-- Visita Médica Dashboard palette -->
+    <color name="header_dark">#1A1F5E</color>
+    <color name="white_70">#B3FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+    <color name="white_10">#1AFFFFFF</color>
+    <color name="white_07">#12FFFFFF</color>
+    <color name="purple_50">#EEEDFE</color>
+    <color name="purple_700">#534AB7</color>
+    <color name="green_50">#E1F5EE</color>
+    <color name="green_700">#0F6E56</color>
+    <color name="amber_50">#FAEEDA</color>
+    <color name="amber_700">#854F0B</color>
+    <color name="blue_700">#185FA5</color>
+    <color name="card_border">#1A000000</color>
+    <color name="text_tertiary">#64748B</color>
+
     <!-- Seller Metrics palette -->
     <color name="accent_primary">#4361EE</color>
     <color name="accent_primary_light">#EEF1FF</color>

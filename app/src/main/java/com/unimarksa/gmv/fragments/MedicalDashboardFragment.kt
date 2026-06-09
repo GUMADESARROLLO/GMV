@@ -4,16 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import com.unimarksa.gmv.R
-import com.unimarksa.gmv.adapters.ActionTile
-import com.unimarksa.gmv.adapters.ActionTileAdapter
 import com.unimarksa.gmv.tools.FakeMedicalRepository
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -32,46 +28,82 @@ class MedicalDashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupHeader(view)
+        loadMetrics(view)
+        setupActionCards(view)
+    }
+
+    private fun setupHeader(view: View) {
+        view.findViewById<TextView>(R.id.tv_name).text = "Visitador Médico"
+        view.findViewById<TextView>(R.id.tv_zone).text = "Zona Central"
+
+        val today = SimpleDateFormat("dd MMM yyyy", Locale("es")).format(Date())
+        view.findViewById<TextView>(R.id.tv_date).text = today.uppercase()
+    }
+
+    private fun loadMetrics(view: View) {
         val stats = FakeMedicalRepository.getTodayStats()
         val totalDoctors = stats["total_doctors"] ?: 0
         val visitsDone = stats["visits_done"] ?: 0
-        val visitsEffective = stats["visits_effective"] ?: 0
-        val visitsNotEffective = stats["visits_not_effective"] ?: 0
+        val pending = stats["visits_not_effective"] ?: 0
 
-        view.findViewById<TextView>(R.id.tv_nombre_visitador).text = "Visitador Médico"
-        view.findViewById<TextView>(R.id.tv_zona).text = "Zona Central"
+        view.findViewById<TextView>(R.id.tv_metric_doctors).text = totalDoctors.toString()
+        view.findViewById<TextView>(R.id.tv_metric_visits).text = visitsDone.toString()
+        view.findViewById<TextView>(R.id.tv_metric_pending).text = pending.toString()
+    }
 
-        val today = SimpleDateFormat("dd MMM yyyy", Locale("es")).format(Date())
-        view.findViewById<Chip>(R.id.chip_fecha).text = today.uppercase()
+    private fun setupActionCards(view: View) {
+        configureCard(
+            view, R.id.card_mis_medicos,
+            R.drawable.ic_person, R.drawable.bg_icon_purple, R.color.purple_700,
+            "Mis médicos", "12 registrados"
+        ) {
+            findNavController().navigate(R.id.doctorListFragment)
+        }
 
-        view.findViewById<TextView>(R.id.tv_total_medicos).text = totalDoctors.toString()
-        view.findViewById<TextView>(R.id.tv_visitas_realizadas).text = visitsDone.toString()
-        view.findViewById<TextView>(R.id.tv_visitas_efectivas).text = "$visitsEffective Efectivas"
-        view.findViewById<TextView>(R.id.tv_visitas_no_efectivas).text = "$visitsNotEffective No efectiva"
+        configureCard(
+            view, R.id.card_nuevo_medico,
+            R.drawable.ic_add, R.drawable.bg_icon_green, R.color.green_700,
+            "Nuevo médico", "Agregar registro"
+        ) {
+            AddDoctorBottomSheet().show(childFragmentManager, "AddDoctor")
+        }
 
-        val progress = if (totalDoctors > 0) (visitsDone * 100 / totalDoctors) else 0
-        view.findViewById<ProgressBar>(R.id.progress_visitas).progress = progress
-        view.findViewById<TextView>(R.id.tv_progress_label).text = "$progress% completado"
+        configureCard(
+            view, R.id.card_productos,
+            R.drawable.ic_premium, R.drawable.bg_icon_amber, R.color.amber_700,
+            "Productos", "Catálogo activo"
+        ) {
+            findNavController().navigate(R.id.productCatalogFragment)
+        }
 
-        val rv = view.findViewById<RecyclerView>(R.id.rv_acciones)
-        rv.layoutManager = LinearLayoutManager(requireContext())
-        rv.isNestedScrollingEnabled = false
+        configureCard(
+            view, R.id.card_mis_visitas,
+            R.drawable.ic_history, R.drawable.bg_icon_blue, R.color.blue_700,
+            "Mis visitas", "5 realizadas hoy"
+        ) {
+            findNavController().navigate(R.id.visitHistoryFragment)
+        }
+    }
 
-        val tiles = listOf(
-            ActionTile(R.drawable.ic_person, "Mis Médicos") {
-                findNavController().navigate(R.id.doctorListFragment)
-            },
-            ActionTile(R.drawable.ic_add, "Nuevo Médico") {
-                AddDoctorBottomSheet().show(childFragmentManager, "AddDoctor")
-            },
-            ActionTile(R.drawable.ic_premium, "Productos") {
-                findNavController().navigate(R.id.productCatalogFragment)
-            },
-            ActionTile(R.drawable.ic_history, "Mis Visitas") {
-                findNavController().navigate(R.id.visitHistoryFragment)
-            }
-        )
-
-        rv.adapter = ActionTileAdapter(tiles)
+    private fun configureCard(
+        view: View,
+        cardId: Int,
+        iconRes: Int,
+        iconBgRes: Int,
+        iconTintRes: Int,
+        title: String,
+        subtitle: String,
+        onClick: () -> Unit
+    ) {
+        val card = view.findViewById<View>(cardId)
+        card.findViewById<ImageView>(R.id.iv_action_icon).apply {
+            setImageResource(iconRes)
+            background = ContextCompat.getDrawable(context, iconBgRes)
+            imageTintList = ContextCompat.getColorStateList(context, iconTintRes)
+        }
+        card.findViewById<TextView>(R.id.tv_action_title).text = title
+        card.findViewById<TextView>(R.id.tv_action_subtitle).text = subtitle
+        card.setOnClickListener { onClick() }
     }
 }

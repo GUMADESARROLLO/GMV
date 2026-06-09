@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/medicalDashboardFragment"
         android:name="com.unimarksa.gmv.fragments.MedicalDashboardFragment"
-        android:label="Visitador Médico"
+        android:label="Inicio"
         tools:layout="@layout/fragment_medical_dashboard">
         <action
             android:id="@+id/action_medicalDashboard_to_doctorList"
@@ -20,6 +20,24 @@
             android:id="@+id/action_medicalDashboard_to_visitHistory"
             app:destination="@id/visitHistoryFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/agendaFragment"
+        android:name="com.unimarksa.gmv.fragments.AgendaFragment"
+        android:label="Agenda"
+        tools:layout="@layout/fragment_agenda" />
+
+    <fragment
+        android:id="@+id/rutasFragment"
+        android:name="com.unimarksa.gmv.fragments.RutasFragment"
+        android:label="Rutas"
+        tools:layout="@layout/fragment_rutas" />
+
+    <fragment
+        android:id="@+id/perfilMedicoFragment"
+        android:name="com.unimarksa.gmv.fragments.PerfilMedicoFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_perfil_medico" />
 
     <fragment
         android:id="@+id/doctorListFragment"
