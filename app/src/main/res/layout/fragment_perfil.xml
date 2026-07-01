@@ -433,6 +433,7 @@
                     android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/id_visitador_medico"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

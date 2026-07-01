@@ -45,4 +45,12 @@ object SessionManager {
     fun saveMedicalToken(token: String) { prefs.edit().putString(KEY_MEDICAL_TOKEN, token).apply() }
     fun getMedicalToken(): String = prefs.getString(KEY_MEDICAL_TOKEN, "") ?: ""
     fun clearMedicalToken() { prefs.edit().remove(KEY_MEDICAL_TOKEN).apply() }
+
+    fun saveProfile(fullName: String, phone: String, email: String) {
+        prefs.edit()
+            .putString(KEY_FULL_NAME, fullName)
+            .putString(KEY_PHONE, phone)
+            .putString(KEY_EMAIL, email)
+            .apply()
+    }
 }

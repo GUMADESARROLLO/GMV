@@ -20,4 +20,7 @@ interface MedicalApiInterface {
 
     @GET("productos")
     fun getProductos(): Call<ResponseBody>
+
+    @POST("post_update_datos")
+    fun updateProfile(@Body body: RequestBody): Call<ResponseBody>
 }

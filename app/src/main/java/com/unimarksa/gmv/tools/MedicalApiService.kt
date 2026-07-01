@@ -44,12 +44,12 @@ object MedicalApiService {
     }
 
     fun ensureAuth(onReady: () -> Unit, onError: (String) -> Unit) {
-        var username = SessionManager.getUsername()
-        var password = SessionManager.getPassword()
+        val username = SessionManager.getUsername()
+        val password = SessionManager.getPassword()
         if (username.isEmpty() || password.isEmpty()) {
-            Log.d("MedicalAPI", "Usando credenciales hardcodeadas para pruebas")
-            username = "admin"
-            password = "admin123"
+            Log.e("MedicalAPI", "Credenciales no disponibles para autenticación médica")
+            onError("Credenciales no disponibles")
+            return
         }
         Log.d("MedicalAPI", "ensureAuth — login con usuario: '$username'")
         fetchLogin(username, password, onResult = {
@@ -224,6 +224,39 @@ object MedicalApiService {
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Log.e("MedicalAPI", "Error de conexión en catálogo: ${t.message}")
+                        onError("Error de conexión: ${t.message}")
+                    }
+                })
+            },
+            onError = onError
+        )
+    }
+
+    fun updateProfile(name: String, email: String, telefono: String, contrasenna: String, onResult: () -> Unit, onError: (String) -> Unit) {
+        ensureAuth(
+            onReady = {
+                Log.d("MedicalAPI", "Actualizando perfil")
+                val json = JSONObject().apply {
+                    put("Name", name)
+                    put("Email", email)
+                    put("Telefono", telefono)
+                    put("Contrasenna", contrasenna)
+                }
+                val body = json.toString().toRequestBody(JSON_MEDIA)
+                api.updateProfile(body).enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        Log.d("MedicalAPI", "Update profile code: ${response.code()}")
+                        if (!response.isSuccessful) {
+                            val errorBody = try { response.errorBody()?.string() ?: "sin cuerpo" } catch (_: Exception) { "error al leer" }
+                            onError("Error del servidor: ${response.code()} — $errorBody")
+                            return
+                        }
+                        SessionManager.saveProfile(name, telefono, email)
+                        SessionManager.savePassword(contrasenna)
+                        onResult()
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         onError("Error de conexión: ${t.message}")
                     }
                 })

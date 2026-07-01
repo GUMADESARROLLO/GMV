@@ -65,6 +65,9 @@ class PerfilFragment : Fragment() {
         view.findViewById<View>(R.id.btn_recibos_history).setOnClickListener {
             startActivity(Intent(requireContext(), RecibosActivity::class.java))
         }
+        view.findViewById<View>(R.id.txt_user_name).setOnClickListener {
+            EditarPerfilBottomSheet().show(childFragmentManager, "EditarPerfil")
+        }
         view.findViewById<View>(R.id.btn_edit_user).setOnClickListener {
             SessionManager.logout()
             startActivity(Intent(requireContext(), LoginActivity::class.java))
