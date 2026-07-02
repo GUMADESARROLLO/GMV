@@ -150,12 +150,6 @@ class ClienteDetailActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
-        val esMoroso = cliente.moroso.equals("S", ignoreCase = true) || cliente.moroso == "1" || cliente.moroso.equals("SI", ignoreCase = true)
-        if (esMoroso) {
-            binding.idBadgeEstado.text = "MOROSO"
-            binding.idBadgeEstado.setBackgroundResource(R.drawable.bg_badge_red)
-            binding.idBadgeEstado.setTextColor(ContextCompat.getColor(this, R.color.white))
-        }
 
         loadPerfilCliente(cliente.codCliente)
     }

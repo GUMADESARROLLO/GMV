@@ -15,6 +15,7 @@ class FacturasAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvNumero: TextView = view.findViewById(R.id.tv_factura_numero)
+        val tvFacturado: TextView = view.findViewById(R.id.tv_factura_facturado)
         val tvSaldo: TextView = view.findViewById(R.id.tv_factura_saldo)
         val tvVencimiento: TextView = view.findViewById(R.id.tv_factura_vencimiento)
     }
@@ -28,8 +29,10 @@ class FacturasAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.tvNumero.text = item.numero
+        val facturado = item.saldoActual.replace(",", "").trim().toDoubleOrNull() ?: 0.0
         val saldo = item.saldo.replace(",", "").trim().toDoubleOrNull() ?: 0.0
-        holder.tvSaldo.text = "C$ ${"%,.2f".format(saldo)}"
+        holder.tvFacturado.text = "C$ ${"%,.2f".format(facturado)}"
+        holder.tvSaldo.text = "Pte: C$ ${"%,.2f".format(saldo)}"
         holder.tvVencimiento.text = "Vence: ${item.vencimiento}"
         holder.itemView.setOnClickListener { onClick(item) }
     }

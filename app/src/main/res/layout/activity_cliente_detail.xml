@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
-                android:text="Perfil del cliente"
+                android:text="PERFIL CLIENTE"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -70,30 +70,10 @@
                     android:orientation="horizontal"
                     android:layout_marginBottom="12dp">
 
-                    <RelativeLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/image"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/photo_male_2" />
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/id_btn_verificacion"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
-                            android:src="@drawable/noverificado" />
-                    </RelativeLayout>
-
-                    <LinearLayout
+                            <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="12dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -130,19 +110,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/id_badge_estado"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_badge_green"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:text="Activo"
-                        android:textColor="@color/white"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <View
