@@ -49,13 +49,6 @@ class HistoricoFacturaActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { finish() }
 
         val codCliente = intent.getStringExtra("codCliente") ?: return
-        val nomCliente = intent.getStringExtra("nomCliente") ?: ""
-        val codTexto = intent.getStringExtra("codTexto") ?: ""
-
-        findViewById<TextView>(R.id.tv_client_name).text = nomCliente
-        findViewById<TextView>(R.id.tv_client_code).text = codTexto
-
-        findViewById<TextView>(R.id.tv_avatar).text = nomCliente.take(2).uppercase()
 
         setupSearch()
         cargarHistorico(codCliente)
@@ -98,7 +91,6 @@ class HistoricoFacturaActivity : AppCompatActivity() {
                 findViewById<View>(R.id.lyt_loading).visibility = View.GONE
                 todasLasFacturas.clear()
                 todasLasFacturas.addAll(items)
-                calcularResumen(items)
                 mostrarLista(items)
             },
             onError = {
@@ -106,28 +98,6 @@ class HistoricoFacturaActivity : AppCompatActivity() {
                 findViewById<View>(R.id.lyt_empty_result).visibility = View.VISIBLE
             }
         )
-    }
-
-    private fun calcularResumen(items: List<ItemReporteFactura>) {
-        var totalPagado = 0.0
-        var totalPendiente = 0.0
-        var totalPeriodo = 0.0
-
-        for (f in items) {
-            val monto = f.total.replace(",", "").trim().toDoubleOrNull() ?: 0.0
-            val saldo = f.saldo.replace(",", "").trim().toDoubleOrNull() ?: 0.0
-            totalPeriodo += monto
-            if (saldo <= 0.0) {
-                totalPagado += monto
-            } else {
-                totalPendiente += saldo
-            }
-        }
-
-        val fmt = { v: Double -> "C$ ${"%,.2f".format(v)}" }
-        findViewById<TextView>(R.id.tv_total_pagado).text = fmt(totalPagado)
-        findViewById<TextView>(R.id.tv_total_pendiente).text = fmt(totalPendiente)
-        findViewById<TextView>(R.id.tv_total_periodo).text = fmt(totalPeriodo)
     }
 
     private fun mostrarLista(items: List<ItemReporteFactura>) {
