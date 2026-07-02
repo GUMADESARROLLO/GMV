@@ -43,7 +43,9 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvSaldo).text = "C$ ${fmt.format(saldo)}"
         findViewById<TextView>(R.id.tvLimite).text = "C$ ${fmt.format(limite)}"
 
-        setupCalculator()
+        val tvBadge = findViewById<TextView>(R.id.tvBadgeExceso)
+
+        setupCalculator(limite, tvBadge)
 
         val tvMotivo = findViewById<TextView>(R.id.tvMontoMotivo)
         tvMotivo.setOnClickListener {
@@ -102,9 +104,10 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupCalculator() {
+    private fun setupCalculator(limite: Double, tvBadge: TextView) {
         val display = findViewById<TextView>(R.id.tvMontoDisplay)
-        updateDisplay()
+        val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
+        updateDisplay(limite, tvBadge, fmt)
 
         val keys = mapOf(
             R.id.btnK0 to "0", R.id.btnK1 to "1", R.id.btnK2 to "2", R.id.btnK3 to "3",
@@ -132,7 +135,7 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
                         currentInput += digit
                     }
                 }
-                updateDisplay()
+                updateDisplay(limite, tvBadge, fmt)
             }
         }
 
@@ -140,19 +143,25 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
             if (currentInput.isNotEmpty()) {
                 if (currentInput.last() == '.') hasDecimal = false
                 currentInput = currentInput.dropLast(1)
-                updateDisplay()
+                updateDisplay(limite, tvBadge, fmt)
             }
         }
     }
 
-    private fun updateDisplay() {
+    private fun updateDisplay(limite: Double, tvBadge: TextView, fmt: DecimalFormat) {
         val display = findViewById<TextView>(R.id.tvMontoDisplay)
         if (currentInput.isEmpty()) {
             display.text = "C$ 0.00"
+            tvBadge.text = "-"
         } else {
             val value = currentInput.toDoubleOrNull() ?: 0.0
-            val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
             display.text = "C$ ${fmt.format(value)}"
+            val exceso = value - limite
+            if (exceso > 0) {
+                tvBadge.text = "+C$ ${fmt.format(exceso)} sobre tu límite actual"
+            } else {
+                tvBadge.text = "-"
+            }
         }
     }
 }
