@@ -148,70 +148,65 @@
                         android:maxLines="2"
                         android:ellipsize="end" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="12dp"
-                        android:background="#F0F0F0" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PEDIDO"
-                        android:textAllCaps="true"
-                        android:textColor="#9A9890"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_summary_total"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="10dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Código"
-                            android:textColor="#555450"
-                            android:textSize="13sp" />
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_order_code"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="N.° DE PEDIDO"
+                                android:textColor="#9A9890"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_order_code"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="PED-000001"
+                                android:textColor="#185FA5"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="PED-000001"
-                            android:textColor="#185FA5"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:gravity="end"
+                            android:orientation="vertical">
 
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="FECHA"
+                                android:textColor="#9A9890"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/tv_order_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:textColor="#1A1A18"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Fecha"
-                            android:textColor="#555450"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:id="@+id/tv_order_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="#1A1A18"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -279,7 +274,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="OBSERVACIONES"
+                        android:text="NOTAS DEL PEDIDO (OPCIONAL)"
                         android:textAllCaps="true"
                         android:textColor="#9A9890"
                         android:textSize="10sp"
@@ -287,27 +282,30 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/lyt_observaciones"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        app:boxCornerRadiusTopEnd="12dp"
-                        app:boxCornerRadiusTopStart="12dp"
                         app:boxCornerRadiusBottomEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
                         app:boxStrokeColor="#E0E0E0"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="200"
                         app:hintEnabled="false">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_observaciones"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="wrap_content"
                             android:gravity="top"
-                            android:textSize="14sp"
+                            android:hint="Instrucciones de entrega o notas adicionales"
+                            android:maxLength="200"
+                            android:maxLines="4"
+                            android:minLines="2"
                             android:textColor="#1A1A18"
-                            android:letterSpacing="0"
-                            android:background="@null"
-                            android:hint="Agregar observaciones..." />
+                            android:textSize="13sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -423,25 +421,23 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="12dp"
-                        android:background="#EEECEA" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_summary_total"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="12dp">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Total"
+                            android:text="Total a pagar"
                             android:textColor="#1A1A18"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -450,7 +446,7 @@
                             android:layout_height="wrap_content"
                             android:text="C$ 0.00"
                             android:textColor="#185FA5"
-                            android:textSize="24sp"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
