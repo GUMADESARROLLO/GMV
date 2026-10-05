@@ -189,4 +189,16 @@
     <color name="progress_track">#EEF1FF</color>
     <color name="text_label">#64748B</color>
 
+    <!-- Perfil cliente -->
+    <color name="perfil_accent">#0B4F6C</color>
+    <color name="perfil_surface">#F2F5F7</color>
+    <color name="perfil_border">#DCE5EA</color>
+    <color name="perfil_text">#14232C</color>
+    <color name="perfil_text_muted">#4A5A66</color>
+    <color name="perfil_danger">#A33A0B</color>
+    <color name="perfil_chip_late_bg">#FBE6E1</color>
+    <color name="perfil_chip_late_text">#8C2F06</color>
+    <color name="perfil_chip_soon_bg">#FBEBCB</color>
+    <color name="perfil_chip_soon_text">#7A4A00</color>
+    <color name="perfil_chip_ok_bg">#E4EEF3</color>
 </resources>

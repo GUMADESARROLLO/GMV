@@ -4,7 +4,7 @@
     android:id="@+id/nested_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/greyUmk_10"
+    android:background="@color/perfil_surface"
     android:clipToPadding="false"
     android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -14,370 +14,124 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Toolbar -->
+        <!-- Encabezado: toolbar + datos del cliente -->
         <LinearLayout
-            android:id="@+id/toolbar_header"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:background="@color/colorUmkPrimary"
-            android:paddingStart="4dp"
-            android:paddingEnd="16dp">
-
-            <ImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Regresar"
-                android:tint="@color/white"
-                app:srcCompat="@drawable/ic_arrow_left" />
-
-            <TextView
-                android:id="@+id/tv_toolbar_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif-medium"
-                android:text="PERFIL CLIENTE"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <ImageButton
-                android:id="@+id/btn_close_selection"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Cerrar selección"
-                android:tint="@color/white"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_close" />
-
-            <TextView
-                android:id="@+id/tv_selection_info"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <ImageButton
-                android:id="@+id/btn_send_selection"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Enviar"
-                android:tint="@color/white"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_send" />
-        </LinearLayout>
-
-        <!-- Header card -->
-        <androidx.cardview.widget.CardView
-            android:layout_marginTop="@dimen/m3_corner_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="10dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="1dp"
-            app:cardUseCompatPadding="false">
+            android:background="@drawable/bg_perfil_header"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="68dp">
 
+            <!-- Toolbar -->
             <LinearLayout
+                android:id="@+id/toolbar_header"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginStart="-20dp"
+                android:layout_marginEnd="-20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingEnd="16dp">
+
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Regresar"
+                    android:tint="@color/white"
+                    app:srcCompat="@drawable/ic_arrow_left" />
+
+                <TextView
+                    android:id="@+id/tv_toolbar_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Perfil cliente"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btn_close_selection"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Cerrar selección"
+                    android:tint="@color/white"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_close" />
+
+                <TextView
+                    android:id="@+id/tv_selection_info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/btn_send_selection"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Enviar"
+                    android:tint="@color/white"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_send" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/id_perfil_name_cliente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp">
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Nombre del cliente"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-
-                            <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/id_perfil_name_cliente"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="Emma Richmond"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Cond. pago "
-                                android:textColor="@color/grey_40"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/id_condicion_pago"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Credito 00 Dias"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/grey_10"
-                    android:layout_marginBottom="10dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tel\u00e9fono"
-                            android:textColor="@color/grey_40"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/id_tele"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="8244-9100"
-                            android:textColor="@color/black"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Nv. Precio"
-                            android:textColor="@color/grey_40"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/id_nivel_precio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="Farmacia"
-                            android:textColor="@color/black"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Direcci\u00f3n"
-                        android:textColor="@color/grey_40"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:id="@+id/txt_direccion"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="@string/lorem_ipsum"
-                        android:textColor="@color/black"
-                        android:textSize="13sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Acciones rápidas -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="10dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/id_condicion_pago"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="4dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="1dp">
-                <LinearLayout
-                    android:id="@+id/id_search_lotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless">
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        app:srcCompat="@drawable/ic_search"
-                        android:tint="@color/grey_60" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Lotes"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey_60" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_perfil_chip"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="Crédito 00 días"
+                android:textColor="@color/perfil_accent"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/id_tele"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="1dp">
-                <LinearLayout
-                    android:id="@+id/id_history_last_3m"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless">
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        app:srcCompat="@drawable/ic_history"
-                        android:tint="@color/grey_60" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Historial"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey_60" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Tel. 8244-9100"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/txt_direccion"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="1dp">
-                <LinearLayout
-                    android:id="@+id/btn_recibo_colector"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless">
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        app:srcCompat="@drawable/ic_add_card"
-                        android:tint="@color/grey_60" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Recibos"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey_60" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="4dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="1dp">
-                <LinearLayout
-                    android:id="@+id/btn_list_articulos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless">
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        app:srcCompat="@drawable/ic_cart_black"
-                        android:tint="@color/available" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Art\u00edculos"
-                        android:textSize="10sp"
-                        android:textColor="@color/available" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
+                android:layout_marginTop="6dp"
+                android:lineSpacingMultiplier="1.1"
+                android:text="@string/lorem_ipsum"
+                android:textColor="#E0FFFFFF"
+                android:textSize="13sp" />
         </LinearLayout>
 
         <!-- Crédito -->
@@ -385,19 +139,21 @@
             android:id="@+id/id_card_disp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="10dp"
-            app:cardBackgroundColor="#1A2B4A"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="-48dp"
+            android:layout_marginEnd="16dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="4dp"
             app:cardUseCompatPadding="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingHorizontal="18dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="18dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -405,65 +161,72 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Disponible"
-                            android:textColor="#80FFFFFF"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/id_perfil_disponible"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="C$ 12,000.00"
-                            android:textColor="@color/available"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
+                        android:text="Disponible"
+                        android:textColor="@color/perfil_text_muted"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_solicitar_incremento"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:insetLeft="0dp"
+                        android:layout_height="44dp"
                         android:insetTop="0dp"
-                        android:insetRight="0dp"
                         android:insetBottom="0dp"
-                        android:text="Solic. Increm."
+                        android:text="Solicitar aumento"
                         android:textAllCaps="false"
-                        android:textSize="10sp"
-                        android:textColor="@color/white"
-                        app:cornerRadius="16dp"
-                        app:strokeColor="#80FFFFFF"
-                        app:strokeWidth="1dp" />
-
+                        android:textColor="@color/perfil_accent"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="22dp"
+                        app:strokeColor="@color/perfil_accent"
+                        app:strokeWidth="1.5dp" />
                 </LinearLayout>
 
-                <View
+                <TextView
+                    android:id="@+id/id_perfil_disponible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="C$ 12,000.00"
+                    android:textColor="@color/perfil_accent"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+                <ProgressBar
+                    android:id="@+id/id_progress_credito"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:background="#26FFFFFF"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_height="10dp"
+                    android:layout_marginTop="14dp"
+                    android:progress="14"
+                    android:progressBackgroundTint="#E3EAEE"
+                    android:progressTint="@color/perfil_accent" />
+
+                <TextView
+                    android:id="@+id/tv_credito_usado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="0% del límite utilizado"
+                    android:textColor="@color/perfil_text_muted"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="#26FFFFFF"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_height="1dp"
+                    android:layout_marginTop="14dp"
+                    android:background="#E3EAEE" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -476,8 +239,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Saldo"
-                            android:textColor="#80FFFFFF"
-                            android:textSize="11sp" />
+                            android:textColor="@color/perfil_text_muted"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/id_perfil_saldo"
@@ -485,47 +248,59 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="C$ 2,000.00"
-                            android:textColor="@color/red"
-                            android:textSize="16sp"
+                            android:textColor="@color/perfil_danger"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#E3EAEE" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingStart="12dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pedidos"
-                            android:textColor="#80FFFFFF"
-                            android:textSize="11sp" />
+                            android:textColor="@color/perfil_text_muted"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/id_perfil_pedido"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="C$ 2,000.00"
-                            android:textColor="@color/red"
-                            android:textSize="16sp"
+                            android:text="C$ 0.00"
+                            android:textColor="@color/perfil_text"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#E3EAEE" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingStart="12dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="L\u00edmite"
-                            android:textColor="#80FFFFFF"
-                            android:textSize="11sp" />
+                            android:text="Límite"
+                            android:textColor="@color/perfil_text_muted"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/id_perfil_limite"
@@ -533,36 +308,163 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="C$ 14,000.00"
-                            android:textColor="@android:color/white"
-                            android:textSize="16sp"
+                            android:textColor="@color/perfil_text"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/id_progress_credito"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="12dp"
-                    android:progress="14"
-                    android:progressTint="@color/colorPrimary"
-                    android:progressBackgroundTint="#26FFFFFF" />
-
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <!-- Acciones rápidas -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:id="@+id/id_search_lotes"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_perfil_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    app:srcCompat="@drawable/ic_search"
+                    app:tint="@color/perfil_accent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Lotes"
+                    android:textColor="@color/perfil_text"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/id_history_last_3m"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_perfil_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    app:srcCompat="@drawable/ic_history"
+                    app:tint="@color/perfil_accent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Historial"
+                    android:textColor="@color/perfil_text"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_recibo_colector"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_perfil_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    app:srcCompat="@drawable/ic_add_card"
+                    app:tint="@color/perfil_accent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Recibos"
+                    android:textColor="@color/perfil_text"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_list_articulos"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_perfil_tile_primary"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    app:srcCompat="@drawable/ic_cart_black"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Artículos"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/white"
-            app:tabIndicatorColor="@color/colorPrimary"
-            app:tabSelectedTextColor="@color/colorPrimary"
-            app:tabTextColor="@color/grey_60"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/perfil_surface"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/perfil_accent"
+            app:tabIndicatorHeight="3dp"
             app:tabMode="fixed"
-            app:tabGravity="fill">
+            app:tabSelectedTextColor="@color/perfil_accent"
+            app:tabTextColor="@color/perfil_text_muted">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -577,10 +479,10 @@
         </com.google.android.material.tabs.TabLayout>
 
         <FrameLayout
-            android:layout_marginTop="@dimen/m3_corner_large"
             android:id="@+id/lyt_facturas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -598,8 +500,8 @@
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:scrollbars="vertical" />
 
                 <View
@@ -624,12 +526,12 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="4dp"
                     app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="12dp"
+                    app:cardCornerRadius="16dp"
                     app:cardElevation="1dp"
                     app:cardUseCompatPadding="false">
 

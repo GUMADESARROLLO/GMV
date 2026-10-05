@@ -49,12 +49,12 @@ class ClienteDetailActivity : AppCompatActivity() {
             val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
             val h = if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
             val scrim = View(this)
-            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.colorUmkPrimaryDark))
+            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.perfil_accent))
             val content = findViewById<ViewGroup>(android.R.id.content)
             scrim.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h)
             content.addView(scrim)
         } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
+            window.statusBarColor = ContextCompat.getColor(this, R.color.perfil_accent)
         }
 
         ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
@@ -152,7 +152,9 @@ class ClienteDetailActivity : AppCompatActivity() {
         binding.idPerfilSaldo.text = fmtNum(saldo)
         binding.idPerfilPedido.text = fmtNum(pedido)
         binding.idPerfilLimite.text = fmtNum(limite)
-        binding.idProgressCredito.progress = ((saldo / limite) * 100).toInt().coerceIn(0, 100)
+        val pctUsado = ((saldo / limite) * 100).toInt().coerceIn(0, 100)
+        binding.idProgressCredito.progress = pctUsado
+        binding.tvCreditoUsado.text = "$pctUsado% del límite utilizado"
         binding.btnSolicitarIncremento.setOnClickListener {
             val intent = Intent(this, SolicitarIncrementoActivity::class.java).apply {
                 putExtra("disponible", disponible)
@@ -251,7 +253,7 @@ class ClienteDetailActivity : AppCompatActivity() {
 
     private fun hideSelectionToolbar() {
         val toolbar = findViewById<View>(R.id.toolbar_header)
-        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorUmkPrimary))
+        toolbar.setBackgroundColor(android.graphics.Color.TRANSPARENT)
         findViewById<TextView>(R.id.tv_toolbar_title).visibility = View.VISIBLE
         findViewById<View>(R.id.btn_back).visibility = View.VISIBLE
         findViewById<View>(R.id.btn_close_selection).visibility = View.GONE
