@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Campo de texto de marca: contorno línea, foco azul rey, esquinas 14dp (igual que botones del monitor) -->
+    <style name="Widget.GMV.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/umk_royal</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+        <item name="boxBackgroundColor">@color/umk_paper</item>
+        <item name="hintTextColor">@color/umk_royal</item>
+        <item name="android:textColorHint">@color/umk_ink_muted</item>
+        <item name="startIconTint">@color/umk_ink_muted</item>
+        <item name="errorTextColor">@color/umk_danger</item>
+    </style>
+
+    <!-- Tecla de teclado numérico: superficie mist con borde línea, esquinas 14dp (no píldora),
+         texto tinta. El ripple azul rey da el feedback al presionar. -->
+    <style name="Widget.GMV.Tecla" parent="Widget.Material3.Button.TonalButton">
+        <item name="backgroundTint">@color/umk_mist</item>
+        <item name="strokeColor">@color/umk_line</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="rippleColor">#262B3B9E</item>
+        <item name="android:textColor">@color/umk_ink</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:fontFamily">@font/archivo</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconTint">@color/umk_ink_soft</item>
+        <item name="android:stateListAnimator">@animator/button_press</item>
+    </style>
+
+    <!-- Opción de un control segmentado hecho con TextViews (Facturación: Hoy / 7 días / …) -->
+    <style name="Widget.GMV.Segmento" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/umk_ink_soft</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:maxLines">1</item>
+    </style>
+</resources>

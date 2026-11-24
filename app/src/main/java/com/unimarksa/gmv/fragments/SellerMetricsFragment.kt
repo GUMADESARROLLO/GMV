@@ -1,23 +1,33 @@
 package com.unimarksa.gmv.fragments
 
 import android.os.Bundle
-import android.graphics.drawable.GradientDrawable
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.databinding.FragmentSellerMetricsBinding
+import com.unimarksa.gmv.models.ItemStatArticulo
+import com.unimarksa.gmv.models.ItemStatRecup
+import com.unimarksa.gmv.models.ItemStatVenta
 import com.unimarksa.gmv.tools.ApiService
 import com.unimarksa.gmv.tools.SessionManager
-import com.unimarksa.gmv.views.ArcProgressView
-import com.unimarksa.gmv.views.AnimatedProgressBar
-import com.unimarksa.gmv.views.CircularProgressMiniView
-import com.unimarksa.gmv.views.MetricPillView
 import java.util.Calendar
+import java.util.Locale
+import kotlin.math.abs
 
+/**
+ * Mis estadísticas: cómo va la ruta en el período.
+ * - Ventas: vendido vs meta (barra + cuánto falta / cuánto se superó) y unidades.
+ * - Recuperación: recuperado vs meta, desglose crédito / contado.
+ * - Saldo vencido: total y distribución por antigüedad (no depende del período: es al día de hoy).
+ */
 class SellerMetricsFragment : Fragment() {
 
     private var _binding: FragmentSellerMetricsBinding? = null
@@ -25,31 +35,12 @@ class SellerMetricsFragment : Fragment() {
     private var currentMes = Calendar.getInstance().get(Calendar.MONTH) + 1
     private var currentAnno = Calendar.getInstance().get(Calendar.YEAR)
 
-    private lateinit var tvMetaVenta: TextView
-    private lateinit var tvMetaVentaReal: TextView
-    private lateinit var tvVentasPercent: TextView
-    private lateinit var tvMetaFaltante: TextView
-    private lateinit var arcVentas: ArcProgressView
-    private lateinit var pillMetaUnits: MetricPillView
-    private lateinit var pillRealUnits: MetricPillView
-    private lateinit var pillDiffUnits: MetricPillView
+    /** Identifica la carga vigente: respuestas de un período anterior se descartan. */
+    private var cargaId = 0
+    private var pendientes = 0
+    private var huboError = false
 
-    private lateinit var tvMetaRecup: TextView
-    private lateinit var tvRecupTotal: TextView
-    private lateinit var tvRecupCredito: TextView
-    private lateinit var tvRecupContado: TextView
-    private lateinit var circleRecup: CircularProgressMiniView
-    private lateinit var barRecup: AnimatedProgressBar
-    private lateinit var tvDifRecup: TextView
-
-    private lateinit var tvSaldoVencido: TextView
-    private lateinit var chipNoVencido: Chip
-    private lateinit var chipD30: Chip
-    private lateinit var chipD60: Chip
-    private lateinit var chipD90: Chip
-    private lateinit var chipD120: Chip
-    private lateinit var chipM120: Chip
-
+    private val meses = arrayOf("ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSellerMetricsBinding.inflate(inflater, container, false)
@@ -58,100 +49,267 @@ class SellerMetricsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
-        bindViews(view)
-        cargarDatos()
-    }
+        binding.btnBack.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
 
-    private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-        binding.txtSellerName.text = SessionManager.getFullName().ifEmpty { SessionManager.getUsername().uppercase() }
-        binding.txtSellerZone.text = "Ruta: ${SessionManager.getUsername().uppercase()}"
+        val ruta = SessionManager.getUsername().uppercase()
+        binding.txtSellerZone.text = "Ruta $ruta"
+        binding.txtSellerName.text = SessionManager.getFullName().ifEmpty { ruta }
         actualizarLabelPeriodo()
 
         binding.chipPeriod.setOnClickListener { showMonthPickerDialog() }
+        binding.swipeRefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.umk_royal))
+        binding.swipeRefresh.setOnRefreshListener { cargarDatos() }
+
+        cargarDatos()
     }
 
-    private fun bindViews(root: View) {
-        tvMetaVenta     = root.findViewById(R.id.id_Meta_venta)
-        tvMetaVentaReal = root.findViewById(R.id.id_Meta_venta_real)
-        tvVentasPercent = root.findViewById(R.id.txt_ventas_percent)
-        tvMetaFaltante  = root.findViewById(R.id.id_meta_faltante)
-        arcVentas       = root.findViewById(R.id.arc_progress_ventas)
-        pillMetaUnits   = root.findViewById(R.id.pill_meta_units)
-        pillRealUnits   = root.findViewById(R.id.pill_real_units)
-        pillDiffUnits   = root.findViewById(R.id.pill_diff_units)
+    // ── Carga ────────────────────────────────────────────────────────────────
 
-        tvMetaRecup    = root.findViewById(R.id.id_meta_recup)
-        tvRecupTotal   = root.findViewById(R.id.id_recup_total)
-        tvRecupCredito = root.findViewById(R.id.id_recup_credito)
-        tvRecupContado = root.findViewById(R.id.id_recup_contado)
-        circleRecup    = root.findViewById(R.id.circle_recup)
-        barRecup       = root.findViewById(R.id.id_progres_recup)
-        tvDifRecup     = root.findViewById(R.id.id_lbl_diferencia_recup)
+    private fun cargarDatos() {
+        val id = ++cargaId
+        pendientes = 3
+        huboError = false
+        binding.swipeRefresh.isRefreshing = true
+        // Atenuar mientras carga: deja claro que los números aún no son del período elegido
+        listOf(binding.cardVentas, binding.cardRecup, binding.cardVencidos).forEach { it.alpha = 0.5f }
 
-        tvSaldoVencido = root.findViewById(R.id.id_saldo_vencido)
-        val rowNoVencido = root.findViewById<View>(R.id.row_no_vencido)
-        val rowD30       = root.findViewById<View>(R.id.row_d30)
-        val rowD60       = root.findViewById<View>(R.id.row_d60)
-        val rowD90       = root.findViewById<View>(R.id.row_d90)
-        val rowD120      = root.findViewById<View>(R.id.row_d120)
-        val rowM120      = root.findViewById<View>(R.id.row_m120)
-
-        fun configChip(row: View, label: String): Chip {
-            row.findViewById<TextView>(R.id.txt_aging_label).text = label
-            return row.findViewById<Chip>(R.id.chip_aging_amount)
+        fun terminar(error: Boolean) {
+            if (id != cargaId || _binding == null) return
+            if (error) huboError = true
+            if (--pendientes > 0) return
+            binding.swipeRefresh.isRefreshing = false
+            if (huboError) {
+                Snackbar.make(binding.root, "No se pudieron cargar todas las estadísticas", Snackbar.LENGTH_LONG)
+                    .setAction("Reintentar") { cargarDatos() }
+                    .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.umk_cyan))
+                    .show()
+            }
         }
 
-        chipNoVencido = configChip(rowNoVencido, "No Vencido")
-        chipD30 = configChip(rowD30, "30 Días")
-        chipD60 = configChip(rowD60, "60 Días")
-        chipD90 = configChip(rowD90, "90 Días")
-        chipD120 = configChip(rowD120, "120 Días")
-        chipM120 = configChip(rowM120, "+120 Días")
+        ApiService.fetchStatRuta(
+            mes = currentMes, anno = currentAnno,
+            onResult = { stat ->
+                if (id == cargaId && _binding != null) actualizarVentas(stat)
+                terminar(false)
+            },
+            onError = { terminar(true) }
+        )
+        ApiService.fetchStatRecup(
+            mes = currentMes, anno = currentAnno,
+            onResult = { stat ->
+                if (id == cargaId && _binding != null) actualizarRecuperacion(stat)
+                terminar(false)
+            },
+            onError = { terminar(true) }
+        )
+        ApiService.fetchStatArticulo(
+            onResult = { stat ->
+                if (id == cargaId && _binding != null) actualizarVencidos(stat)
+                terminar(false)
+            },
+            onError = { terminar(true) }
+        )
     }
 
+    // ── Ventas ───────────────────────────────────────────────────────────────
+
+    private fun actualizarVentas(stat: ItemStatVenta) {
+        binding.cardVentas.alpha = 1f
+        val meta = stat.metaVenta
+        val real = stat.ventaReal
+
+        binding.idMetaVentaReal.text = moneda(real)
+        binding.idMetaVenta.text = if (meta > 0) moneda(meta) else "Sin meta"
+
+        val pct = if (meta > 0) real / meta * 100 else 0.0
+        pintarChipAvance(binding.txtVentasPercent, pct, meta > 0)
+        binding.barVentas.setProgress(pct.toFloat().coerceIn(0f, 100f))
+
+        val falta = meta - real
+        binding.idMetaFaltante.apply {
+            when {
+                meta <= 0 -> { text = ""; color(R.color.umk_ink_soft) }
+                falta > 0 -> { text = "Faltan ${moneda(falta)}"; color(R.color.umk_ink_soft) }
+                else -> { text = "Meta superada por ${moneda(-falta)}"; color(R.color.umk_success) }
+            }
+        }
+
+        binding.txtMetaUnits.text = "%,d".format(stat.vntCanti)
+        binding.txtRealUnits.text = "%,d".format(stat.vntCantiReal)
+        val faltanU = stat.vntCanti - stat.vntCantiReal
+        if (faltanU > 0) {
+            binding.lblDiffUnits.text = "Faltan"
+            binding.txtDiffUnits.text = "%,d".format(faltanU)
+            binding.txtDiffUnits.color(R.color.umk_ink)
+        } else {
+            binding.lblDiffUnits.text = "Excedente"
+            binding.txtDiffUnits.text = "+%,d".format(abs(faltanU))
+            binding.txtDiffUnits.color(R.color.umk_success)
+        }
+    }
+
+    // ── Recuperación ─────────────────────────────────────────────────────────
+
+    private fun actualizarRecuperacion(stat: ItemStatRecup) {
+        binding.cardRecup.alpha = 1f
+        val meta = stat.metaRecuperacion
+        val total = stat.recupTotal
+
+        binding.idRecupTotal.text = moneda(total)
+        binding.idMetaRecup.text = if (meta > 0) moneda(meta) else "Sin meta"
+        binding.idRecupCredito.text = moneda(stat.recupCredito)
+        binding.idRecupContado.text = moneda(stat.recupContado)
+
+        // Con meta 0 el backend devuelve Recup_cumple = 100: antes se mostraba "100%" con todo en cero
+        val pct = if (meta > 0) total / meta * 100 else 0.0
+        pintarChipAvance(binding.idLblDiferenciaRecup, pct, meta > 0)
+        binding.idProgresRecup.setProgress(pct.toFloat().coerceIn(0f, 100f))
+
+        val falta = meta - total
+        binding.txtRecupFaltante.apply {
+            when {
+                meta <= 0 -> { text = ""; color(R.color.umk_ink_soft) }
+                falta > 0 -> { text = "Faltan ${moneda(falta)}"; color(R.color.umk_ink_soft) }
+                else -> { text = "Meta superada por ${moneda(-falta)}"; color(R.color.umk_success) }
+            }
+        }
+    }
+
+    // ── Saldo vencido ────────────────────────────────────────────────────────
+
+    private fun actualizarVencidos(stat: ItemStatArticulo) {
+        binding.cardVencidos.alpha = 1f
+        fun n(raw: String) = raw.replace(",", "").trim().toDoubleOrNull() ?: 0.0
+
+        data class Tramo(val etiqueta: String, val monto: Double, @ColorRes val color: Int)
+        val tramos = listOf(
+            Tramo("No vencido", n(stat.noVencidos), R.color.umk_success),
+            Tramo("1 – 30 días", n(stat.dias30), R.color.mora_warn),
+            Tramo("31 – 60 días", n(stat.dias60), R.color.mora_60),
+            Tramo("61 – 90 días", n(stat.dias90), R.color.mora_90),
+            Tramo("91 – 120 días", n(stat.dias120), R.color.mora_danger),
+            Tramo("Más de 120 días", n(stat.mas120), R.color.umk_danger)
+        )
+        val vencido = tramos.drop(1).sumOf { it.monto }
+        val cartera = tramos.sumOf { it.monto }
+
+        binding.idSaldoVencido.text = moneda(vencido)
+
+        // Barra por antigüedad
+        val dp = resources.displayMetrics.density
+        val barra = binding.lytBarraAging
+        barra.removeAllViews()
+        barra.visibility = if (cartera > 0) View.VISIBLE else View.GONE
+        tramos.filter { it.monto > 0 }.forEachIndexed { i, t ->
+            barra.addView(View(requireContext()).apply {
+                setBackgroundResource(R.drawable.bg_segmento)
+                backgroundTintList = ContextCompat.getColorStateList(requireContext(), t.color)
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, t.monto.toFloat()).apply {
+                    if (i > 0) marginStart = (3 * dp).toInt()
+                }
+            })
+        }
+
+        // Filas: punto de color · etiqueta · monto · % de la cartera
+        val filas = binding.lytAging
+        filas.removeAllViews()
+        tramos.forEachIndexed { i, t ->
+            val fila = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                minimumHeight = (36 * dp).toInt()
+            }
+            fila.addView(View(requireContext()).apply {
+                setBackgroundResource(R.drawable.bg_chip_pill)
+                backgroundTintList = ContextCompat.getColorStateList(requireContext(), t.color)
+                layoutParams = LinearLayout.LayoutParams((10 * dp).toInt(), (10 * dp).toInt())
+            })
+            fila.addView(TextView(requireContext()).apply {
+                text = t.etiqueta
+                textSize = 14f
+                setTextColor(ContextCompat.getColor(context, R.color.umk_ink_soft))
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+                    marginStart = (10 * dp).toInt()
+                }
+            })
+            fila.addView(TextView(requireContext()).apply {
+                text = moneda(t.monto)
+                textSize = 14f
+                fontFeatureSettings = "tnum"
+                setTextColor(ContextCompat.getColor(context,
+                    if (t.monto > 0 && i > 0) R.color.umk_ink else R.color.umk_ink_muted))
+                typeface = android.graphics.Typeface.create(typeface, if (t.monto > 0) 700 else 400, false)
+            })
+            fila.contentDescription = "${t.etiqueta}: ${moneda(t.monto)}"
+            if (i > 0) filas.addView(View(requireContext()).apply {
+                setBackgroundColor(ContextCompat.getColor(context, R.color.umk_line))
+                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (1 * dp).toInt())
+            })
+            filas.addView(fila)
+        }
+    }
+
+    // ── Utilidades ───────────────────────────────────────────────────────────
+
+    /** Chip de avance: ≥100 verde, ≥70 azul, ≥40 ámbar, menor rojo; sin meta, neutro. */
+    private fun pintarChipAvance(tv: TextView, pct: Double, hayMeta: Boolean) {
+        val (texto, fondo, color) = when {
+            !hayMeta -> Triple("Sin meta", R.color.umk_mist, R.color.umk_ink_muted)
+            pct >= 100 -> Triple(pctTxt(pct) + " ✓", R.color.status_active_bg, R.color.status_active_text)
+            pct >= 70 -> Triple(pctTxt(pct), R.color.umk_royal_tint, R.color.umk_royal)
+            pct >= 40 -> Triple(pctTxt(pct), R.color.status_pending_bg, R.color.status_pending_text)
+            else -> Triple(pctTxt(pct), R.color.status_cancel_bg, R.color.status_cancel_text)
+        }
+        tv.text = texto
+        tv.backgroundTintList = ContextCompat.getColorStateList(requireContext(), fondo)
+        tv.color(color)
+    }
+
+    private fun pctTxt(p: Double) = String.format(Locale.US, "%.1f%%", p)
+
+    private fun TextView.color(@ColorRes res: Int) = setTextColor(ContextCompat.getColor(context, res))
+
+    private fun moneda(v: Double) = String.format(Locale.US, "C$ %,.2f", v)
+
+    private fun actualizarLabelPeriodo() {
+        binding.txtPeriod.text = "${meses[currentMes - 1]} $currentAnno"
+        binding.chipPeriod.contentDescription = "Período ${meses[currentMes - 1]} $currentAnno. Cambiar período"
+    }
+
+    /** Selector de mes: cuadrícula 3×4 con botones de 48dp (antes 72px, muy pequeños). */
     private fun showMonthPickerDialog() {
-        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(requireContext())
+        val ctx = requireContext()
+        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(ctx)
         dialog.setContentView(R.layout.dialog_month_picker)
-        dialog.setCancelable(true)
 
         var year = currentAnno
         val tvYear = dialog.findViewById<TextView>(R.id.tv_year)!!
-        val lytMonths = dialog.findViewById<android.widget.LinearLayout>(R.id.lyt_months)!!
-        val names = arrayOf("ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC")
-        val screenW = resources.displayMetrics.widthPixels
+        val lytMonths = dialog.findViewById<LinearLayout>(R.id.lyt_months)!!
+        val dp = resources.displayMetrics.density
+        val hoy = Calendar.getInstance()
         tvYear.text = year.toString()
 
         fun buildMonths() {
             lytMonths.removeAllViews()
-            for (row in 0..5) {
-                val rowLay = android.widget.LinearLayout(requireContext()).apply {
-                    layoutParams = android.widget.LinearLayout.LayoutParams(
-                        android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                        android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    orientation = android.widget.LinearLayout.HORIZONTAL
-                }
-                for (col in 0..1) {
-                    val idx = row * 2 + col
-                    if (idx >= 12) break
-                    val tv = android.widget.TextView(requireContext()).apply {
-                        text = names[idx]
-                        textSize = 16f
-                        gravity = android.view.Gravity.CENTER
-                        layoutParams = android.widget.LinearLayout.LayoutParams(
-                            0, 72, 1f
-                        ).apply { setMargins(8, 8, 8, 8) }
-                        setTextColor(android.graphics.Color.parseColor("#1A1A18"))
-                        val bg = GradientDrawable().apply {
-                            shape = GradientDrawable.RECTANGLE
-                            cornerRadius = 10f
-                            setColor(android.graphics.Color.parseColor("#EFF1F5"))
+            for (fila in 0 until 4) {
+                val rowLay = LinearLayout(ctx).apply { orientation = LinearLayout.HORIZONTAL }
+                for (col in 0 until 3) {
+                    val idx = fila * 3 + col
+                    val seleccionado = idx + 1 == currentMes && year == currentAnno
+                    val futuro = year > hoy.get(Calendar.YEAR) ||
+                        (year == hoy.get(Calendar.YEAR) && idx > hoy.get(Calendar.MONTH))
+                    rowLay.addView(TextView(ctx).apply {
+                        text = meses[idx]
+                        textSize = 15f
+                        gravity = Gravity.CENTER
+                        isEnabled = !futuro
+                        alpha = if (futuro) 0.35f else 1f
+                        typeface = android.graphics.Typeface.create(typeface, if (seleccionado) 800 else 600, false)
+                        setBackgroundResource(if (seleccionado) R.drawable.bg_tarjeta_seleccionada else R.drawable.bg_tarjeta_perfil)
+                        setTextColor(ContextCompat.getColor(ctx, if (seleccionado) R.color.umk_royal else R.color.umk_ink))
+                        layoutParams = LinearLayout.LayoutParams(0, (48 * dp).toInt(), 1f).apply {
+                            val m = (4 * dp).toInt(); setMargins(m, m, m, m)
                         }
-                        background = bg
                         setOnClickListener {
                             currentMes = idx + 1
                             currentAnno = year
@@ -159,118 +317,25 @@ class SellerMetricsFragment : Fragment() {
                             cargarDatos()
                             dialog.dismiss()
                         }
-                    }
-                    if (idx + 1 == currentMes && year == currentAnno) {
-                        val bgSel = GradientDrawable().apply {
-                            shape = GradientDrawable.RECTANGLE
-                            cornerRadius = 10f
-                            setColor(android.graphics.Color.parseColor("#4361EE"))
-                        }
-                        tv.background = bgSel
-                        tv.setTextColor(android.graphics.Color.WHITE)
-                    }
-                    rowLay.addView(tv)
+                    })
                 }
                 lytMonths.addView(rowLay)
             }
         }
 
         buildMonths()
-
         dialog.findViewById<TextView>(R.id.btn_year_prev)!!.setOnClickListener {
             year--; tvYear.text = year.toString(); buildMonths()
         }
         dialog.findViewById<TextView>(R.id.btn_year_next)!!.setOnClickListener {
-            year++; tvYear.text = year.toString(); buildMonths()
+            if (year < hoy.get(Calendar.YEAR)) { year++; tvYear.text = year.toString(); buildMonths() }
         }
-
         dialog.show()
-    }
-
-    private fun cargarDatos() {
-        ApiService.fetchStatArticulo(
-            onResult = { stat -> actualizarVencidos(stat) },
-            onError = { }
-        )
-
-        ApiService.fetchStatRuta(
-            mes = currentMes, anno = currentAnno,
-            onResult = { stat -> actualizarVentas(stat) },
-            onError = { }
-        )
-
-        ApiService.fetchStatRecup(
-            mes = currentMes, anno = currentAnno,
-            onResult = { stat -> actualizarRecuperacion(stat) },
-            onError = { }
-        )
-    }
-
-    private fun parseAmount(raw: String): Double =
-        raw.replace(",", "").trim().toDoubleOrNull() ?: 0.0
-
-    private fun actualizarVentas(stat: com.unimarksa.gmv.models.ItemStatVenta) {
-        val meta    = stat.metaVenta
-        val real    = stat.ventaReal
-        val diff    = stat.ventaDif
-        val metaU   = stat.vntCanti
-        val realU   = stat.vntCantiReal
-        val diffU   = stat.vntCantiDif
-
-        val pct = if (meta > 0) (real / meta * 100).toFloat() else 0f
-        val faltante = meta - real
-
-        tvMetaVenta.text     = formatCurrency(meta)
-        tvMetaVentaReal.text = formatCurrency(real)
-        tvVentasPercent.text = "${pct.toInt()}%"
-        tvMetaFaltante.text  = "Falta ${formatCurrency(faltante)}"
-        arcVentas.setProgress(pct)
-        pillMetaUnits.setValue("$metaU")
-        pillRealUnits.setValue("$realU")
-        pillDiffUnits.setValue("$diffU")
-    }
-
-    private fun actualizarRecuperacion(stat: com.unimarksa.gmv.models.ItemStatRecup) {
-        val meta = stat.metaRecuperacion
-        val credito = stat.recupCredito
-        val contado = stat.recupContado
-        val total = stat.recupTotal
-        val pct = stat.recupCumple.toFloat()
-
-        tvMetaRecup.text    = formatCurrency(meta)
-        tvRecupTotal.text   = formatCurrency(total)
-        tvRecupCredito.text = formatCurrency(credito)
-        tvRecupContado.text = formatCurrency(contado)
-        tvDifRecup.text     = "${String.format("%.1f", pct)}%"
-        circleRecup.setProgress(pct.coerceIn(0f, 100f))
-        barRecup.setProgress(pct.coerceIn(0f, 100f))
-    }
-
-    private fun actualizarVencidos(stat: com.unimarksa.gmv.models.ItemStatArticulo) {
-        val amounts = listOf(
-            stat.noVencidos, stat.dias30, stat.dias60,
-            stat.dias90, stat.dias120, stat.mas120
-        ).map { parseAmount(it) }
-
-        val totalVencido = amounts.drop(1).sum()
-        val chips = listOf(chipNoVencido, chipD30, chipD60, chipD90, chipD120, chipM120)
-
-        for (i in amounts.indices) {
-            chips[i].text = formatCurrency(amounts[i])
-        }
-
-        tvSaldoVencido.text = formatCurrency(totalVencido)
-    }
-
-    private fun formatCurrency(amount: Double): String = "C$ %,.2f".format(amount)
-
-    private fun actualizarLabelPeriodo() {
-        val months = arrayOf("ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC")
-        binding.chipPeriod.text = "${months[currentMes - 1]} $currentAnno"
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        cargaId++ // invalida respuestas pendientes
         _binding = null
     }
 }

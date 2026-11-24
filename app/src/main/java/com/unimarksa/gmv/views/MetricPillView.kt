@@ -28,7 +28,7 @@ class MetricPillView @JvmOverloads constructor(
             val ta = context.obtainStyledAttributes(it, R.styleable.MetricPillView)
             val label = ta.getString(R.styleable.MetricPillView_pillLabel) ?: ""
             val value = ta.getString(R.styleable.MetricPillView_pillValue) ?: "0"
-            val color = ta.getColor(R.styleable.MetricPillView_pillColor, Color.parseColor("#4361EE"))
+            val color = ta.getColor(R.styleable.MetricPillView_pillColor, Color.parseColor("#2B3B9E"))
             ta.recycle()
 
             tvLabel.text = label

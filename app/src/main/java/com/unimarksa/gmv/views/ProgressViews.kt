@@ -15,8 +15,8 @@ class AnimatedProgressBar @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private var barColor: Int = Color.parseColor("#4361EE")
-    private var trackColor: Int = Color.parseColor("#EEF1FF")
+    private var barColor: Int = Color.parseColor("#2B3B9E")
+    private var trackColor: Int = Color.parseColor("#E9ECF8")
     private var progress: Float = 0f
     private var cornerRadius: Float = 8f
     private var animatedProgress = 0f
@@ -43,7 +43,7 @@ class AnimatedProgressBar @JvmOverloads constructor(
         super.onSizeChanged(w, h, oldw, oldh)
         trackRect.set(0f, 0f, w.toFloat(), h.toFloat())
         barPaint.shader = LinearGradient(0f, 0f, w.toFloat(), 0f,
-            intArrayOf(Color.parseColor("#6C8FF5"), barColor), null, Shader.TileMode.CLAMP)
+            intArrayOf(Color.parseColor("#29B6E8"), barColor), null, Shader.TileMode.CLAMP)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -80,7 +80,7 @@ class CircularProgressMiniView @JvmOverloads constructor(
     private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE; strokeCap = Paint.Cap.ROUND }
     private val progressPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE; strokeCap = Paint.Cap.ROUND }
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        textAlign = Paint.Align.CENTER; color = Color.parseColor("#0F172A")
+        textAlign = Paint.Align.CENTER; color = Color.parseColor("#15204F")
     }
     private val oval = RectF()
 

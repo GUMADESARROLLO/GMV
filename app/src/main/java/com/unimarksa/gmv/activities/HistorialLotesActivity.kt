@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.BarrasSistema
 import com.unimarksa.gmv.adapters.AdapterSuggestionSearch
 import com.unimarksa.gmv.adapters.HistorialLotesAdapter
 import com.unimarksa.gmv.databinding.ActivityHistorialLotesBinding
@@ -29,10 +30,7 @@ class HistorialLotesActivity : AppCompatActivity() {
         binding = ActivityHistorialLotesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (Build.VERSION.SDK_INT < 35) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
-        }
-        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
+        BarrasSistema.aplicar(this, R.color.umk_mist)
 
         SearchHistoryStore.init(this)
 
@@ -108,6 +106,17 @@ class HistorialLotesActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+
+        binding.btnBuscar.setOnClickListener {
+            if (binding.etSearch.text.isNullOrBlank()) {
+                binding.etSearch.error = "Escribe un código de lote"
+                binding.etSearch.requestFocus()
+                return@setOnClickListener
+            }
+            hideSuggestion()
+            hideKeyboard()
+            performSearch()
+        }
 
         binding.btnClear.setOnClickListener {
             binding.etSearch.text.clear()

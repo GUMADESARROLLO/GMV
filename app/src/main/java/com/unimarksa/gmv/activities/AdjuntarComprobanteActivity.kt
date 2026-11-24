@@ -25,6 +25,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.BarrasSistema
 import com.unimarksa.gmv.models.ItemAdjunto
 import com.unimarksa.gmv.tools.ApiService
 import java.io.ByteArrayOutputStream
@@ -52,9 +53,7 @@ class AdjuntarComprobanteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_adjuntar_comprobante)
 
-        if (Build.VERSION.SDK_INT < 35) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.brand_primary_dark)
-        }
+        BarrasSistema.aplicar(this, R.color.umk_royal)
 
         idRecibo = intent.getStringExtra("id_recibo") ?: ""
 

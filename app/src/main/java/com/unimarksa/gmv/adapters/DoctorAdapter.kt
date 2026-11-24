@@ -61,12 +61,12 @@ class DoctorAdapter(
 
     private fun getAvatarColor(name: String): Int {
         val colors = listOf(
-            Color.parseColor("#4361EE"),
+            Color.parseColor("#2B3B9E"),
             Color.parseColor("#22C55E"),
-            Color.parseColor("#EF4444"),
+            Color.parseColor("#C42B3A"),
             Color.parseColor("#F59E0B"),
-            Color.parseColor("#8B5CF6"),
-            Color.parseColor("#06B6D4")
+            Color.parseColor("#1B2766"),
+            Color.parseColor("#29B6E8")
         )
         return colors[(name.hashCode() and Int.MAX_VALUE) % colors.size]
     }

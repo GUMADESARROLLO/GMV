@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Segmento de la barra de crédito (color vía backgroundTint) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/umk_royal" />
+    <corners android:radius="6dp" />
+</shape>

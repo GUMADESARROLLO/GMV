@@ -16,8 +16,8 @@ class ArcProgressView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private var arcColor: Int = Color.parseColor("#4361EE")
-    private var arcTrackColor: Int = Color.parseColor("#EEF1FF")
+    private var arcColor: Int = Color.parseColor("#2B3B9E")
+    private var arcTrackColor: Int = Color.parseColor("#E9ECF8")
     private var arcProgress: Float = 0f
     private var arcStrokeWidth: Float = 36f
 
@@ -53,7 +53,7 @@ class ArcProgressView @JvmOverloads constructor(
 
         progressPaint.shader = LinearGradient(
             oval.left, oval.top, oval.right, oval.bottom,
-            intArrayOf(Color.parseColor("#6C8FF5"), arcColor),
+            intArrayOf(Color.parseColor("#29B6E8"), arcColor),
             null, Shader.TileMode.CLAMP
         )
         trackPaint.strokeWidth = stroke

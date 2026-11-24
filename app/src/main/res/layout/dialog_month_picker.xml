@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Seleccionar período"
-        android:textColor="#1A1A18"
+        android:textColor="@color/umk_ink"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -29,7 +29,7 @@
             android:focusable="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:text="&lt;"
-            android:textColor="#1A1A18"
+            android:textColor="@color/umk_ink"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="2026"
-            android:textColor="#1A1A18"
+            android:textColor="@color/umk_ink"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -53,7 +53,7 @@
             android:focusable="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:text="&gt;"
-            android:textColor="#1A1A18"
+            android:textColor="@color/umk_ink"
             android:textSize="24sp"
             android:textStyle="bold" />
     </LinearLayout>

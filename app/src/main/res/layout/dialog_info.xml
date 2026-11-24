@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Tu pedido ha sido registrado exitosamente."
-            android:textColor="#555450"
+            android:textColor="@color/umk_ink_soft"
             android:textSize="15sp" />
 
     </LinearLayout>

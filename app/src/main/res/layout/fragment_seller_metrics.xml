@@ -1,115 +1,622 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Mis estadísticas (versión compacta): todo visible de un vistazo, como la pantalla original,
+     con el lenguaje visual actual. Ventas · Recuperación · Saldo vencido. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface_dark"
-    android:fitsSystemWindows="true">
+    android:background="@color/umk_mist"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+    <!-- Header -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/surface_dark"
-        app:elevation="0dp">
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_boton_circular"
+            android:contentDescription="Regresar"
+            android:padding="11dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_arrow_left"
+            app:tint="@color/umk_ink" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:layout_marginHorizontal="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="-0.01"
+                android:text="Mis estadísticas"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="800"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_seller_zone"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
-                app:navigationIcon="@drawable/ic_arrow_back_white"
-                app:title="Mis Estadísticas"
-                app:titleTextColor="@android:color/white" />
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Ruta"
+                android:textColor="@color/umk_ink_soft"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chip_period"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_tarjeta_perfil"
+            android:clickable="true"
+            android:contentDescription="Cambiar período"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_calendar_small"
+                app:tint="@color/umk_royal" />
+
+            <TextView
+                android:id="@+id/txt_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFeatureSettings="tnum"
+                android:text="NOV 2026"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="700"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingBottom="16dp">
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/img_seller_avatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_person"
-                    android:background="@drawable/bg_avatar_ring"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Circle" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/txt_seller_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Vendedor"
+                    android:textColor="@color/umk_ink_muted"
+                    android:textSize="13sp" />
+
+                <!-- ═══ Ventas ═══ -->
+                <LinearLayout
+                    android:id="@+id/card_ventas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_tarjeta_perfil"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:letterSpacing="0.08"
+                            android:text="VENTAS"
+                            android:textColor="@color/umk_ink_soft"
+                            android:textFontWeight="800"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/txt_ventas_percent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_chip_pill"
+                            android:backgroundTint="@color/umk_mist"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="3dp"
+                            android:text="—"
+                            android:textColor="@color/umk_ink_muted"
+                            android:textFontWeight="700"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Meta | Real -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Meta"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/id_Meta_venta"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFeatureSettings="tnum"
+                                android:maxLines="1"
+                                android:text="C$ 0.00"
+                                android:textColor="@color/umk_royal"
+                                android:textFontWeight="800"
+                                android:textSize="18sp"
+                                app:autoSizeMaxTextSize="18sp"
+                                app:autoSizeMinTextSize="12sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Vendido"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/id_Meta_venta_real"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFeatureSettings="tnum"
+                                android:gravity="end"
+                                android:maxLines="1"
+                                android:text="C$ 0.00"
+                                android:textColor="@color/umk_success"
+                                android:textFontWeight="800"
+                                android:textSize="18sp"
+                                app:autoSizeMaxTextSize="18sp"
+                                app:autoSizeMinTextSize="12sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.unimarksa.gmv.views.AnimatedProgressBar
+                        android:id="@+id/bar_ventas"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="10dp"
+                        app:apbColor="@color/umk_royal"
+                        app:apbCornerRadius="5dp"
+                        app:apbTrackColor="@color/umk_royal_tint" />
 
                     <TextView
-                        android:id="@+id/txt_seller_name"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/id_meta_faltante"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Carlos Mendoza"
-                        android:textColor="@android:color/white"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="6dp"
+                        android:fontFeatureSettings="tnum"
+                        android:gravity="end"
+                        android:text="—"
+                        android:textColor="@color/umk_ink_soft"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
 
-                    <TextView
-                        android:id="@+id/txt_seller_zone"
-                        android:layout_width="wrap_content"
+                    <!-- Unidades -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Zona Norte · Vendedor Senior"
-                        android:textColor="#B0FFFFFF"
-                        android:textSize="11sp"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_icono_tile"
+                        android:backgroundTint="@color/umk_mist"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="8dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Meta unid."
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_meta_units"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFeatureSettings="tnum"
+                                android:text="0"
+                                android:textColor="@color/umk_ink"
+                                android:textFontWeight="800"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Vendidas"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_real_units"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFeatureSettings="tnum"
+                                android:text="0"
+                                android:textColor="@color/umk_ink"
+                                android:textFontWeight="800"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/lbl_diff_units"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Faltan"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_diff_units"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFeatureSettings="tnum"
+                                android:text="0"
+                                android:textColor="@color/umk_ink"
+                                android:textFontWeight="800"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_period"
-                    android:layout_width="wrap_content"
+                <!-- ═══ Recuperación ═══ -->
+                <LinearLayout
+                    android:id="@+id/card_recup"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="MAYO 2026"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/black"
-                    app:chipBackgroundColor="#33FFFFFF"
-                    app:chipStrokeColor="#55FFFFFF"
-                    app:chipStrokeWidth="1dp" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_tarjeta_perfil"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:letterSpacing="0.08"
+                            android:text="RECUPERACIÓN"
+                            android:textColor="@color/umk_ink_soft"
+                            android:textFontWeight="800"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/id_lbl_diferencia_recup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_chip_pill"
+                            android:backgroundTint="@color/umk_mist"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="3dp"
+                            android:text="—"
+                            android:textColor="@color/umk_ink_muted"
+                            android:textFontWeight="700"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Meta | Crédito | Contado | Total -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Meta"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/id_meta_recup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFeatureSettings="tnum"
+                                android:maxLines="1"
+                                android:text="C$ 0.00"
+                                android:textColor="@color/umk_royal"
+                                android:textFontWeight="800"
+                                android:textSize="14sp"
+                                app:autoSizeMaxTextSize="14sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Crédito"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/id_recup_credito"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFeatureSettings="tnum"
+                                android:gravity="center_horizontal"
+                                android:maxLines="1"
+                                android:text="C$ 0.00"
+                                android:textColor="@color/umk_ink"
+                                android:textFontWeight="700"
+                                android:textSize="14sp"
+                                app:autoSizeMaxTextSize="14sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Contado"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/id_recup_contado"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFeatureSettings="tnum"
+                                android:gravity="center_horizontal"
+                                android:maxLines="1"
+                                android:text="C$ 0.00"
+                                android:textColor="@color/umk_ink"
+                                android:textFontWeight="700"
+                                android:textSize="14sp"
+                                app:autoSizeMaxTextSize="14sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/id_recup_total"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFeatureSettings="tnum"
+                                android:gravity="end"
+                                android:maxLines="1"
+                                android:text="C$ 0.00"
+                                android:textColor="@color/umk_success"
+                                android:textFontWeight="800"
+                                android:textSize="14sp"
+                                app:autoSizeMaxTextSize="14sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.unimarksa.gmv.views.AnimatedProgressBar
+                        android:id="@+id/id_progres_recup"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="10dp"
+                        app:apbColor="@color/umk_success"
+                        app:apbCornerRadius="5dp"
+                        app:apbTrackColor="@color/umk_success_tint" />
+
+                    <TextView
+                        android:id="@+id/txt_recup_faltante"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFeatureSettings="tnum"
+                        android:gravity="end"
+                        android:text="—"
+                        android:textColor="@color/umk_ink_soft"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- ═══ Saldo vencido ═══ -->
+                <LinearLayout
+                    android:id="@+id/card_vencidos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_tarjeta_perfil"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="14dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:letterSpacing="0.08"
+                            android:text="SALDO VENCIDO"
+                            android:textColor="@color/umk_ink_soft"
+                            android:textFontWeight="800"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Al día de hoy"
+                            android:textColor="@color/umk_ink_muted"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Barra por antigüedad (pesos en código) -->
+                    <LinearLayout
+                        android:id="@+id/lyt_barra_aging"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="4dp"
+                        android:orientation="horizontal" />
+
+                    <!-- Filas por antigüedad (se llenan en código) -->
+                    <LinearLayout
+                        android:id="@+id/lyt_aging"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <!-- Total vencido -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/umk_line" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="44dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Total vencido"
+                            android:textColor="@color/umk_danger"
+                            android:textFontWeight="800"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/id_saldo_vencido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFeatureSettings="tnum"
+                            android:text="C$ 0.00"
+                            android:textColor="@color/umk_danger"
+                            android:textFontWeight="800"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
 
             </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        </LinearLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/bg_dashboard"
-        android:clipToPadding="false"
-        android:paddingBottom="32dp"
-        android:scrollbars="none"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="8dp">
-
-            <include layout="@layout/card_ventas_overview" />
-            <include layout="@layout/card_recuperacion" />
-            <include layout="@layout/card_saldo_vencidos" />
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

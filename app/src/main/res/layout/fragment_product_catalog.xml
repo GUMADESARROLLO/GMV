@@ -36,7 +36,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:letterSpacing="0"
-            android:fontFamily="sans-serif" />
+            android:fontFamily="@font/archivo" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

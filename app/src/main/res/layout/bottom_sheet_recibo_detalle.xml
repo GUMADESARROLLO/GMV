@@ -1,108 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Detalle de recibo (bottom sheet) — lenguaje de Recibos/Solicitudes -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:orientation="vertical">
-
-    <View
-        android:layout_width="40dp"
-        android:layout_height="4dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
-        android:background="@color/grey_20" />
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="16dp">
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
 
-        <TextView
-            android:id="@+id/tv_recibo_numero"
-            android:layout_width="0dp"
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_handle" />
+
+        <!-- Encabezado -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Recibo N° 22357"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/btn_delete_recibo"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="6dp"
-            android:src="@drawable/ic_trash"
-            android:tint="@color/accent_red" />
+            <TextView
+                android:id="@+id/tv_recibo_numero"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFeatureSettings="tnum"
+                android:text="Recibo N° 0000"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="800"
+                android:textSize="18sp" />
 
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_recibo_cliente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="4dp"
-        android:text="CLIENTE"
-        android:textColor="@color/grey_80"
-        android:textSize="13sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+            <ImageButton
+                android:id="@+id/btn_delete_recibo"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_boton_circular"
+                android:contentDescription="Eliminar recibo"
+                android:padding="11dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_trash"
+                app:tint="@color/umk_danger" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_recibo_fecha"
-            android:layout_width="0dp"
+            android:id="@+id/tv_recibo_cliente"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="26-05-2026"
-            android:textColor="@color/grey_60"
-            android:textSize="12sp" />
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="2dp"
+            android:text="CLIENTE"
+            android:textColor="@color/umk_ink_soft"
+            android:textSize="14sp" />
+
+        <!-- Resumen: total + estado + fecha -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_tarjeta_perfil"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total recibido"
+                    android:textColor="@color/umk_ink_soft"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_recibo_estado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chip_pill"
+                    android:backgroundTint="@color/status_active_bg"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="Vigente"
+                    android:textColor="@color/status_active_text"
+                    android:textFontWeight="700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_recibo_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFeatureSettings="tnum"
+                android:letterSpacing="-0.02"
+                android:maxLines="1"
+                android:text="C$ 0.00"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="800"
+                android:textSize="26sp"
+                app:autoSizeMaxTextSize="26sp"
+                app:autoSizeMinTextSize="16sp"
+                app:autoSizeTextType="uniform" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_schedule"
+                    app:tint="@color/umk_ink_muted" />
+
+                <TextView
+                    android:id="@+id/tv_recibo_fecha"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:fontFeatureSettings="tnum"
+                    android:text="0000-00-00"
+                    android:textColor="@color/umk_ink_muted"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_recibo_total"
+            android:id="@+id/tv_recibo_comentario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_icono_tile"
+            android:backgroundTint="@color/umk_mist"
+            android:padding="12dp"
+            android:text=""
+            android:textColor="@color/umk_ink_soft"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="C$ 39,709.86"
-            android:textColor="@color/accent_primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="16dp"
-        android:background="#EEECEA" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="12dp"
-        android:text="FACTURAS ASOCIADAS"
-        android:textColor="#9BA3AF"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.12" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="400dp">
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:letterSpacing="0.12"
+            android:text="FACTURAS ASOCIADAS"
+            android:textColor="@color/umk_ink_muted"
+            android:textFontWeight="700"
+            android:textSize="11sp" />
 
         <LinearLayout
             android:id="@+id/lyt_detalles"
@@ -111,65 +176,64 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp" />
 
-    </ScrollView>
+        <TextView
+            android:id="@+id/tv_adjuntos_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:letterSpacing="0.12"
+            android:text="COMPROBANTES"
+            android:textColor="@color/umk_ink_muted"
+            android:textFontWeight="700"
+            android:textSize="11sp"
+            android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/tv_adjuntos_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:text="COMPROBANTES"
-        android:textColor="#9BA3AF"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.12"
-        android:visibility="gone" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_adjuntos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false"
+            android:orientation="horizontal"
+            android:visibility="gone" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_adjuntos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:nestedScrollingEnabled="false"
-        android:visibility="gone" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_adjuntar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/umk_royal"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Adjuntar comprobante"
+            android:textAllCaps="false"
+            android:textColor="@color/umk_paper"
+            android:textFontWeight="700"
+            android:textSize="15sp"
+            app:cornerRadius="14dp"
+            app:icon="@drawable/ic_attach_file"
+            app:iconGravity="textStart"
+            app:iconTint="@color/umk_paper" />
 
-    <TextView
-        android:id="@+id/tv_recibo_comentario"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="12dp"
-        android:text=""
-        android:textColor="@color/grey_80"
-        android:textSize="13sp"
-        android:visibility="gone" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cerrar"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Cerrar"
+            android:textAllCaps="false"
+            android:textColor="@color/umk_ink"
+            android:textFontWeight="700"
+            android:textSize="15sp"
+            app:cornerRadius="14dp"
+            app:strokeColor="@color/umk_line" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_adjuntar"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="12dp"
-        android:text="Adjuntar comprobante"
-        android:textAllCaps="false"
-        android:textSize="13sp"
-        app:cornerRadius="12dp"
-        app:icon="@drawable/ic_attach_file"
-        app:iconGravity="textStart" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_cerrar"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
-        android:text="Cerrar"
-        android:textAllCaps="false"
-        android:textSize="14sp"
-        app:cornerRadius="12dp" />
-
-</LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

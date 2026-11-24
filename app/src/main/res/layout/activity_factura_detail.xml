@@ -1,54 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Detalle de factura — mismo lenguaje que Perfil cliente / Solicitudes:
+     header claro con botón circular, tarjeta de resumen, artículos en tarjetas y panel inferior con Pagar. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_5"
+    android:background="@color/umk_mist"
     android:orientation="vertical">
 
-    <!-- Toolbar -->
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="64dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="4dp"
-        android:paddingEnd="16dp">
+        android:paddingHorizontal="16dp">
 
         <ImageButton
             android:id="@+id/btn_back"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/bg_boton_circular"
             android:contentDescription="Regresar"
-            android:tint="@color/black"
-            app:srcCompat="@drawable/ic_arrow_left" />
+            android:padding="11dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_arrow_left"
+            app:tint="@color/umk_ink" />
 
-        <TextView
-            android:id="@+id/tv_toolbar_title"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
             android:layout_weight="1"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
-            android:maxLines="1"
-            android:text="@string/factura_detail_title"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_detail_vencimiento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20-06-2026"
-            android:textColor="@color/grey_60"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFeatureSettings="tnum"
+                android:letterSpacing="-0.01"
+                android:maxLines="1"
+                android:text="@string/factura_detail_title"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="800"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_detail_vencimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:text="Vence 00/00/0000"
+                android:textColor="@color/umk_ink_soft"
+                android:textFontWeight="600"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Observaciones de la factura: deshabilitado hasta cargar; punto azul si hay comentario -->
+        <FrameLayout
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp">
+
+            <ImageButton
+                android:id="@+id/btn_observaciones"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:alpha="0.4"
+                android:background="@drawable/bg_boton_circular"
+                android:contentDescription="Ver observaciones de la factura"
+                android:enabled="false"
+                android:padding="11dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_message"
+                app:tint="@color/umk_royal" />
+
+            <View
+                android:id="@+id/dot_observaciones"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/bg_chip_pill"
+                android:backgroundTint="@color/umk_cyan"
+                android:importantForAccessibility="no"
+                android:visibility="gone" />
+        </FrameLayout>
     </LinearLayout>
 
-    <!-- Scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_content"
         android:layout_width="match_parent"
@@ -60,106 +103,110 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp">
 
+            <!-- Artículos -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="8dp">
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <!-- ARTÍCULOS section -->
                 <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Artículos"
+                    android:textColor="@color/umk_ink"
+                    android:textFontWeight="800"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/tvConteoArticulos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="ARTÍCULOS"
-                    android:textColor="@color/grey_60"
-                    android:textSize="11sp" />
-
+                    android:background="@drawable/bg_chip_pill"
+                    android:backgroundTint="@color/umk_royal_tint"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="3dp"
+                    android:text="0"
+                    android:textColor="@color/umk_royal"
+                    android:textFontWeight="700"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_articulos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:paddingHorizontal="16dp" />
+                android:layout_marginTop="2dp"
+                android:nestedScrollingEnabled="false" />
 
             <include
                 android:id="@+id/lyt_empty"
                 layout="@layout/include_empty_result"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
-
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Sticky bottom panel -->
-    <com.google.android.material.card.MaterialCardView
+    <!-- Panel inferior fijo -->
+    <LinearLayout
         android:id="@+id/lyt_bottom_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="6dp"
-        app:strokeWidth="0dp">
+        android:background="@drawable/bg_panel_inferior"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="20dp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="10dp">
+                android:layout_weight="1"
+                android:text="@string/factura_detail_saldo"
+                android:textColor="@color/umk_ink_soft"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/factura_detail_saldo"
-                    android:textColor="@color/grey_60"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tv_factura_saldo_bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="C$ 0.00"
-                    android:textColor="@color/red"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_registrar_pago"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="@string/btn_registrar_pago"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:cornerRadius="12dp" />
-
+            <TextView
+                android:id="@+id/tv_factura_saldo_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:letterSpacing="-0.02"
+                android:text="C$ 0.00"
+                android:textColor="@color/umk_danger"
+                android:textFontWeight="800"
+                android:textSize="28sp" />
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_registrar_pago"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:stateListAnimator="@animator/button_press"
+            android:text="@string/btn_registrar_pago"
+            android:textAllCaps="false"
+            android:textColor="@color/umk_paper"
+            android:textFontWeight="700"
+            android:textSize="16sp"
+            app:backgroundTint="@color/umk_royal"
+            app:cornerRadius="14dp" />
+    </LinearLayout>
 
 </LinearLayout>

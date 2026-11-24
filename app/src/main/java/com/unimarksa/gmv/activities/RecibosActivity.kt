@@ -2,11 +2,10 @@ package com.unimarksa.gmv.activities
 
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.os.Build
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -18,13 +17,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.BarrasSistema
 import com.unimarksa.gmv.adapters.ReporteReciboAdapter
 import com.unimarksa.gmv.models.ItemReporteRecibo
 import com.unimarksa.gmv.tools.ApiService
+import com.unimarksa.gmv.tools.FechasRango
 import com.unimarksa.gmv.tools.SessionManager
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -34,43 +38,37 @@ class RecibosActivity : AppCompatActivity() {
     private val items = mutableListOf<ItemReporteRecibo>()
     private lateinit var adapter: ReporteReciboAdapter
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
+
+    /** Id de la última búsqueda: descarta respuestas viejas si se cambian las fechas rápido. */
+    private var busquedaActual = 0
+
+    /** Rango rápido activo (null = fechas elegidas a mano). */
+    private var rangoActivo: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recibos)
 
-        if (Build.VERSION.SDK_INT >= 35) {
-            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-            val h = if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
-            val scrim = View(this)
-            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.brand_primary_dark))
-            val content = findViewById<ViewGroup>(android.R.id.content)
-            scrim.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h)
-            content.addView(scrim)
-        } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.brand_primary_dark)
+        BarrasSistema.aplicar(this, R.color.umk_mist)
+
+        findViewById<View>(R.id.btn_back).setOnClickListener { finish() }
+        // Antes era el ítem action_anular_recibo del menú de la toolbar
+        findViewById<View>(R.id.btn_anular_recibo).setOnClickListener { mostrarDialogoAnular() }
+
+        findViewById<View>(R.id.cardDateFrom).setOnClickListener {
+            showDatePicker(findViewById<TextView>(R.id.tvDateFrom).text.toString()) { updateDesde(it) }
         }
-
-        findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-            .apply {
-                setNavigationOnClickListener { finish() }
-                setOnMenuItemClickListener { item ->
-                    if (item.itemId == R.id.action_anular_recibo) {
-                        mostrarDialogoAnular()
-                        true
-                    } else false
-                }
-            }
-
-        findViewById<View>(R.id.cardDateFrom).setOnClickListener { showDatePicker { updateDesde(it) } }
-        findViewById<View>(R.id.cardDateTo).setOnClickListener { showDatePicker { updateHasta(it) } }
+        findViewById<View>(R.id.cardDateTo).setOnClickListener {
+            showDatePicker(findViewById<TextView>(R.id.tvDateTo).text.toString()) { updateHasta(it) }
+        }
 
         val rv = findViewById<RecyclerView>(R.id.recyclerRecibos)
         rv.layoutManager = LinearLayoutManager(this)
         adapter = ReporteReciboAdapter(
             items = items,
             onClick = { recibo -> mostrarDetalle(recibo) },
-            onDelete = { recibo, position -> confirmarEliminar(recibo, position) },
+            onDelete = { recibo -> confirmarEliminar(recibo) },
             onAttach = { recibo ->
                 startActivity(Intent(this, AdjuntarComprobanteActivity::class.java)
                     .putExtra("id_recibo", recibo.recibo.replace("#", "")))
@@ -78,79 +76,111 @@ class RecibosActivity : AppCompatActivity() {
         )
         rv.adapter = adapter
 
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        val lunes = dateFormat.format(cal.time)
-        val hoy = dateFormat.format(Calendar.getInstance().time)
-        findViewById<TextView>(R.id.tvDateFrom).text = lunes
-        findViewById<TextView>(R.id.tvDateTo).text = hoy
-        buscar(lunes, hoy)
+        FechasRango.RANGOS.forEach { (id, _) -> findViewById<View>(id).setOnClickListener { aplicarRango(id) } }
+        aplicarRango(R.id.rango7)
 
-        val swipeRefresh = findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh)
-        swipeRefresh.setOnRefreshListener {
-            val d = findViewById<TextView>(R.id.tvDateFrom).text.toString()
-            val h = findViewById<TextView>(R.id.tvDateTo).text.toString()
+        findViewById<SwipeRefreshLayout>(R.id.swipeRefresh).setOnRefreshListener {
+            val (d, h) = rangoActual()
             buscar(d, h, true)
         }
     }
 
+    /** Fija Desde/Hasta según el rango rápido y busca. */
+    private fun aplicarRango(id: Int) {
+        val (desde, hasta) = FechasRango.fechasDe(id)
+        findViewById<TextView>(R.id.tvDateFrom).text = desde
+        findViewById<TextView>(R.id.tvDateTo).text = hasta
+        marcarRango(id)
+        buscar(desde, hasta)
+    }
+
+    private fun marcarRango(id: Int?) {
+        rangoActivo = id
+        FechasRango.marcarRango(this, id)
+        findViewById<TextView>(R.id.tvResumenTitulo).text = FechasRango.tituloResumen(
+            id,
+            findViewById<TextView>(R.id.tvDateFrom).text.toString(),
+            findViewById<TextView>(R.id.tvDateTo).text.toString()
+        )
+    }
+
     private fun updateDesde(date: String) {
+        marcarRango(null)
         findViewById<TextView>(R.id.tvDateFrom).text = date
         val hasta = findViewById<TextView>(R.id.tvDateTo).text?.toString()?.trim()
         if (!hasta.isNullOrEmpty()) buscar(date, hasta)
     }
 
     private fun updateHasta(date: String) {
+        marcarRango(null)
         findViewById<TextView>(R.id.tvDateTo).text = date
         val desde = findViewById<TextView>(R.id.tvDateFrom).text?.toString()?.trim()
         if (!desde.isNullOrEmpty()) buscar(desde, date)
     }
 
-    private fun buscar(desde: String, hasta: String, isRefresh: Boolean = false) {
-        val loading = findViewById<View>(R.id.lyt_loading)
-        val empty = findViewById<View>(R.id.lyt_empty_result)
-        val rv = findViewById<RecyclerView>(R.id.recyclerRecibos)
+    /** Fechas actuales del filtro, en orden (si "Desde" quedó después de "Hasta" se invierten). */
+    private fun rangoActual(): Pair<String, String> {
+        val d = findViewById<TextView>(R.id.tvDateFrom).text.toString()
+        val h = findViewById<TextView>(R.id.tvDateTo).text.toString()
+        return if (d > h) h to d else d to h
+    }
 
-        if (!isRefresh) {
-            loading.visibility = View.VISIBLE
+    private fun buscar(desdeSel: String, hastaSel: String, isRefresh: Boolean = false) {
+        // Rango invertido → el backend devolvía vacío; se ordena antes de consultar
+        val (desde, hasta) = if (desdeSel > hastaSel) hastaSel to desdeSel else desdeSel to hastaSel
+
+        if (rangoActivo == null) {
+            findViewById<TextView>(R.id.tvResumenTitulo).text = FechasRango.rangoLegible(desde, hasta)
         }
-        empty.visibility = View.GONE
-        rv.visibility = View.GONE
+
+        val id = ++busquedaActual
+        if (!isRefresh) {
+            findViewById<View>(R.id.lyt_loading).visibility = View.VISIBLE
+        }
 
         ApiService.fetchRecibos(
             desde = desde,
             hasta = hasta,
             onResult = { result ->
+                // Ignora respuestas de una búsqueda que ya no es la última (cambios rápidos de fecha)
+                if (id != busquedaActual || isFinishing || isDestroyed) return@fetchRecibos
                 items.clear()
                 items.addAll(result)
-                adapter.notifyDataSetChanged()
-                mostrarResultados()
+                mostrarResultados(null)
             },
-            onError = {
+            onError = { error ->
+                if (id != busquedaActual || isFinishing || isDestroyed) return@fetchRecibos
                 items.clear()
-                adapter.notifyDataSetChanged()
-                mostrarResultados()
+                mostrarResultados(error)
             }
         )
     }
 
-    private fun mostrarResultados() {
-        val loading = findViewById<View>(R.id.lyt_loading)
+    /** [error] no nulo = la búsqueda falló; se muestra en el estado vacío en vez de "Sin recibos". */
+    private fun mostrarResultados(error: String? = null) {
+        findViewById<SwipeRefreshLayout>(R.id.swipeRefresh).isRefreshing = false
+        findViewById<View>(R.id.lyt_loading).visibility = View.GONE
+
+        // Reagrupa por día (eliminar un recibo puede dejar un día sin filas)
+        adapter.actualizar()
+
+        val anulados = items.count { ReporteReciboAdapter.esAnulado(it) }
+        // El total excluye los recibos anulados
+        val total = items.filterNot { ReporteReciboAdapter.esAnulado(it) }
+            .sumOf { ReporteReciboAdapter.monto(it.orderTotal) }
+        findViewById<TextView>(R.id.tvTotalAmount).text = "Σ C$ ${fmt.format(total)}"
+        val conteo = "${items.size} recibo${if (items.size == 1) "" else "s"}"
+        findViewById<TextView>(R.id.tvReceiptCount).text =
+            if (anulados > 0) "$conteo · $anulados anulado${if (anulados == 1) "" else "s"}" else conteo
+
         val empty = findViewById<View>(R.id.lyt_empty_result)
         val rv = findViewById<RecyclerView>(R.id.recyclerRecibos)
-        val swipeRefresh = findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh)
-        swipeRefresh.isRefreshing = false
-
-        loading.visibility = View.GONE
-
-        val fmt = java.text.DecimalFormat("#,##0.00", java.text.DecimalFormatSymbols(Locale.US))
-        val total = items.sumOf {
-            it.orderTotal.replace("C$", "").replace(",", "").trim().toDoubleOrNull() ?: 0.0
-        }
-        findViewById<TextView>(R.id.tvTotalAmount).text = "C$ ${fmt.format(total)}"
-        findViewById<TextView>(R.id.tvReceiptCount).text = "${items.size}"
-
         if (items.isEmpty()) {
+            findViewById<TextView>(R.id.tvEmptyTitulo).text =
+                if (error != null) "No se pudo cargar" else "Sin recibos"
+            findViewById<TextView>(R.id.tvEmptySubtitulo).text =
+                if (error != null) "$error\nDesliza hacia abajo para reintentar"
+                else "No hay recibos en este rango de fechas"
             empty.visibility = View.VISIBLE
             rv.visibility = View.GONE
             return
@@ -171,6 +201,16 @@ class RecibosActivity : AppCompatActivity() {
         val fmtTotal = java.text.DecimalFormat("#,##0.00", java.text.DecimalFormatSymbols(Locale.US))
         val totalVal = recibo.orderTotal.replace("C$", "").replace(",", "").trim().toDoubleOrNull() ?: 0.0
         view.findViewById<TextView>(R.id.tv_recibo_total).text = "C$ ${fmtTotal.format(totalVal)}"
+
+        val anulado = ReporteReciboAdapter.esAnulado(recibo)
+        val tvEstado = view.findViewById<TextView>(R.id.tv_recibo_estado)
+        tvEstado.text = if (anulado) "Anulado" else "Vigente"
+        tvEstado.backgroundTintList = ContextCompat.getColorStateList(
+            this, if (anulado) R.color.status_cancel_bg else R.color.status_active_bg)
+        tvEstado.setTextColor(ContextCompat.getColor(
+            this, if (anulado) R.color.status_cancel_text else R.color.status_active_text))
+        // Un recibo ya anulado no se puede volver a eliminar
+        view.findViewById<View>(R.id.btn_delete_recibo).visibility = if (anulado) View.GONE else View.VISIBLE
 
         val tvComentario = view.findViewById<TextView>(R.id.tv_recibo_comentario)
         if (recibo.comentario.isNotBlank()) {
@@ -201,14 +241,15 @@ class RecibosActivity : AppCompatActivity() {
             }
             val tvTipoAccion = row.findViewById<TextView>(R.id.tv_tipo_accion)
             tvTipoAccion.text = det.tipoAccion
-            tvTipoAccion.setBackgroundColor(ContextCompat.getColor(this, actionBg))
+            // Tint sobre la píldora (setBackgroundColor reemplazaba la forma redondeada)
+            tvTipoAccion.backgroundTintList = ContextCompat.getColorStateList(this, actionBg)
             tvTipoAccion.setTextColor(ContextCompat.getColor(this, actionText))
 
             row.findViewById<TextView>(R.id.tv_valor_recibido).text = "C$ ${fmt.format(det.valorRecibido)}"
             row.findViewById<TextView>(R.id.tv_total).text = "C$ ${fmt.format(det.total)}"
             val tvSaldo = row.findViewById<TextView>(R.id.tv_saldo_pendiente)
             tvSaldo.text = "C$ ${fmt.format(det.saldoPendiente)}"
-            tvSaldo.setTextColor(if (det.saldoPendiente > 0) ContextCompat.getColor(this, R.color.amount_negative) else ContextCompat.getColor(this, R.color.amount_zero))
+            tvSaldo.setTextColor(if (det.saldoPendiente > 0) ContextCompat.getColor(this, R.color.umk_danger) else ContextCompat.getColor(this, R.color.umk_ink_muted))
 
             row.findViewById<View>(R.id.conceptRetention).findViewById<TextView>(R.id.tvConceptLabel).text = "Retención"
             row.findViewById<View>(R.id.conceptRetention).findViewById<TextView>(R.id.tvConceptAmount).text = "C$ ${fmt.format(det.retencion)}"
@@ -284,8 +325,7 @@ class RecibosActivity : AppCompatActivity() {
 
         view.findViewById<View>(R.id.btn_delete_recibo).setOnClickListener {
             dialog.dismiss()
-            val pos = items.indexOfFirst { it.id == recibo.id }
-            if (pos >= 0) confirmarEliminar(recibo, pos)
+            if (items.any { it.id == recibo.id }) confirmarEliminar(recibo)
         }
 
         dialog.show()
@@ -296,26 +336,27 @@ class RecibosActivity : AppCompatActivity() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_add_recibo_anular)
         dialog.setCancelable(true)
+        // La tarjeta del layout ya trae fondo y esquinas; la ventana queda transparente
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val edtRecibo = dialog.findViewById<EditText>(R.id.edt_cantidad_vineta)
-        edtRecibo.hint = "Nº Recibo: "
-
-        dialog.findViewById<TextView>(R.id.id_title_frm).text = "Digite Numero de Recibo a Anular"
 
         val tvFecha = dialog.findViewById<TextView>(R.id.id_text_recibo)
         tvFecha.text = "0000-00-00"
 
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window?.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.width = (resources.displayMetrics.widthPixels * 0.9f).toInt()
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
 
-        tvFecha.setOnClickListener {
+        val abrirCalendario = View.OnClickListener {
             val cal = Calendar.getInstance()
             DatePickerDialog(this, { _, y, m, d ->
                 tvFecha.text = "$y-${(m+1).toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}"
             }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
         }
+        tvFecha.setOnClickListener(abrirCalendario)
+        dialog.findViewById<View>(R.id.lyt_fecha_anular).setOnClickListener(abrirCalendario)
 
         dialog.findViewById<View>(R.id.bt_cancel).setOnClickListener { dialog.dismiss() }
 
@@ -344,8 +385,7 @@ class RecibosActivity : AppCompatActivity() {
                     runOnUiThread {
                         if (response.contains("Nuevo", ignoreCase = true)) {
                             Toast.makeText(this, "Recibo #$numRec anulado", Toast.LENGTH_LONG).show()
-                            val desde = findViewById<TextView>(R.id.tvDateFrom).text.toString()
-                            val hasta = findViewById<TextView>(R.id.tvDateTo).text.toString()
+                            val (desde, hasta) = rangoActual()
                             buscar(desde, hasta)
                         } else {
                             Toast.makeText(this, "Error: $response", Toast.LENGTH_LONG).show()
@@ -364,7 +404,7 @@ class RecibosActivity : AppCompatActivity() {
         dialog.window?.attributes = lp
     }
 
-    private fun confirmarEliminar(recibo: ItemReporteRecibo, position: Int) {
+    private fun confirmarEliminar(recibo: ItemReporteRecibo) {
         MaterialAlertDialogBuilder(this)
             .setTitle("Eliminar recibo")
             .setMessage("Eliminar recibo #${recibo.recibo} de ${recibo.nombreCliente}?")
@@ -376,8 +416,10 @@ class RecibosActivity : AppCompatActivity() {
                     onResult = { response ->
                         runOnUiThread {
                             if (response.contains("Anulado", ignoreCase = true)) {
-                                items.removeAt(position)
-                                adapter.notifyItemRemoved(position)
+                                // Se vuelve a ubicar por id: la posición pudo cambiar mientras se esperaba la respuesta
+                                val pos = items.indexOfFirst { it.id == recibo.id }
+                                if (pos >= 0) items.removeAt(pos)
+                                // Reagrupa días, totales y conteos
                                 mostrarResultados()
                                 Snackbar.make(findViewById(R.id.recyclerRecibos),
                                     "Recibo #${recibo.recibo} eliminado", Snackbar.LENGTH_LONG).show()
@@ -399,8 +441,10 @@ class RecibosActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun showDatePicker(onDateSelected: (String) -> Unit) {
+    /** Abre el calendario en la fecha ya seleccionada (antes siempre abría en hoy). */
+    private fun showDatePicker(actual: String, onDateSelected: (String) -> Unit) {
         val cal = Calendar.getInstance()
+        runCatching { dateFormat.parse(actual) }.getOrNull()?.let { cal.time = it }
         DatePickerDialog(
             this,
             { _, year, month, day ->

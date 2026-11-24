@@ -1,6 +1,6 @@
 package com.unimarksa.gmv.adapters
 
-import android.text.format.DateFormat
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,95 +8,157 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.models.ItemReporteRecibo
-import java.text.SimpleDateFormat
-import java.util.Date
+import com.unimarksa.gmv.tools.FechasRango
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.Locale
 
+/**
+ * Recibos agrupados por día (mismo patrón que [ReporteFacturaAdapter]): un encabezado por fecha
+ * (HOY / AYER / LUN 22 NOV) con la cantidad de recibos y el Σ del día sin anulados, seguido de sus
+ * recibos. Días más recientes primero.
+ *
+ * [items] es la lista de la Activity; tras modificarla se llama [actualizar] para reagrupar
+ * (eliminar un recibo puede dejar un día vacío y su encabezado debe desaparecer).
+ */
 class ReporteReciboAdapter(
-    private val items: MutableList<ItemReporteRecibo>,
+    private val items: List<ItemReporteRecibo>,
     private val onClick: (ItemReporteRecibo) -> Unit = {},
-    private val onDelete: ((ItemReporteRecibo, Int) -> Unit)? = null,
+    private val onDelete: ((ItemReporteRecibo) -> Unit)? = null,
     private val onAttach: ((ItemReporteRecibo) -> Unit)? = null
-) : RecyclerView.Adapter<ReporteReciboAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val cardRecibo: MaterialCardView = view.findViewById(R.id.cardRecibo)
-        val tvClientInitial: TextView = view.findViewById(R.id.tvClientInitial)
+    private sealed class Fila {
+        data class Dia(val titulo: String, val cantidad: Int, val total: Double) : Fila()
+        data class Recibo(val item: ItemReporteRecibo) : Fila()
+    }
+
+    private val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
+    private var filas: List<Fila> = agrupar(items)
+
+    class ReciboVH(view: View) : RecyclerView.ViewHolder(view) {
+        val cardRecibo: View = view.findViewById(R.id.cardRecibo)
         val tvClientName: TextView = view.findViewById(R.id.tvClientName)
         val tvClientCode: TextView = view.findViewById(R.id.tvClientCode)
-        val tvRuc: TextView = view.findViewById(R.id.tvRuc)
-        val tvReceiptNumber: TextView = view.findViewById(R.id.tvReceiptNumber)
-        val tvFooterAmount: TextView = view.findViewById(R.id.tvFooterAmount)
-        val tvTimestamp: TextView = view.findViewById(R.id.tvTimestamp)
+        val tvMonto: TextView = view.findViewById(R.id.tvMonto)
+        val tvFechaRecibo: TextView = view.findViewById(R.id.tvFechaRecibo)
+        val tvEstado: TextView = view.findViewById(R.id.tvEstado)
         val btnAttach: ImageButton = view.findViewById(R.id.btnAttach)
         val btnDelete: ImageButton = view.findViewById(R.id.btnDelete)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recibo, parent, false)
-        return ViewHolder(view)
+    class DiaVH(view: View) : RecyclerView.ViewHolder(view) {
+        val titulo: TextView = view.findViewById(R.id.tvDiaTitulo)
+        val conteo: TextView = view.findViewById(R.id.tvDiaConteo)
+        val total: TextView = view.findViewById(R.id.tvDiaTotal)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        try {
-            bind(holder, position)
-        } catch (_: Exception) { }
+    /** Reagrupa desde [items] (la lista de la Activity) y redibuja. */
+    fun actualizar() {
+        filas = agrupar(items)
+        notifyDataSetChanged()
     }
 
-    private fun bind(holder: ViewHolder, position: Int) {
-        val item = items[position]
-        val ctx = holder.itemView.context
-        val fmt = java.text.DecimalFormat("#,##0.00", java.text.DecimalFormatSymbols(Locale.US))
+    override fun getItemViewType(position: Int) = if (filas[position] is Fila.Dia) TIPO_DIA else TIPO_RECIBO
 
-        val esAnulado = item.status == "4" || item.status.contains("Anul", ignoreCase = true)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return if (viewType == TIPO_DIA) DiaVH(inflater.inflate(R.layout.item_reporte_dia, parent, false))
+        else ReciboVH(inflater.inflate(R.layout.item_recibo, parent, false))
+    }
 
-        val name = item.nombreCliente.replace(Regex("^\\d+\\s*-\\s*"), "")
-        val displayName = if (esAnulado) "ANULADO" else name.replace(Regex(" - RUC.*"), "").trim()
-        val initial = if (esAnulado) "X" else (name.firstOrNull()?.uppercaseChar()?.toString() ?: "F")
-        holder.tvClientInitial.text = initial
-        holder.tvClientName.text = displayName
-        holder.tvClientCode.text = item.codCliente.replace(Regex("[^\\d]"), "").ifEmpty { item.codCliente }
-        val rucMatch = Regex("RUC[\\s\\-]*([\\dA-Z]+)").find(item.nombreCliente)
-        holder.tvRuc.text = if (rucMatch != null) "RUC ${rucMatch.groupValues[1]}" else ""
-        holder.tvReceiptNumber.text = "#${item.recibo}"
-
-        val total = item.orderTotal.replace("C$", "").replace(",", "").trim().toDoubleOrNull() ?: 0.0
-        holder.tvFooterAmount.text = "C$ ${fmt.format(total)}"
-
-        if (esAnulado) {
-            holder.cardRecibo.setCardBackgroundColor(android.graphics.Color.parseColor("#FFEBEE"))
-            holder.cardRecibo.setStrokeColor(android.graphics.Color.parseColor("#EF9A9A"))
-        } else {
-            holder.cardRecibo.setCardBackgroundColor(ContextCompat.getColor(ctx, R.color.card_background))
-            holder.cardRecibo.setStrokeColor(ContextCompat.getColor(ctx, R.color.card_stroke_new))
-        }
-
-        try {
-            val dateStr = item.fecha.replace(" ", "T")
-            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-            val date = sdf.parse(dateStr)
-            if (date != null) {
-                val now = Date()
-                val diff = now.time - date.time
-                val days = diff / (1000 * 60 * 60 * 24)
-                holder.tvTimestamp.text = when {
-                    days < 1 -> "hoy"
-                    days < 2 -> "ayer"
-                    days < 7 -> "hace $days días"
-                    else -> DateFormat.format("dd/MM/yy", date).toString()
-                }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val fila = filas[position]) {
+            is Fila.Dia -> {
+                holder as DiaVH
+                holder.titulo.text = fila.titulo
+                holder.conteo.text = "${fila.cantidad} recibo${if (fila.cantidad == 1) "" else "s"}"
+                holder.total.text = "Σ C$ ${fmt.format(fila.total)}"
+                holder.itemView.contentDescription =
+                    "${fila.titulo}, ${holder.conteo.text}, total C$ ${fmt.format(fila.total)}"
             }
-        } catch (_: Exception) {
-            holder.tvTimestamp.text = item.fecha.take(10)
+            is Fila.Recibo -> try {
+                bindRecibo(holder as ReciboVH, fila.item)
+            } catch (_: Exception) { }
         }
-
-        holder.btnDelete.setOnClickListener { onDelete?.invoke(item, position) }
-        holder.btnAttach.setOnClickListener { onAttach?.invoke(item) }
-        holder.cardRecibo.setOnClickListener { onClick(item) }
     }
 
-    override fun getItemCount() = items.size
+    /** Recibo de la fila actual del holder (las posiciones incluyen encabezados de día). */
+    private fun reciboEn(holder: RecyclerView.ViewHolder): ItemReporteRecibo? {
+        val pos = holder.bindingAdapterPosition
+        if (pos == RecyclerView.NO_POSITION) return null
+        return (filas.getOrNull(pos) as? Fila.Recibo)?.item
+    }
+
+    private fun bindRecibo(holder: ReciboVH, item: ItemReporteRecibo) {
+        val ctx = holder.itemView.context
+        val anulado = esAnulado(item)
+
+        // "00123 - NOMBRE - RUC J0310..." → "NOMBRE"
+        val nombre = item.nombreCliente.replace(Regex("^\\d+\\s*-\\s*"), "")
+            .replace(Regex("\\s+-\\s*RUC.*"), "").trim()
+        holder.tvClientName.text = nombre.ifEmpty { "Cliente" }
+
+        val codigo = item.codCliente.replace(Regex("[^\\d]"), "").ifEmpty { item.codCliente }
+        val numero = item.recibo.replace("#", "").trim()
+        holder.tvClientCode.text = listOfNotNull(
+            codigo.takeIf { it.isNotBlank() }?.let { "Cód. $it" },
+            numero.takeIf { it.isNotBlank() }?.let { "Rec. #$it" }
+        ).joinToString(" · ")
+
+        // Verde = dinero recibido; anulado no suma al total: gris y tachado
+        holder.tvMonto.text = "C$ ${fmt.format(monto(item.orderTotal))}"
+        holder.tvMonto.setTextColor(ContextCompat.getColor(ctx, if (anulado) R.color.umk_ink_muted else R.color.umk_success))
+        holder.tvMonto.paintFlags = if (anulado) holder.tvMonto.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        else holder.tvMonto.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+
+        // Fecha del recibo bajo el monto
+        val fecha = FechasRango.diaDe(item.fecha)?.let { FechasRango.FECHA_CORTA.format(it) } ?: item.fecha.trim()
+        holder.tvFechaRecibo.text = fecha
+        holder.tvFechaRecibo.visibility = if (fecha.isNotBlank()) View.VISIBLE else View.GONE
+
+        // Chip de estado solo para anulados (tint sobre la forma píldora, no setBackgroundColor)
+        holder.tvEstado.visibility = if (anulado) View.VISIBLE else View.GONE
+        if (anulado) {
+            holder.tvEstado.text = "Anulado"
+            holder.tvEstado.backgroundTintList = ContextCompat.getColorStateList(ctx, R.color.status_cancel_bg)
+            holder.tvEstado.setTextColor(ContextCompat.getColor(ctx, R.color.status_cancel_text))
+        }
+
+        // Un recibo ya anulado no se puede volver a eliminar
+        holder.btnDelete.visibility = if (anulado || onDelete == null) View.GONE else View.VISIBLE
+
+        // Se resuelve el recibo al momento del click (la posición capturada en bind queda desfasada)
+        holder.btnDelete.setOnClickListener { reciboEn(holder)?.let { onDelete?.invoke(it) } }
+        holder.btnAttach.setOnClickListener { reciboEn(holder)?.let { onAttach?.invoke(it) } }
+        holder.cardRecibo.setOnClickListener { reciboEn(holder)?.let(onClick) }
+    }
+
+    override fun getItemCount() = filas.size
+
+    // ── Agrupación ───────────────────────────────────────────────────────────
+
+    private fun agrupar(items: List<ItemReporteRecibo>): List<Fila> {
+        val salida = mutableListOf<Fila>()
+        for ((dia, grupo) in FechasRango.agruparPorDia(items) { it.fecha }) {
+            val totalDia = grupo.filterNot { esAnulado(it) }.sumOf { monto(it.orderTotal) }
+            salida += Fila.Dia(FechasRango.tituloDia(dia), grupo.size, totalDia)
+            grupo.forEach { salida += Fila.Recibo(it) }
+        }
+        return salida
+    }
+
+    companion object {
+        private const val TIPO_DIA = 0
+        private const val TIPO_RECIBO = 1
+
+        fun esAnulado(item: ItemReporteRecibo): Boolean =
+            item.status == "4" || item.status.contains("Anul", ignoreCase = true)
+
+        /** Monto del backend ("C$ 1,234.50") → Double; 0 si no se puede leer. */
+        fun monto(raw: String): Double =
+            raw.replace("C$", "").replace(",", "").trim().toDoubleOrNull() ?: 0.0
+    }
 }

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -27,26 +26,32 @@ class LoginActivity : AppCompatActivity() {
 
         SessionManager.init(this)
 
+        // Arriba blanco (íconos oscuros); la franja azul inferior absorbe el inset de la barra de navegación
         val root = findViewById<View>(R.id.main)
+        val band = findViewById<View>(R.id.loginBand)
+        val bandPaddingBottom = band.paddingBottom
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            band.setPadding(band.paddingLeft, band.paddingTop, band.paddingRight, bandPaddingBottom + systemBars.bottom)
             insets
         }
 
-        if (Build.VERSION.SDK_INT >= 35) {
-            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-            val statusBarHeight = if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
-            val scrim = View(this)
-            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.colorUmkPrimaryDark))
-            val content = findViewById<ViewGroup>(android.R.id.content)
-            scrim.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBarHeight)
-            content.addView(scrim)
-        } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
+        if (Build.VERSION.SDK_INT < 35) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.umk_paper)
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.umk_royal)
+        }
+        ViewCompat.getWindowInsetsController(window.decorView)?.apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = false
         }
 
-        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
+        // "Listo" en el teclado envía el formulario
+        findViewById<EditText>(R.id.edtPassword).setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                findViewById<MaterialButton>(R.id.btnLogin).performClick(); true
+            } else false
+        }
 
         findViewById<MaterialButton>(R.id.btnLogin).setOnClickListener {
             val usuario = findViewById<EditText>(R.id.edtUsername).text?.toString()?.trim() ?: ""

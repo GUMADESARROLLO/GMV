@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cantidad"
-        android:textColor="#1A1A18"
+        android:textColor="@color/umk_ink"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -25,14 +25,14 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:text=""
-        android:textColor="#9A9890"
+        android:textColor="@color/umk_ink_muted"
         android:textSize="13sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginVertical="12dp"
-        android:background="#F0F0F0" />
+        android:background="@color/umk_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="1"
-            android:textColor="#185FA5"
+            android:textColor="@color/umk_royal"
             android:textSize="36sp"
             android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
             android:insetRight="0dp"
             android:insetBottom="0dp"
             android:text="C"
-            android:textColor="#EF5350"
+            android:textColor="@color/umk_danger"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textColor="#639922"
+            android:textColor="@color/mora_ok"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="#185FA5"
+                android:textColor="@color/umk_royal"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="#639922"
+                android:textColor="@color/mora_ok"
                 android:textSize="11sp"
                 android:visibility="gone" />
 
@@ -121,11 +121,11 @@
 
         <Button
             android:id="@+id/btn_7"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -136,11 +136,11 @@
 
         <Button
             android:id="@+id/btn_8"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -151,11 +151,11 @@
 
         <Button
             android:id="@+id/btn_9"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -175,11 +175,11 @@
 
         <Button
             android:id="@+id/btn_4"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -190,11 +190,11 @@
 
         <Button
             android:id="@+id/btn_5"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -205,11 +205,11 @@
 
         <Button
             android:id="@+id/btn_6"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -229,11 +229,11 @@
 
         <Button
             android:id="@+id/btn_1"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -244,11 +244,11 @@
 
         <Button
             android:id="@+id/btn_2"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -259,11 +259,11 @@
 
         <Button
             android:id="@+id/btn_3"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -283,11 +283,11 @@
 
         <Button
             android:id="@+id/btn_0"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -298,11 +298,11 @@
 
         <Button
             android:id="@+id/btn_dot"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -313,29 +313,31 @@
 
         <Button
             android:id="@+id/btn_delete"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.GMV.Tecla"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="56dp"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:layout_margin="4dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
             android:padding="12dp"
+            android:contentDescription="Borrar dígito"
             app:icon="@drawable/ic_backspace"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="20dp"
-            app:iconTint="#555450" />
+            app:iconTint="@color/umk_ink_soft" />
 
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
         android:layout_marginTop="16dp"
+        android:stateListAnimator="@animator/button_press"
         android:text="Agregar al carrito"
         android:textAllCaps="false"
         android:textSize="15sp"

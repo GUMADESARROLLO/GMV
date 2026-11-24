@@ -36,6 +36,14 @@ object PagoManager {
         }
     }
 
+    /** Reinserta un pago en su posición original (para "Deshacer"). */
+    fun insertAt(index: Int, pago: ItemPagoFactura) {
+        _pagos.add(index.coerceIn(0, _pagos.size), pago)
+        scope.launch {
+            db?.reciboCartDao()?.insert(pago.toReciboCartEntity())
+        }
+    }
+
     fun removeAt(index: Int) {
         if (index in _pagos.indices) {
             val removed = _pagos.removeAt(index)

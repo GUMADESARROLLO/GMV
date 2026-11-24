@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Borde superior de la franja azul: curva ascendente con ondas cian y blanca (igual que MonitorLoteria/Tombola) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="38dp"
+    android:viewportWidth="1440"
+    android:viewportHeight="150">
+    <path
+        android:fillColor="@color/umk_royal"
+        android:pathData="M0,150 L0,110 C300,70 620,40 980,30 C1180,24 1320,10 1440,0 L1440,150 Z" />
+    <path
+        android:fillAlpha="0.55"
+        android:fillColor="@color/umk_royal_2"
+        android:pathData="M0,150 L0,132 C360,96 700,74 1040,66 C1220,62 1340,52 1440,44 L1440,150 Z" />
+    <path
+        android:pathData="M0,96 C300,56 640,30 990,20 C1190,14 1330,2 1440,-8"
+        android:strokeWidth="5"
+        android:strokeColor="@color/umk_cyan" />
+    <path
+        android:pathData="M0,84 C310,46 650,22 1000,12 C1200,6 1335,-4 1440,-14"
+        android:strokeAlpha="0.9"
+        android:strokeWidth="2"
+        android:strokeColor="@color/umk_paper" />
+    <path
+        android:pathData="M560,150 C820,110 1120,96 1440,92"
+        android:strokeAlpha="0.35"
+        android:strokeWidth="1.5"
+        android:strokeColor="@color/umk_paper" />
+</vector>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F7"
+    android:background="@color/umk_mist"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -41,7 +41,7 @@
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:iconSize="20dp"
-                    app:iconTint="#1A1A18" />
+                    app:iconTint="@color/umk_ink" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -49,20 +49,21 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Detalle del pedido"
-                    android:textColor="#1A1A18"
+                    android:textColor="@color/umk_ink"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/btn_print"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+            android:padding="6dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:src="@drawable/ic_printer"
                     android:scaleType="centerInside"
                     android:clickable="true"
                     android:focusable="true"
                     android:contentDescription="Imprimir"
-                    android:tint="#555450" />
+                    android:tint="@color/umk_ink_soft" />
 
             </LinearLayout>
 
@@ -71,7 +72,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#EEECEA" />
+            android:background="@color/umk_line" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -107,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Cargando..."
-                    android:textColor="#9A9890"
+                    android:textColor="@color/umk_ink_muted"
                     android:textSize="13sp" />
             </LinearLayout>
 
@@ -121,7 +122,7 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
-                app:strokeColor="#F0F0F0"
+                app:strokeColor="@color/umk_line"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -135,8 +136,8 @@
                         android:layout_height="wrap_content"
                         android:text="PEDIDO"
                         android:textAllCaps="true"
-                        android:textColor="#9A9890"
-                        android:textSize="10sp"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -151,7 +152,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Código"
-                            android:textColor="#555450"
+                            android:textColor="@color/umk_ink_soft"
                             android:textSize="13sp" />
 
                         <TextView
@@ -159,7 +160,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
-                            android:textColor="#185FA5"
+                            android:textColor="@color/umk_royal"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -177,7 +178,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Cliente"
-                            android:textColor="#555450"
+                            android:textColor="@color/umk_ink_soft"
                             android:textSize="13sp" />
 
                         <TextView
@@ -185,7 +186,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
-                            android:textColor="#1A1A18"
+                            android:textColor="@color/umk_ink"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -203,7 +204,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Fecha"
-                            android:textColor="#555450"
+                            android:textColor="@color/umk_ink_soft"
                             android:textSize="13sp" />
 
                         <TextView
@@ -211,7 +212,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
-                            android:textColor="#1A1A18"
+                            android:textColor="@color/umk_ink"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -231,7 +232,7 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
-                app:strokeColor="#F0F0F0"
+                app:strokeColor="@color/umk_line"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -246,8 +247,8 @@
                         android:layout_height="wrap_content"
                         android:text="ARTÍCULOS"
                         android:textAllCaps="true"
-                        android:textColor="#9A9890"
-                        android:textSize="10sp"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -271,7 +272,7 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
-                app:strokeColor="#F0F0F0"
+                app:strokeColor="@color/umk_line"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -285,8 +286,8 @@
                         android:layout_height="wrap_content"
                         android:text="OBSERVACIONES"
                         android:textAllCaps="true"
-                        android:textColor="#9A9890"
-                        android:textSize="10sp"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -295,7 +296,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text=""
-                        android:textColor="#1A1A18"
+                        android:textColor="@color/umk_ink"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -315,7 +316,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pedido no encontrado"
-                    android:textColor="#9A9890"
+                    android:textColor="@color/umk_ink_muted"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -346,7 +347,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Total"
-                android:textColor="#1A1A18"
+                android:textColor="@color/umk_ink"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -355,7 +356,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="#185FA5"
+                android:textColor="@color/umk_royal"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 

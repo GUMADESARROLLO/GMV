@@ -1,260 +1,315 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Solicitar aumento de crédito — mismo lenguaje que Perfil cliente y Buscar lote:
+     fondo claro, header con botón circular, tarjetas blancas con borde línea. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_surface"
+    android:background="@color/umk_mist"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/brand_primary"
-        app:navigationIcon="@drawable/ic_arrow_back_white"
-        app:title="Solicitar Incremento"
-        app:titleTextColor="@android:color/white" />
-
+    <!-- Header -->
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_boton_circular"
+            android:contentDescription="Regresar"
+            android:padding="11dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_arrow_left"
+            app:tint="@color/umk_ink" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="-0.01"
+                android:text="Solicitar aumento"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="800"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tvClienteSub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Cliente"
+                android:textColor="@color/umk_ink_muted"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Contenido superior: se desplaza si la pantalla es baja; en pantallas altas el motivo llena el espacio -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:fillViewport="true"
+        android:scrollbars="none">
 
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/card_background"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:strokeColor="@color/card_stroke_new"
-            app:strokeWidth="1dp">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
 
+            <!-- Monto solicitado -->
             <LinearLayout
+                android:id="@+id/cardLimit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Disponible"
-                        android:textColor="@color/text_hint_new"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/tvDisponible"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="C$ 0.00"
-                        android:textColor="@color/amount_positive"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="40dp"
-                    android:background="@color/divider_color" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Saldo"
-                        android:textColor="@color/text_hint_new"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/tvSaldo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="C$ 0.00"
-                        android:textColor="@color/amount_negative"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="40dp"
-                    android:background="@color/divider_color" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Limite"
-                        android:textColor="@color/text_hint_new"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/tvLimite"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="C$ 0.00"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardLimit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#082A63"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="24dp">
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_tarjeta_perfil"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="16dp">
 
                 <TextView
                     android:id="@+id/txtTitulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nuevo límite solicitado"
-                    android:textColor="#8DB4FF"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    android:textColor="@color/umk_ink_soft"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvMontoDisplay"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:fontFeatureSettings="tnum"
+                    android:letterSpacing="-0.02"
+                    android:maxLines="1"
                     android:text="C$ 0.00"
-                    android:textColor="#D5E5FF"
-                    android:textStyle="bold"
-                    android:textSize="44sp"
-                    app:layout_constraintTop_toBottomOf="@id/txtTitulo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    android:textColor="@color/umk_ink"
+                    android:textFontWeight="800"
+                    android:textSize="46sp"
+                    app:autoSizeMaxTextSize="46sp"
+                    app:autoSizeMinTextSize="24sp"
+                    app:autoSizeTextType="uniform" />
 
                 <LinearLayout
                     android:id="@+id/badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_badge"
-                    android:gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_chip_pill"
+                    android:backgroundTint="@color/umk_mist"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="18dp"
-                    android:paddingVertical="10dp"
-                    app:layout_constraintTop_toBottomOf="@id/tvMontoDisplay"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp">
 
                     <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:id="@+id/ivBadge"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:importantForAccessibility="no"
                         android:src="@drawable/ic_arrow_up"
-                        android:tint="#21E68C" />
+                        android:visibility="gone"
+                        app:tint="@color/umk_success" />
 
                     <TextView
                         android:id="@+id/tvBadgeExceso"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="-"
-                        android:textColor="#21E68C"
-                        android:textStyle="bold"
+                        android:layout_marginStart="4dp"
+                        android:text="Ingresa el nuevo límite"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textFontWeight="700"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Métricas 2×2 (mismo diseño que Perfil cliente) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/tileLimite"
+                    layout="@layout/item_metrica_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/tileSaldo"
+                    layout="@layout/item_metrica_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/tileDisponible"
+                    layout="@layout/item_metrica_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/tileIncremento"
+                    layout="@layout/item_metrica_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- Motivo: ocupa el espacio libre entre la tarjeta y el teclado; muestra el texto completo -->
+            <LinearLayout
+                android:id="@+id/rowMotivo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_tarjeta_perfil"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:minHeight="72dp"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icono_tile"
+                        android:backgroundTint="@color/umk_royal_tint"
+                        android:importantForAccessibility="no"
+                        android:padding="7dp"
+                        android:src="@drawable/ic_message"
+                        app:tint="@color/umk_royal" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:text="Motivo del aumento"
+                        android:textColor="@color/umk_ink"
+                        android:textFontWeight="700"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvMotivoAccion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Escribir"
+                        android:textColor="@color/umk_royal"
+                        android:textFontWeight="700"
                         android:textSize="14sp" />
 
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/umk_royal" />
                 </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tvMontoMotivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:gravity="top|start"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="Toca para escribir el motivo"
+                    android:textColor="@color/umk_ink_muted"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        </com.google.android.material.card.MaterialCardView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
 
-        <TextView
-            android:id="@+id/tvMontoMotivo"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/bg_badge"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:letterSpacing="0"
-            android:maxLines="1"
-            android:text="Escribe el motivo del Incremento"
-            android:textColor="@color/available"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
+        <!-- Teclado -->
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="-5dp"
             android:columnCount="3">
-            <Button android:id="@+id/btnK7" android:text="7" style="@style/KeyStyle" />
-            <Button android:id="@+id/btnK8" android:text="8" style="@style/KeyStyle" />
-            <Button android:id="@+id/btnK9" android:text="9" style="@style/KeyStyle" />
 
-            <Button android:id="@+id/btnK4" android:text="4" style="@style/KeyStyle" />
-            <Button android:id="@+id/btnK5" android:text="5" style="@style/KeyStyle" />
-            <Button android:id="@+id/btnK6" android:text="6" style="@style/KeyStyle" />
+            <Button android:id="@+id/btnK7" style="@style/KeyStyle" android:text="7" />
+            <Button android:id="@+id/btnK8" style="@style/KeyStyle" android:text="8" />
+            <Button android:id="@+id/btnK9" style="@style/KeyStyle" android:text="9" />
 
-            <Button android:id="@+id/btnK1" android:text="1" style="@style/KeyStyle" />
-            <Button android:id="@+id/btnK2" android:text="2" style="@style/KeyStyle" />
-            <Button android:id="@+id/btnK3" android:text="3" style="@style/KeyStyle" />
+            <Button android:id="@+id/btnK4" style="@style/KeyStyle" android:text="4" />
+            <Button android:id="@+id/btnK5" style="@style/KeyStyle" android:text="5" />
+            <Button android:id="@+id/btnK6" style="@style/KeyStyle" android:text="6" />
 
-            <Button android:id="@+id/btnK0" android:text="0" style="@style/KeyStyle" />
-            <Button android:id="@+id/btnKDot" android:text="." style="@style/KeyStyle" />
-            <Button android:id="@+id/btnKDel" android:text="⌫" style="@style/KeyStyle" />
+            <Button android:id="@+id/btnK1" style="@style/KeyStyle" android:text="1" />
+            <Button android:id="@+id/btnK2" style="@style/KeyStyle" android:text="2" />
+            <Button android:id="@+id/btnK3" style="@style/KeyStyle" android:text="3" />
 
+            <Button android:id="@+id/btnK0" style="@style/KeyStyle" android:text="0" />
+            <Button android:id="@+id/btnKDot" style="@style/KeyStyle" android:text="." />
+            <Button android:id="@+id/btnKDel" style="@style/KeyStyle" android:contentDescription="Borrar dígito" android:text="⌫" />
         </GridLayout>
-
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEnviar"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="56dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="20dp"
-        android:text="Enviar solicitud"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:stateListAnimator="@animator/button_press"
+        android:text="Continuar"
         android:textAllCaps="false"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:cornerRadius="12dp" />
+        android:textFontWeight="700"
+        android:textSize="16sp"
+        app:backgroundTint="@color/umk_royal"
+        app:cornerRadius="14dp" />
 
 </LinearLayout>

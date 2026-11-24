@@ -7,7 +7,7 @@
     android:paddingTop="8dp"
     android:paddingBottom="6dp"
     android:text="Mayo 2025"
-    android:textColor="#9BA3AF"
+    android:textColor="@color/umk_ink_muted"
     android:textSize="11sp"
     android:letterSpacing="0.08"
     android:textStyle="bold" />

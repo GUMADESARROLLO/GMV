@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo rojo que aparece detrás de una tarjeta al deslizarla para eliminar -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/umk_danger" />
+    <corners android:radius="20dp" />
+</shape>

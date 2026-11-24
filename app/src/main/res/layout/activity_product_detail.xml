@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F7"
+    android:background="@color/umk_mist"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -29,7 +29,7 @@
                 android:id="@+id/imgProduct"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#EEECEA"
+                android:background="@color/umk_line"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_placeholder_product"
@@ -69,7 +69,7 @@
                         android:layout_height="18dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_arrow_back"
-                        app:tint="#1A1A18" />
+                        app:tint="@color/umk_ink" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <View
@@ -92,7 +92,7 @@
                         android:layout_height="18dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_share"
-                        app:tint="#1A1A18" />
+                        app:tint="@color/umk_ink" />
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="Camiseta básica premium 100% algodón"
-                android:textColor="#1A1A18"
+                android:textColor="@color/umk_ink"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="SKU: 00000001"
-                android:textColor="#9A9890"
+                android:textColor="@color/umk_ink_muted"
                 android:textSize="12sp" />
 
             <!-- PRICE -->
@@ -156,7 +156,7 @@
                     android:background="@drawable/bg_stock"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="5dp"
-                    android:textColor="#639922"
+                    android:textColor="@color/mora_ok"
                     android:textSize="26sp"
                     android:textStyle="bold" />
 
@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="5,912 UND"
-                    android:textColor="#185FA5"
+                    android:textColor="@color/umk_royal"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -178,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="20dp"
-                android:background="#EEECEA" />
+                android:background="@color/umk_line" />
 
             <!-- BONIFICADOS (estilo tallas) -->
             <TextView
@@ -187,7 +187,7 @@
                 android:layout_height="wrap_content"
                 android:text="BONIFICADOS DISPONIBLE"
                 android:textAllCaps="true"
-                android:textColor="#9A9890"
+                android:textColor="@color/umk_ink_muted"
                 android:textSize="11sp"
                 android:textStyle="bold" />
 
@@ -210,7 +210,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="20dp"
-                android:background="#EEECEA" />
+                android:background="@color/umk_line" />
 
             <!-- DESCRIPCION -->
             <TextView
@@ -218,7 +218,7 @@
                 android:layout_height="wrap_content"
                 android:text="DESCRIPCIÓN"
                 android:textAllCaps="true"
-                android:textColor="#9A9890"
+                android:textColor="@color/umk_ink_muted"
                 android:textSize="11sp"
                 android:textStyle="bold" />
 
@@ -226,7 +226,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                app:cardBackgroundColor="#F9F8F6"
+                app:cardBackgroundColor="@color/umk_mist"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
 
@@ -237,7 +237,7 @@
                     android:padding="16dp"
                     android:lineSpacingExtra="4dp"
                     android:text="Camiseta de corte regular confeccionada en algodón 100% peinado. Cuello redondo reforzado, costuras dobles en mangas y bajo."
-                    android:textColor="#555450"
+                    android:textColor="@color/umk_ink_soft"
                     android:textSize="14sp" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -252,7 +252,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                app:backgroundTint="#1A2B4A"
+                app:backgroundTint="@color/umk_navy"
                 app:cornerRadius="16dp"
                 app:icon="@drawable/ic_cart"
                 app:iconGravity="textStart"
@@ -265,7 +265,7 @@
                 android:layout_marginTop="12dp"
                 android:gravity="center"
                 android:text="Bonificado Seleccionado"
-                android:textColor="#9A9890"
+                android:textColor="@color/umk_ink_muted"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -287,7 +287,7 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_cart"
-            app:backgroundTint="#185FA5"
+            app:backgroundTint="@color/umk_royal"
             app:fabSize="normal"
             app:tint="@android:color/white" />
 
@@ -300,7 +300,7 @@
             android:gravity="center"
             android:text="0"
             android:textColor="@android:color/white"
-            android:textSize="9sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             android:visibility="gone" />
 

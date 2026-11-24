@@ -55,7 +55,7 @@ class DoctorInfoTabFragment : Fragment() {
             setPadding((16 * dp).toInt(), (16 * dp).toInt(), (16 * dp).toInt(), (16 * dp).toInt())
         }
 
-        val avatarColors = listOf("#4361EE", "#22C55E", "#EF4444", "#F59E0B", "#8B5CF6", "#06B6D4")
+        val avatarColors = listOf("#2B3B9E", "#22C55E", "#C42B3A", "#F59E0B", "#1B2766", "#29B6E8")
         val avatarColor = Color.parseColor(avatarColors[(doctor.nombre.hashCode() and Int.MAX_VALUE) % avatarColors.size])
 
         val initials = doctor.nombre.replace(Regex("^(Dr|Dra)\\.?\\s*"), "")

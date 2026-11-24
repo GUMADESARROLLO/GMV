@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:text="recibos"
                         android:textColor="#CCFFFFFF"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

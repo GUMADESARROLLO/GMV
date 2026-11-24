@@ -112,7 +112,7 @@ class DoctorListFragment : Fragment() {
         content.addView(TextView(ctx).apply {
             text = "Cargando médicos..."
             textSize = 14f
-            setTextColor(0xFF888888.toInt())
+            setTextColor(0xFF66708C.toInt())
         })
         lv.addView(content)
         container.addView(lv)

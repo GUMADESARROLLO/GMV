@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chip píldora (color vía backgroundTint) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/umk_royal_tint" />
+    <corners android:radius="999dp" />
+</shape>

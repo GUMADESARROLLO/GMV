@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F7"
+    android:background="@color/umk_mist"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -42,7 +42,7 @@
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:iconSize="20dp"
-                    app:iconTint="#1A1A18" />
+                    app:iconTint="@color/umk_ink" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -50,7 +50,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Resumen del pedido"
-                    android:textColor="#1A1A18"
+                    android:textColor="@color/umk_ink"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#EEECEA" />
+            android:background="@color/umk_line" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -88,7 +88,7 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
-                app:strokeColor="#F0F0F0"
+                app:strokeColor="@color/umk_line"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -102,8 +102,8 @@
                         android:layout_height="wrap_content"
                         android:text="CLIENTE"
                         android:textAllCaps="true"
-                        android:textColor="#9A9890"
-                        android:textSize="10sp"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Nombre del cliente"
-                        android:textColor="#1A1A18"
+                        android:textColor="@color/umk_ink"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -122,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Código: 00000"
-                        android:textColor="#9A9890"
+                        android:textColor="@color/umk_ink_muted"
                         android:textSize="12sp"
                         android:visibility="gone" />
 
@@ -132,8 +132,8 @@
                         android:layout_marginTop="8dp"
                         android:text="DIRECCIÓN"
                         android:textAllCaps="true"
-                        android:textColor="#9A9890"
-                        android:textSize="10sp"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -142,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/lorem_ipsum"
-                        android:textColor="#1A1A18"
+                        android:textColor="@color/umk_ink"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:maxLines="2"
@@ -167,8 +167,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="N.° DE PEDIDO"
-                                android:textColor="#9A9890"
-                                android:textSize="10sp"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -177,7 +177,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:text="PED-000001"
-                                android:textColor="#185FA5"
+                                android:textColor="@color/umk_royal"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
@@ -193,8 +193,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="FECHA"
-                                android:textColor="#9A9890"
-                                android:textSize="10sp"
+                                android:textColor="@color/umk_ink_muted"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -202,7 +202,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:textColor="#1A1A18"
+                                android:textColor="@color/umk_ink"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
@@ -223,7 +223,7 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
-                app:strokeColor="#F0F0F0"
+                app:strokeColor="@color/umk_line"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -238,8 +238,8 @@
                         android:layout_height="wrap_content"
                         android:text="ARTÍCULOS"
                         android:textAllCaps="true"
-                        android:textColor="#9A9890"
-                        android:textSize="10sp"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -262,7 +262,7 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
-                app:strokeColor="#F0F0F0"
+                app:strokeColor="@color/umk_line"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -276,8 +276,8 @@
                         android:layout_height="wrap_content"
                         android:text="NOTAS DEL PEDIDO (OPCIONAL)"
                         android:textAllCaps="true"
-                        android:textColor="#9A9890"
-                        android:textSize="10sp"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -290,7 +290,7 @@
                         app:boxCornerRadiusBottomStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
                         app:boxCornerRadiusTopStart="12dp"
-                        app:boxStrokeColor="#E0E0E0"
+                        app:boxStrokeColor="@color/umk_line"
                         app:counterEnabled="true"
                         app:counterMaxLength="200"
                         app:hintEnabled="false">
@@ -304,7 +304,7 @@
                             android:maxLength="200"
                             android:maxLines="4"
                             android:minLines="2"
-                            android:textColor="#1A1A18"
+                            android:textColor="@color/umk_ink"
                             android:textSize="13sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -324,7 +324,7 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
-                app:strokeColor="#F0F0F0"
+                app:strokeColor="@color/umk_line"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -338,8 +338,8 @@
                         android:layout_height="wrap_content"
                         android:text="RESUMEN DE PAGO"
                         android:textAllCaps="true"
-                        android:textColor="#9A9890"
-                        android:textSize="10sp"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -354,7 +354,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Subtotal"
-                            android:textColor="#555450"
+                            android:textColor="@color/umk_ink_soft"
                             android:textSize="14sp" />
 
                         <TextView
@@ -362,7 +362,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="C$ 0.00"
-                            android:textColor="#1A1A18"
+                            android:textColor="@color/umk_ink"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -381,7 +381,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="IVA"
-                        android:textColor="#555450"
+                        android:textColor="@color/umk_ink_soft"
                         android:textSize="14sp" />
 
                         <TextView
@@ -389,7 +389,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="C$ 0.00"
-                            android:textColor="#1A1A18"
+                            android:textColor="@color/umk_ink"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -407,7 +407,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Descuento"
-                            android:textColor="#555450"
+                            android:textColor="@color/umk_ink_soft"
                             android:textSize="14sp" />
 
                         <TextView
@@ -415,7 +415,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="C$ 0.00"
-                            android:textColor="#639922"
+                            android:textColor="@color/mora_ok"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -436,7 +436,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Total a pagar"
-                            android:textColor="#1A1A18"
+                            android:textColor="@color/umk_ink"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -445,7 +445,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="C$ 0.00"
-                            android:textColor="#185FA5"
+                            android:textColor="@color/umk_royal"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 

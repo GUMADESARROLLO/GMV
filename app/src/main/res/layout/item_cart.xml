@@ -9,7 +9,7 @@
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp"
-    app:strokeColor="#F0F0F0"
+    app:strokeColor="@color/umk_line"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -35,7 +35,7 @@
                     android:id="@+id/iv_product_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#F5F5F5"
+                    android:background="@color/umk_mist"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_placeholder_product" />
@@ -56,7 +56,7 @@
                     android:maxLines="10"
                     android:ellipsize="end"
                     android:text="Producto"
-                    android:textColor="#1A1A18"
+                    android:textColor="@color/umk_ink"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="SKU: 000000"
-                        android:textColor="#9A9890"
+                        android:textColor="@color/umk_ink_muted"
                         android:textSize="13sp" />
 
                     <TextView
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="| 2+1"
-                        android:textColor="#639922"
+                        android:textColor="@color/mora_ok"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:visibility="gone" />
@@ -89,22 +89,23 @@
 
             </LinearLayout>
 
+            <!-- wrap_content: con match_parent la columna tomaba el alto del nombre y, si era corto, aplastaba el stepper -->
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="end"
                 android:orientation="vertical"
                 android:layout_marginStart="4dp">
 
                 <ImageButton
                     android:id="@+id/btn_delete"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:importantForAccessibility="no"
-                    android:padding="3dp"
+                    android:contentDescription="Quitar del carrito"
+                    android:padding="13dp"
                     android:src="@drawable/ic_close"
-                    android:tint="#C0C0C0"
+                    android:tint="@color/umk_silver"
                     android:layout_marginBottom="4dp" />
 
                 <LinearLayout
@@ -112,39 +113,40 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:background="#F5F5F7"
+                    android:background="@color/umk_mist"
                     android:paddingHorizontal="1dp"
                     android:paddingVertical="1dp">
 
                     <ImageButton
                         android:id="@+id/btn_decrease"
-                        android:layout_width="26dp"
-                        android:layout_height="26dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:importantForAccessibility="no"
-                        android:padding="5dp"
+                        android:contentDescription="Disminuir cantidad"
+                        android:padding="14dp"
                         android:src="@drawable/ic_remove"
-                        android:tint="#555450" />
+                        android:tint="@color/umk_ink_soft" />
 
                     <TextView
                         android:id="@+id/tv_quantity"
-                        android:layout_width="24dp"
+                        android:layout_width="wrap_content"
+                        android:minWidth="28dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="1"
-                        android:textColor="#1A1A18"
+                        android:textColor="@color/umk_ink"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <ImageButton
                         android:id="@+id/btn_increase"
-                        android:layout_width="26dp"
-                        android:layout_height="26dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:importantForAccessibility="no"
-                        android:padding="5dp"
+                        android:contentDescription="Aumentar cantidad"
+                        android:padding="14dp"
                         android:src="@drawable/ic_add"
-                        android:tint="#185FA5" />
+                        android:tint="@color/umk_royal" />
 
                 </LinearLayout>
 
@@ -157,7 +159,7 @@
             android:layout_height="1dp"
             android:layout_marginVertical="10dp"
             android:layout_marginHorizontal="12dp"
-            android:background="#F0F0F0" />
+            android:background="@color/umk_line" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -186,7 +188,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="C$ 1,000.00 X 15"
-                android:textColor="#9A9890"
+                android:textColor="@color/umk_ink_muted"
                 android:textSize="15sp" />
 
         </LinearLayout>

@@ -1,216 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Pago registrado de una factura (Pagos registrados y Recibo colector).
+     Tarjeta blanca con borde, mismo estilo que Solicitudes. Se llena con tools/FilaPago.kt -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyt_parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="12dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="2dp"
-    app:cardUseCompatPadding="true">
+    android:layout_marginTop="10dp"
+    android:background="@drawable/bg_tarjeta_perfil"
+    android:orientation="vertical"
+    android:paddingHorizontal="14dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
 
     <LinearLayout
-        android:id="@+id/lyt_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <View
-            android:id="@+id/view_estado_bar"
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:background="@color/grey_40" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!-- Factura + Badge -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/id_Factura"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:fontFeatureSettings="tnum"
+                android:text="Fact. 00000000"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="800"
+                android:textSize="15sp" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Factura"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey_40" />
-
-                    <TextView
-                        android:id="@+id/id_Factura"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fact. 00000000"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_80"
-                        android:fontFamily="sans-serif-medium" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/id_badge_estado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bono"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/white"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:background="@drawable/shape_round_corner"
-                    android:backgroundTint="@color/grey_40" />
-
-            </LinearLayout>
-
-            <!-- Recibido (destacado) -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/id_badge_estado"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_chip_pill"
+                android:backgroundTint="@color/status_active_bg"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="Contado"
+                android:textColor="@color/status_active_text"
+                android:textFontWeight="700"
+                android:textSize="11sp" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Recibido"
-                    android:textSize="10sp"
-                    android:textColor="@color/grey_40" />
 
-                <TextView
-                    android:id="@+id/id_valor_recibido"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="C$ 0.00"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/green_500" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="vertical">
 
-            </LinearLayout>
-
-            <!-- Divisor -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/grey_5"
-                android:layout_marginBottom="6dp" />
-
-            <!-- NC | Retencion | Descuento -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/id_valor_recibido"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:fontFeatureSettings="tnum"
+                android:text="C$ 0.00"
+                android:textColor="@color/umk_success"
+                android:textFontWeight="800"
+                android:textSize="17sp" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/id_nc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="C$ 0.00"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_80" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="N/C"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey_40"
-                        android:layout_marginTop="1dp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/grey_5" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/id_retencion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="C$ 0.00"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_80" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Retención"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey_40"
-                        android:layout_marginTop="1dp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/grey_5" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/id_descuento"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="C$ 0.00"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_80" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Descuento"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey_40"
-                        android:layout_marginTop="1dp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recibido"
+                android:textColor="@color/umk_ink_muted"
+                android:textSize="12sp" />
         </LinearLayout>
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="10dp"
+        android:background="@color/umk_line" />
+
+    <!-- N/C · Retención · Descuento -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/C"
+                android:textColor="@color/umk_ink_muted"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/id_nc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:text="C$ 0.00"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="700"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retención"
+                android:textColor="@color/umk_ink_muted"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/id_retencion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:text="C$ 0.00"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="700"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descuento"
+                android:textColor="@color/umk_ink_muted"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/id_descuento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:text="C$ 0.00"
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="700"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

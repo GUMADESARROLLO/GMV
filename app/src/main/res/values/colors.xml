@@ -1,125 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="seed">#337AB7</color>
+    <!-- ═══ Línea gráfica Unimark 20 años (compartida con MonitorLoteria/Tombola) ═══
+         Blanco arriba, franja azul rey con ondas cian. Todos los alias de abajo apuntan aquí. -->
+    <color name="umk_paper">#FFFFFF</color>
+    <color name="umk_mist">#F2F5FA</color>
+    <color name="umk_navy">#1B2766</color>
+    <color name="umk_royal">#2B3B9E</color>
+    <color name="umk_royal_2">#3446B3</color>
+    <color name="umk_royal_tint">#E9ECF8</color>
+    <color name="umk_cyan">#29B6E8</color>
+    <color name="umk_cyan_ink">#0A76A8</color>
+    <color name="umk_cyan_tint">#E6F6FD</color>
+    <color name="umk_silver">#C4CCD8</color>
+    <color name="umk_ink">#15204F</color>
+    <color name="umk_ink_soft">#4A5878</color>
+    <!-- Texto terciario/hint: 4.9:1 sobre blanco (AA) -->
+    <color name="umk_ink_muted">#66708C</color>
+    <color name="umk_on_royal_soft">#CDD6F5</color>
+    <color name="umk_line">#DDE3EE</color>
+    <color name="umk_danger">#C42B3A</color>
+    <color name="umk_danger_tint">#FDECEE</color>
+    <!-- Acción de pedido / éxito: texto blanco encima 5.4:1 (AA) -->
+    <color name="umk_success">#1F7A4A</color>
+    <color name="umk_success_tint">#E3F4EA</color>
+    <color name="seed">@color/umk_royal</color>
 
     <!-- Primary -->
-    <color name="primary">#337AB7</color>
+    <color name="primary">@color/umk_royal</color>
     <color name="on_primary">#FFFFFF</color>
-    <color name="primary_container">#D6E4F0</color>
-    <color name="on_primary_container">#1A3A5C</color>
+    <color name="primary_container">@color/umk_royal_tint</color>
+    <color name="on_primary_container">@color/umk_navy</color>
     <color name="badge_color">#1b4332</color>
 
     <!-- Secondary -->
-    <color name="secondary">#3A539B</color>
+    <color name="secondary">@color/umk_navy</color>
     <color name="on_secondary">#FFFFFF</color>
-    <color name="secondary_container">#D6DCE8</color>
-    <color name="on_secondary_container">#1C2A5C</color>
+    <color name="secondary_container">@color/umk_cyan_tint</color>
+    <color name="on_secondary_container">@color/umk_navy</color>
 
     <!-- Tertiary -->
-    <color name="tertiary">#7E57C2</color>
+    <color name="tertiary">@color/umk_cyan_ink</color>
     <color name="on_tertiary">#FFFFFF</color>
-    <color name="tertiary_container">#EDE7F6</color>
-    <color name="on_tertiary_container">#311B92</color>
+    <color name="tertiary_container">@color/umk_cyan_tint</color>
+    <color name="on_tertiary_container">#073B55</color>
 
     <!-- Error -->
-    <color name="error">#EF5350</color>
+    <color name="error">@color/umk_danger</color>
     <color name="on_error">#FFFFFF</color>
-    <color name="error_container">#FFEBEE</color>
-    <color name="on_error_container">#B71C1C</color>
+    <color name="error_container">@color/umk_danger_tint</color>
+    <color name="on_error_container">#8A1C27</color>
 
     <!-- Background / Surface -->
-    <color name="background">#F2F2F2</color>
-    <color name="on_background">#000000</color>
-    <color name="surface">#E7E7E7</color>
-    <color name="on_surface">#000000</color>
-    <color name="surface_variant">#D4D4D4</color>
-    <color name="on_surface_variant">#535353</color>
+    <color name="background">@color/umk_mist</color>
+    <color name="on_background">@color/umk_ink</color>
+    <color name="surface">@color/umk_paper</color>
+    <color name="on_surface">@color/umk_ink</color>
+    <color name="surface_variant">#E6EAF2</color>
+    <color name="on_surface_variant">@color/umk_ink_soft</color>
 
     <!-- Outline -->
-    <color name="outline">#B0BEC5</color>
-    <color name="outline_variant">#CFD8DC</color>
+    <color name="outline">@color/umk_silver</color>
+    <color name="outline_variant">@color/umk_line</color>
 
     <!-- Overlay -->
     <color name="overlay">#80000000</color>
 
-    <!-- Telegram-specific extras -->
+    <!-- Extras -->
     <color name="badge_red">#FF7043</color>
-    <color name="time_text">#535353</color>
-    <color name="subtitle_text">#535353</color>
-    <color name="avatar_bg_1">#D6E4F0</color>
-    <color name="avatar_bg_2">#E1BEE7</color>
+    <color name="time_text">@color/umk_ink_soft</color>
+    <color name="subtitle_text">@color/umk_ink_soft</color>
+    <color name="avatar_bg_1">@color/umk_royal_tint</color>
+    <color name="avatar_bg_2">#D9E1F5</color>
     <color name="avatar_bg_3">#C8E6C9</color>
     <color name="avatar_bg_4">#FFCCBC</color>
-    <color name="avatar_bg_5">#B2EBF2</color>
+    <color name="avatar_bg_5">@color/umk_cyan_tint</color>
 
     <!-- UI LOGIN -->
-    <color name="background_login">#F2F2F2</color>
-    <color name="primary_login">#337AB7</color>
-    <color name="primary_dark">#273B7A</color>
-    <color name="input_bg">#E7E7E7</color>
-    <color name="text_primary">#000000</color>
-    <color name="text_secondary">#535353</color>
+    <color name="background_login">@color/umk_mist</color>
+    <color name="primary_login">@color/umk_royal</color>
+    <color name="primary_dark">@color/umk_navy</color>
+    <color name="input_bg">#EEF1F7</color>
+    <color name="text_primary">@color/umk_ink</color>
+    <color name="text_secondary">@color/umk_ink_soft</color>
     <color name="white">#FFFFFF</color>
 
     <!-- Productos / UI extras -->
-    <color name="grey_40">#9E9E9E</color>
-    <color name="grey_60">#757575</color>
+    <color name="grey_40">@color/umk_ink_muted</color>
+    <color name="grey_60">@color/umk_ink_muted</color>
     <color name="available">#43A047</color>
-    <color name="txt_price_color">#E65100</color>
-    <color name="grey_90">#212121</color>
+    <color name="txt_price_color">@color/umk_royal</color>
+    <color name="grey_90">@color/umk_ink</color>
     <color name="green_500">#4CAF50</color>
-    <color name="red_400">#EF5350</color>
-    <color name="light_blue_400">#29B6F6</color>
-    <color name="red">#EF5350</color>
+    <color name="red_400">@color/umk_danger</color>
+    <color name="light_blue_400">@color/umk_cyan</color>
+    <color name="red">@color/umk_danger</color>
     <color name="orange_500">#FF9800</color>
     <color name="colorPrimary">@color/primary</color>
-    <color name="grey_5">#F5F5F5</color>
-    <color name="grey_10">#F0F0F0</color>
-    <color name="grey_80">#424242</color>
-    <color name="blue_600">#337AB7</color>
+    <color name="grey_5">@color/umk_mist</color>
+    <color name="grey_10">@color/umk_mist</color>
+    <color name="grey_80">@color/umk_ink_soft</color>
+    <color name="blue_600">@color/umk_royal</color>
     <color name="black">#000000</color>
     <color name="light_green_600">#43A047</color>
     <color name="light_green_700">#689F38</color>
     <color name="colorAccent">@color/primary</color>
     <color name="overlay_light_20">#33FFFFFF</color>
 
-    <color name="grey_20">#D4D4D4</color>
+    <color name="grey_20">@color/umk_line</color>
 
     <!-- Floating nav — corporate colors -->
-    <color name="nav_pill_bg">@color/colorUmkPrimaryDark</color>
-    <color name="nav_pill_stroke">@color/colorUmkPrimaryDark</color>
-    <color name="nav_active_bg">@color/colorUmkPrimary</color>
-    <color name="nav_inactive_icon">#80FFFFFF</color>
-    <color name="nav_active_icon">#FFFFFF</color>
-    <color name="nav_active_text">#FFFFFF</color>
+    <color name="nav_pill_bg">#F7FFFFFF</color>
+    <color name="nav_pill_stroke">@color/umk_line</color>
+    <color name="nav_active_bg">@color/umk_royal_tint</color>
+    <color name="nav_inactive_icon">@color/umk_ink_muted</color>
+    <color name="nav_active_icon">@color/umk_royal</color>
+    <color name="nav_active_text">@color/umk_royal</color>
 
     <!-- Recibos Colector palette -->
-    <color name="brand_primary">#1A73C8</color>
-    <color name="brand_primary_dark">#1558A0</color>
-    <color name="brand_primary_light">#E8F1FB</color>
-    <color name="brand_accent">#00C49A</color>
-    <color name="bg_surface">#F0F4F9</color>
+    <color name="brand_primary">@color/umk_royal</color>
+    <color name="brand_primary_dark">@color/umk_navy</color>
+    <color name="brand_primary_light">@color/umk_royal_tint</color>
+    <color name="brand_accent">@color/umk_cyan</color>
+    <color name="bg_surface">@color/umk_mist</color>
     <color name="card_background">#FFFFFF</color>
-    <color name="card_stroke_new">#E8EDF3</color>
-    <color name="avatar_bg">#EBF3FD</color>
-    <color name="text_secondary_new">#4A5568</color>
-    <color name="text_hint_new">#9AA5B4</color>
-    <color name="icon_secondary">#9AA5B4</color>
+    <color name="card_stroke_new">@color/umk_line</color>
+    <color name="avatar_bg">@color/umk_royal_tint</color>
+    <color name="text_secondary_new">@color/umk_ink_soft</color>
+    <color name="text_hint_new">@color/umk_ink_muted</color>
+    <color name="icon_secondary">#8792AB</color>
     <color name="amount_positive">#0A9E72</color>
-    <color name="amount_zero">#9AA5B4</color>
-    <color name="amount_negative">#E53E3E</color>
+    <color name="amount_zero">@color/umk_ink_muted</color>
+    <color name="amount_negative">@color/umk_danger</color>
     <color name="status_cancel_bg">#FFF0F0</color>
     <color name="status_cancel_text">#C53030</color>
     <color name="status_active_bg">#E8F8F0</color>
     <color name="status_active_text">#1A6B45</color>
     <color name="status_pending_bg">#FFF8E6</color>
     <color name="status_pending_text">#B45309</color>
-    <color name="chip_bg_neutral">#F7FAFC</color>
-    <color name="chip_stroke_neutral">#E8EDF3</color>
-    <color name="chip_bg_active">#EBF3FD</color>
-    <color name="chip_stroke_active">#BDD4EE</color>
-    <color name="divider_color">#EEF2F7</color>
-    <color name="error_color">#E53E3E</color>
+    <color name="chip_bg_neutral">@color/umk_mist</color>
+    <color name="chip_stroke_neutral">@color/umk_line</color>
+    <color name="chip_bg_active">@color/umk_royal_tint</color>
+    <color name="chip_stroke_active">#BFC7EA</color>
+    <color name="divider_color">@color/umk_line</color>
+    <color name="error_color">@color/umk_danger</color>
 
     <!-- Mora semafórica -->
     <color name="mora_ok">#639922</color>
@@ -136,69 +159,69 @@
     <color name="mora_90_bg">#FAE5D3</color>
 
     <!-- Chips de talla — estado disponible (azul) -->
-    <color name="size_chip_available_bg">#E6F1FB</color>
-    <color name="size_chip_available_text">#0C447C</color>
+    <color name="size_chip_available_bg">@color/umk_royal_tint</color>
+    <color name="size_chip_available_text">@color/umk_navy</color>
 
     <!-- Chips de talla — estado por defecto (gris) -->
-    <color name="size_chip_default_bg">#F1EFE8</color>
-    <color name="size_chip_default_text">#888780</color>
+    <color name="size_chip_default_bg">@color/umk_mist</color>
+    <color name="size_chip_default_text">@color/umk_ink_muted</color>
 
     <!-- Product Detail mockup -->
-    <color name="mockup_btn_primary">#1A2B4A</color>
-    <color name="mockup_btn_active">#185FA5</color>
+    <color name="mockup_btn_primary">@color/umk_navy</color>
+    <color name="mockup_btn_active">@color/umk_royal</color>
 
-    <color name="colorUmkPrimaryDark">#003044</color>
-    <color name="colorUmkPrimary">#006690</color>
-    <color name="colorUmkAccent">#009cdd</color>
-    <color name="greyUmk_10">#e6e6e6</color>
+    <color name="colorUmkPrimaryDark">@color/umk_navy</color>
+    <color name="colorUmkPrimary">@color/umk_royal</color>
+    <color name="colorUmkAccent">@color/umk_cyan</color>
+    <color name="greyUmk_10">@color/umk_mist</color>
 
-    <color name="text_hint">#5A5A72</color>
-    <color name="accent_blue">#4F6EF7</color>
-    <color name="icon_muted">#9E9E9E</color>
-    <color name="divider">#D4D4D4</color>
+    <color name="text_hint">@color/umk_ink_muted</color>
+    <color name="accent_blue">@color/umk_royal</color>
+    <color name="icon_muted">#8792AB</color>
+    <color name="divider">@color/umk_line</color>
 
     <!-- Visita Médica Dashboard palette -->
-    <color name="header_dark">#1A1F5E</color>
+    <color name="header_dark">@color/umk_navy</color>
     <color name="white_70">#B3FFFFFF</color>
     <color name="white_50">#80FFFFFF</color>
     <color name="white_10">#1AFFFFFF</color>
     <color name="white_07">#12FFFFFF</color>
-    <color name="purple_50">#EEEDFE</color>
-    <color name="purple_700">#534AB7</color>
+    <color name="purple_50">@color/umk_cyan_tint</color>
+    <color name="purple_700">@color/umk_cyan_ink</color>
     <color name="green_50">#E1F5EE</color>
     <color name="green_700">#0F6E56</color>
     <color name="amber_50">#FAEEDA</color>
     <color name="amber_700">#854F0B</color>
-    <color name="blue_700">#185FA5</color>
-    <color name="card_border">#1A000000</color>
-    <color name="text_tertiary">#64748B</color>
+    <color name="blue_700">@color/umk_royal</color>
+    <color name="card_border">#1A15204F</color>
+    <color name="text_tertiary">@color/umk_ink_muted</color>
 
     <!-- Seller Metrics palette -->
-    <color name="accent_primary">#4361EE</color>
-    <color name="accent_primary_light">#EEF1FF</color>
+    <color name="accent_primary">@color/umk_royal</color>
+    <color name="accent_primary_light">@color/umk_royal_tint</color>
     <color name="accent_green">#22C55E</color>
     <color name="accent_green_light">#DCFCE7</color>
-    <color name="accent_red">#EF4444</color>
-    <color name="accent_red_light">#FEE2E2</color>
+    <color name="accent_red">@color/umk_danger</color>
+    <color name="accent_red_light">@color/umk_danger_tint</color>
     <color name="accent_amber">#F59E0B</color>
-    <color name="bg_dashboard">#F1F5F9</color>
-    <color name="surface_card">#FFFFFF</color>
-    <color name="surface_dark">#1E293B</color>
-    <color name="card_stroke">#E8EDF3</color>
-    <color name="chip_bg">#F1F5F9</color>
-    <color name="progress_track">#EEF1FF</color>
-    <color name="text_label">#64748B</color>
+    <color name="bg_dashboard">@color/umk_mist</color>
+    <color name="surface_card">@color/umk_paper</color>
+    <color name="surface_dark">@color/umk_navy</color>
+    <color name="card_stroke">@color/umk_line</color>
+    <color name="chip_bg">@color/umk_mist</color>
+    <color name="progress_track">@color/umk_royal_tint</color>
+    <color name="text_label">@color/umk_ink_muted</color>
 
     <!-- Perfil cliente -->
-    <color name="perfil_accent">#0B4F6C</color>
-    <color name="perfil_surface">#F2F5F7</color>
-    <color name="perfil_border">#DCE5EA</color>
-    <color name="perfil_text">#14232C</color>
-    <color name="perfil_text_muted">#4A5A66</color>
+    <color name="perfil_accent">@color/umk_royal</color>
+    <color name="perfil_surface">@color/umk_mist</color>
+    <color name="perfil_border">@color/umk_line</color>
+    <color name="perfil_text">@color/umk_ink</color>
+    <color name="perfil_text_muted">@color/umk_ink_soft</color>
     <color name="perfil_danger">#A33A0B</color>
     <color name="perfil_chip_late_bg">#FBE6E1</color>
     <color name="perfil_chip_late_text">#8C2F06</color>
     <color name="perfil_chip_soon_bg">#FBEBCB</color>
     <color name="perfil_chip_soon_text">#7A4A00</color>
-    <color name="perfil_chip_ok_bg">#E4EEF3</color>
+    <color name="perfil_chip_ok_bg">@color/umk_royal_tint</color>
 </resources>

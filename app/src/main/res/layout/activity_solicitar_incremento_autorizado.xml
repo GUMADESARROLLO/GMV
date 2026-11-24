@@ -1,364 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-    Comprobante de Transacción - Full Screen Elegante
-
-    Dependencias:
-    implementation("com.google.android.material:material:1.11.0")
-
-    Colores:
-    header_dark  = #0F2D52
-    green_avail  = #0F6E56
-    red_balance  = #993C1D
-    avatar_bg    = #E6F1FB
-    avatar_text  = #185FA5
-    note_bg      = #F0F4F8
-    white        = #FFFFFF
--->
-
+<!-- Confirmar solicitud de aumento — mismo lenguaje que Perfil cliente y Buscar lote. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#0F2D52">
+    android:background="@color/umk_mist"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <!-- ═════════ HEADER (40%) ═════════ -->
-
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:paddingStart="28dp"
-        android:paddingEnd="28dp"
-        android:paddingTop="40dp"
-        android:paddingBottom="24dp">
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
 
-        <!-- Toolbar -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="32dp">
-
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_btn_back"
-                android:src="@drawable/ic_arrow_left"
-                android:contentDescription="Volver"
-                app:tint="#FFFFFF" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Confirmar Solicitud"
-                android:textColor="#FFFFFF"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:gravity="center" />
-
-            <!-- Spacer -->
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
-
-        </LinearLayout>
-
-        <!-- Icono -->
-
-        <LinearLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:background="@drawable/bg_icon_circle">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_monetization_on"
-                app:tint="#FFFFFF" />
-
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_boton_circular"
+            android:contentDescription="Regresar"
+            android:padding="11dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_arrow_left"
+            app:tint="@color/umk_ink" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="ESTA A PUNTO DE SOLICITAR"
-            android:textColor="#8FAECB"
-            android:textSize="11sp"
-            android:letterSpacing="0.12"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/tvMonto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="C$ 60,000.00"
-            android:textColor="#FFFFFF"
-            android:textSize="44sp"
-            android:textStyle="bold"
-            android:letterSpacing="-0.02" />
-
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:letterSpacing="-0.01"
+            android:id="@+id/tvTituloConfirmar"
+            android:text="Confirmar solicitud"
+            android:textColor="@color/umk_ink"
+            android:textFontWeight="800"
+            android:textSize="20sp" />
     </LinearLayout>
 
-    <!-- ═════════ TARJETA BLANCA (60%) ═════════ -->
-
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
-        android:orientation="vertical"
-        android:background="@drawable/bg_card_top_rounded"
-        android:paddingStart="28dp"
-        android:paddingEnd="28dp"
-        android:paddingTop="28dp"
-        android:paddingBottom="32dp">
-
-        <!-- Handle -->
-
-        <View
-            android:layout_width="40dp"
-            android:layout_height="4dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="28dp"
-            android:background="@drawable/bg_handle" />
-
-        <!-- Cliente -->
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="28dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvAvatar"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center"
-                android:text="C"
-                android:textColor="#185FA5"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:background="@drawable/bg_avatar_rounded" />
-
+            <!-- Monto -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_tarjeta_perfil"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp">
+
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:background="@drawable/bg_icono_tile"
+                    android:backgroundTint="@color/umk_royal_tint"
+                    android:importantForAccessibility="no"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_monetization_on"
+                    app:tint="@color/umk_royal" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cliente"
-                    android:textColor="#AAAAAA"
+                    android:layout_marginTop="12dp"
+                    android:text="Nuevo límite a solicitar"
+                    android:textColor="@color/umk_ink_soft"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvMonto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFeatureSettings="tnum"
+                    android:letterSpacing="-0.02"
+                    android:maxLines="1"
+                    android:text="C$ 0.00"
+                    android:textColor="@color/umk_ink"
+                    android:textFontWeight="800"
+                    android:textSize="34sp" />
+
+                <TextView
+                    android:id="@+id/tvEstadoSolicitud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_chip_pill"
+                    android:backgroundTint="@color/umk_success_tint"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="+C$ 0.00 sobre el límite actual"
+                    android:textColor="@color/umk_success"
+                    android:textFontWeight="700"
                     android:textSize="12sp"
-                    android:layout_marginBottom="2dp" />
-
-                <TextView
-                    android:id="@+id/tvNombreCliente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Clínica Centro Médico Belén"
-                    android:textColor="#1A1A1A"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvIdCliente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="# 00479"
-                    android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:layout_marginTop="2dp" />
-
+                    android:visibility="gone" />
             </LinearLayout>
 
-        </LinearLayout>
+            <!-- Cliente -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_tarjeta_perfil"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="14dp">
 
-        <!-- Estadísticas -->
+                <TextView
+                    android:id="@+id/tvAvatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_chip_pill"
+                    android:backgroundTint="@color/umk_royal_tint"
+                    android:gravity="center"
+                    android:importantForAccessibility="no"
+                    android:text="C"
+                    android:textColor="@color/umk_royal"
+                    android:textFontWeight="800"
+                    android:textSize="15sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_stats_rounded"
-            android:padding="16dp"
-            android:layout_marginBottom="28dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-            <!-- Disponible -->
+                    <TextView
+                        android:id="@+id/tvNombreCliente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="Cliente"
+                        android:textColor="@color/umk_ink"
+                        android:textFontWeight="800"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvIdCliente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="00000"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Métricas 2×2 (mismo diseño que Perfil cliente) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/tileLimite"
+                    layout="@layout/item_metrica_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/tileSaldo"
+                    layout="@layout/item_metrica_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <include
+                    android:id="@+id/tileDisponible"
+                    layout="@layout/item_metrica_tile"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Disponible"
-                    android:textColor="#AAAAAA"
-                    android:textSize="11sp"
-                    android:layout_marginBottom="6dp" />
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1" />
 
-                <TextView
-                    android:id="@+id/tvDisponible"
-                    android:layout_width="wrap_content"
+                <include
+                    android:id="@+id/tileIncremento"
+                    layout="@layout/item_metrica_tile"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="C$ 42,782.40"
-                    android:textColor="#0F6E56"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1" />
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical"
-                android:background="#E0E0E0" />
-
-            <!-- Saldo -->
-
+            <!-- Motivo -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_tarjeta_perfil"
+                android:orientation="horizontal"
+                android:padding="14dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icono_tile"
+                    android:backgroundTint="@color/umk_royal_tint"
+                    android:importantForAccessibility="no"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_message"
+                    app:tint="@color/umk_royal" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Saldo"
-                    android:textColor="#AAAAAA"
-                    android:textSize="11sp"
-                    android:layout_marginBottom="6dp" />
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvSaldo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="C$ 7,217.60"
-                    android:textColor="#993C1D"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Motivo"
+                        android:textColor="@color/umk_ink_muted"
+                        android:textSize="12sp" />
 
+                    <TextView
+                        android:id="@+id/tvNota"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:lineSpacingMultiplier="1.15"
+                        android:text="—"
+                        android:textColor="@color/umk_ink"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical"
-                android:background="#E0E0E0" />
-
-            <!-- Límite -->
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Límite"
-                    android:textColor="#AAAAAA"
-                    android:textSize="11sp"
-                    android:layout_marginBottom="6dp" />
-
-                <TextView
-                    android:id="@+id/tvLimite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="C$ 50,000.00"
-                    android:textColor="#1A1A1A"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <!-- Referencia -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Referencia"
-            android:textColor="#AAAAAA"
-            android:textSize="12sp"
-            android:layout_marginBottom="8dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:background="@drawable/bg_note_rounded"
-            android:padding="16dp">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_message"
-                app:tint="#AAAAAA" />
-
-            <TextView
-                android:id="@+id/tvNota"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ksksksk"
-                android:textColor="#555555"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-        <!-- Spacer -->
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <!-- Botón -->
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEnviar"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="Enviar solicitud"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.02"
-            app:backgroundTint="#0F2D52"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/ic_send"
-            app:iconTint="#FFFFFF"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp" />
-
-    </LinearLayout>
+    <!-- Desliza para enviar: el envío solo ocurre al completar el gesto (con TalkBack: doble toque) -->
+    <com.unimarksa.gmv.views.DeslizarParaConfirmarView
+        android:id="@+id/btnEnviar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp" />
 
 </LinearLayout>

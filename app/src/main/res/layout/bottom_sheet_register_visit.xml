@@ -106,7 +106,7 @@
                     android:gravity="center"
                     android:text="La visita se realizó con éxito"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
 
             </LinearLayout>
 
@@ -156,7 +156,7 @@
                     android:gravity="center"
                     android:text="No fue posible completar"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
 
             </LinearLayout>
 
@@ -291,7 +291,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:letterSpacing="0"
-                        android:fontFamily="sans-serif" />
+                        android:fontFamily="@font/archivo" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

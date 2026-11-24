@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient android:type="linear" android:angle="135"
-        android:startColor="#1E3A8A" android:centerColor="#2D55C9" android:endColor="#4361EE" />
+<!-- Franja azul rey de la línea gráfica Unimark 20 años -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="315"
+        android:startColor="@color/umk_navy"
+        android:centerColor="@color/umk_royal"
+        android:endColor="@color/umk_royal_2"
+        android:type="linear" />
 </shape>

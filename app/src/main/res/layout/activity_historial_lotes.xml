@@ -3,76 +3,105 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_5"
+    android:background="@color/umk_mist"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Header claro (igual que Perfil cliente): botón circular + título, y debajo el campo de búsqueda -->
+    <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:elevation="0dp"
-        android:fitsSystemWindows="true">
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorUmkPrimary"
-            app:contentInsetStart="0dp"
-            app:contentInsetEnd="0dp">
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_boton_circular"
+            android:contentDescription="Regresar"
+            android:padding="11dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_arrow_left"
+            app:tint="@color/umk_ink" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="4dp"
-                android:paddingEnd="12dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:letterSpacing="-0.01"
+            android:text="Buscar lote"
+            android:textColor="@color/umk_ink"
+            android:textFontWeight="800"
+            android:textSize="20sp" />
+    </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/btn_back"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Regresar"
-                    android:src="@drawable/ic_arrow_left"
-                    android:tint="@color/white" />
-
-                <EditText
-                    android:id="@+id/et_search"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:hint="Ingrese el código del lote"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:textSize="15sp" />
-
-                <ImageButton
-                    android:id="@+id/btn_clear"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Limpiar"
-                    android:src="@drawable/ic_close"
-                    android:tint="#9A9890"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <View
+    <!-- Campo de búsqueda: blanco con borde, ícono, limpiar y botón Buscar visible -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#EEECEA" />
+        android:layout_height="52dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_input_dark"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="14dp"
+        android:paddingEnd="4dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_search"
+            app:tint="@color/umk_ink_muted" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="Código del lote"
+            android:imeOptions="actionSearch"
+            android:importantForAutofill="no"
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLines="1"
+            android:textColor="@color/umk_ink"
+            android:textColorHint="@color/umk_ink_muted"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/btn_clear"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Limpiar búsqueda"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close"
+            android:visibility="gone"
+            app:tint="@color/umk_ink_muted" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_buscar"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="16dp"
+            android:stateListAnimator="@animator/button_press"
+            android:text="Buscar"
+            android:textAllCaps="false"
+            android:textFontWeight="700"
+            android:textSize="14sp"
+            app:backgroundTint="@color/umk_royal"
+            app:cornerRadius="11dp" />
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -92,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="#9A9890"
+                android:textColor="@color/umk_ink_muted"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -120,14 +149,14 @@
                 android:layout_height="60dp"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_search"
-                android:tint="#D0D0D0" />
+                app:tint="@color/umk_silver" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Buscar lote"
-                android:textColor="#1A1A18"
+                android:textColor="@color/umk_ink"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -135,8 +164,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="Ingrese el código del lote y presione buscar"
-                android:textColor="#9A9890"
+                android:text="Escribe el código del lote y toca Buscar"
+                android:textColor="@color/umk_ink_muted"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -154,14 +183,14 @@
                 android:layout_height="60dp"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_close"
-                android:tint="#EF5350" />
+                app:tint="@color/umk_danger" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Sin resultados"
-                android:textColor="#1A1A18"
+                android:textColor="@color/umk_ink"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -172,7 +201,7 @@
                 android:gravity="center"
                 android:paddingHorizontal="32dp"
                 android:text="No se encontró ninguna coincidencia con ese lote"
-                android:textColor="#9A9890"
+                android:textColor="@color/umk_ink_muted"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -203,7 +232,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Recientes"
-                    android:textColor="#9A9890"
+                    android:textColor="@color/umk_ink_muted"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -215,7 +244,7 @@
                     android:focusable="true"
                     android:padding="4dp"
                     android:text="Borrar"
-                    android:textColor="#EF5350"
+                    android:textColor="@color/umk_danger"
                     android:textSize="12sp" />
             </LinearLayout>
 

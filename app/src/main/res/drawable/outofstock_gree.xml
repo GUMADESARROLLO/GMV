@@ -8,7 +8,7 @@
         android:bottomRightRadius="18dp"
         android:topRightRadius="18dp" />
 
-    <!--<stroke android:color="#03A9F4"-->
+    <!--<stroke android:color="@color/umk_cyan"-->
     <!--android:width="1dp" />-->
 
 </shape>

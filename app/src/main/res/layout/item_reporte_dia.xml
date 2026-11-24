@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Encabezado de día en Facturación: franja azul marino (contraste fuerte con las tarjetas blancas),
+     para ubicar rápido cada día y su total. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:background="@drawable/bg_icono_tile"
+    android:backgroundTint="@color/umk_navy"
+    android:gravity="center_vertical"
+    android:minHeight="52dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="8dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvDiaTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:accessibilityHeading="true"
+            android:letterSpacing="0.06"
+            android:text="HOY"
+            android:textColor="@color/umk_paper"
+            android:textFontWeight="800"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvDiaConteo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 facturas"
+            android:textColor="@color/umk_on_royal_soft"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvDiaTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFeatureSettings="tnum"
+        android:text="Σ C$ 0.00"
+        android:textColor="@color/umk_paper"
+        android:textFontWeight="800"
+        android:textSize="17sp" />
+</LinearLayout>

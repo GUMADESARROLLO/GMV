@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:text="Crédito"
                     android:textColor="@color/accent_green"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -169,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:text="Contado"
                     android:textColor="@color/accent_green"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView

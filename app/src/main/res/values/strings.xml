@@ -6,6 +6,9 @@
     <string name="label_articulos">ARTÍCULOS</string>
     <string name="label_clientes">CLIENTES</string>
     <string name="label_perfil">PERFIL</string>
+    <string name="nav_articulos">Artículos</string>
+    <string name="nav_clientes">Clientes</string>
+    <string name="nav_perfil">Perfil</string>
     <string name="titulo_articulos">Artículos</string>
     <string name="titulo_clientes">Clientes</string>
     <string name="titulo_perfil">Perfil</string>
@@ -105,7 +108,7 @@
     <string name="factura_detail_saldo">Saldo</string>
     <string name="factura_detail_vencimiento">Vencimiento</string>
     <string name="factura_detail_saldo_actual">Saldo actual</string>
-    <string name="btn_registrar_pago">Registrar pago / Abono</string>
+    <string name="btn_registrar_pago">Pagar</string>
     <string name="btn_agregar">Agregar</string>
     <string name="btn_cancelar">Cancelar</string>
     <string name="about_text">GMV utiliza la API interna de la empresa para brindar una experiencia segura y de alta velocidad.

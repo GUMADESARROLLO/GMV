@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.BarrasSistema
 import com.unimarksa.gmv.adapters.DetalleFacturaAdapter
 import com.unimarksa.gmv.databinding.ActivityFacturaDetailBinding
 import com.unimarksa.gmv.models.ItemFacturaPendiente
@@ -30,6 +31,7 @@ class FacturaDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFacturaDetailBinding
     private var factura: ItemFacturaPendiente? = null
     private var isReadOnly = false
+    private var observaciones: List<Pair<String?, String>> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -43,19 +45,10 @@ class FacturaDetailActivity : AppCompatActivity() {
             insets
         }
 
-        if (Build.VERSION.SDK_INT >= 35) {
-            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-            val h = if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
-            val scrim = View(this)
-            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.colorUmkPrimaryDark))
-            val content = findViewById<ViewGroup>(android.R.id.content)
-            scrim.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h)
-            content.addView(scrim)
-        } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
-        }
+        BarrasSistema.aplicar(this, R.color.umk_mist)
 
-        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
+
+        binding.btnObservaciones.setOnClickListener { mostrarObservaciones() }
 
         binding.btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -83,9 +76,9 @@ class FacturaDetailActivity : AppCompatActivity() {
             val v = raw.replace(",", "").trim().toDoubleOrNull() ?: 0.0
             return "C$ ${"%,.2f".format(v)}"
         }
-        binding.tvToolbarTitle.text = "${f.numero}"
+        binding.tvToolbarTitle.text = "Fact. ${f.numero}"
         binding.tvFacturaSaldoBottom.text = fmt(f.saldo)
-        binding.tvDetailVencimiento.text = "${f.vencimiento.replace("-", "/")}"
+        binding.tvDetailVencimiento.text = "Vence ${f.vencimiento.replace("-", "/")}"
         loadDetalle(f.numero)
     }
 
@@ -99,12 +92,83 @@ class FacturaDetailActivity : AppCompatActivity() {
                 } else {
                     binding.rvArticulos.layoutManager = LinearLayoutManager(this)
                     binding.rvArticulos.adapter = DetalleFacturaAdapter(items)
+                    prepararObservaciones(items)
+                    binding.tvConteoArticulos.text = "${items.size}"
+                    binding.tvConteoArticulos.visibility = View.VISIBLE
                 }
             },
             onError = {
                 binding.lytEmpty.root.visibility = View.VISIBLE
+
             }
         )
+    }
+
+    /**
+     * OBSERVACIONES llega en cada línea del detalle (normalmente el mismo comentario repetido).
+     * Si todas coinciden se muestra una sola vez; si alguna línea trae uno distinto, se lista
+     * con el artículo al que pertenece.
+     */
+    private fun prepararObservaciones(items: List<com.unimarksa.gmv.models.ItemDetalleFactura>) {
+        val conTexto = items.filter { it.observaciones.isNotBlank() }
+        val distintas = conTexto.map { it.observaciones.trim() }.distinct()
+        observaciones = when {
+            distintas.isEmpty() -> emptyList()
+            distintas.size == 1 -> listOf(null to distintas.first())
+            else -> conTexto.distinctBy { it.observaciones.trim() }
+                .map { it.descripcion.ifBlank { it.articulo } to it.observaciones.trim() }
+        }
+        val hay = observaciones.isNotEmpty()
+        binding.btnObservaciones.isEnabled = true
+        binding.btnObservaciones.alpha = 1f
+        binding.dotObservaciones.visibility = if (hay) View.VISIBLE else View.GONE
+        binding.btnObservaciones.contentDescription =
+            if (hay) "Ver observaciones de la factura" else "La factura no tiene observaciones"
+    }
+
+    private fun mostrarObservaciones() {
+        val sheet = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_observaciones, null)
+        view.findViewById<android.widget.TextView>(R.id.tvObsFactura).text = "Fact. ${factura?.numero.orEmpty()}"
+        val contenedor = view.findViewById<android.widget.LinearLayout>(R.id.lytObservaciones)
+        val dp = resources.displayMetrics.density
+
+        fun bloque(titulo: String?, texto: String, italica: Boolean = false) {
+            val card = android.widget.LinearLayout(this).apply {
+                orientation = android.widget.LinearLayout.VERTICAL
+                setBackgroundResource(R.drawable.bg_tarjeta_perfil)
+                val p = (14 * dp).toInt()
+                setPadding(p, p, p, p)
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { if (contenedor.childCount > 0) topMargin = (8 * dp).toInt() }
+            }
+            if (titulo != null) {
+                card.addView(android.widget.TextView(this).apply {
+                    text = titulo
+                    setTextColor(ContextCompat.getColor(context, R.color.umk_ink_muted))
+                    textSize = 12f
+                    maxLines = 2
+                    setPadding(0, 0, 0, (4 * dp).toInt())
+                })
+            }
+            card.addView(android.widget.TextView(this).apply {
+                text = texto
+                setTextColor(ContextCompat.getColor(context, if (italica) R.color.umk_ink_muted else R.color.umk_ink))
+                textSize = 15f
+                setLineSpacing(0f, 1.2f)
+                setTextIsSelectable(!italica)
+            })
+            contenedor.addView(card)
+        }
+
+        if (observaciones.isEmpty()) bloque(null, "Esta factura no tiene observaciones.", italica = true)
+        else observaciones.forEach { (titulo, texto) -> bloque(titulo, texto) }
+
+        view.findViewById<View>(R.id.btnCerrarObs).setOnClickListener { sheet.dismiss() }
+        sheet.setContentView(view)
+        sheet.show()
     }
 
     private fun showPagoDialog() {

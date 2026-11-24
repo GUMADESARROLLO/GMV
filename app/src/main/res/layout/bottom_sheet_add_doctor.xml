@@ -78,7 +78,7 @@
             android:inputType="textPersonName"
             android:maxLength="100"
             android:letterSpacing="0"
-            android:fontFamily="sans-serif" />
+            android:fontFamily="@font/archivo" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             android:letterSpacing="0"
-            android:fontFamily="sans-serif" />
+            android:fontFamily="@font/archivo" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,7 +127,7 @@
             android:inputType="phone"
             android:maxLength="15"
             android:letterSpacing="0"
-            android:fontFamily="sans-serif" />
+            android:fontFamily="@font/archivo" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,7 +150,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:letterSpacing="0"
-            android:fontFamily="sans-serif" />
+            android:fontFamily="@font/archivo" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

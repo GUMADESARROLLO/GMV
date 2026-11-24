@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.BarrasSistema
 import com.unimarksa.gmv.data.local.AppDatabase
 import com.unimarksa.gmv.data.local.OrderEntity
 import com.unimarksa.gmv.databinding.ActivityOrderDetailBinding
@@ -39,10 +40,7 @@ class OrderDetailActivity : AppCompatActivity() {
         binding = ActivityOrderDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (Build.VERSION.SDK_INT < 35) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
-        }
-        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
+        BarrasSistema.aplicar(this, R.color.umk_paper)
 
         db = AppDatabase.getInstance(this)
 

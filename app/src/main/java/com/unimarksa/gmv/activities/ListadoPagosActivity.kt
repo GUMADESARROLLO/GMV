@@ -14,9 +14,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.BarrasSistema
 import com.unimarksa.gmv.databinding.ActivityListadoPagosBinding
 import com.unimarksa.gmv.models.ItemPagoFactura
 import com.unimarksa.gmv.tools.PagoManager
+import com.unimarksa.gmv.tools.FilaPago
+import com.unimarksa.gmv.views.FilaDeslizable
+import com.google.android.material.snackbar.Snackbar
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
@@ -35,18 +39,13 @@ class ListadoPagosActivity : AppCompatActivity() {
         val namClient = intent.getStringExtra("nomCliente") ?: ""
 
 
-        if (Build.VERSION.SDK_INT >= 35) {
-            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-            val h = if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
-            val scrim = View(this)
-            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.colorUmkPrimaryDark))
-            val content = findViewById<ViewGroup>(android.R.id.content)
-            scrim.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h)
-            content.addView(scrim)
-        } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
+        BarrasSistema.aplicar(this, R.color.umk_mist)
+        // Título fijo "Pagos registrados"; subtítulo = código · nombre del cliente
+        val cliente = listOf(codClient, namClient).filter { it.isNotBlank() }.joinToString(" · ")
+        if (cliente.isNotBlank()) {
+            binding.tvClientePagos.text = cliente
+            binding.tvClientePagos.visibility = View.VISIBLE
         }
-        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
 
         binding.btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
@@ -81,58 +80,47 @@ class ListadoPagosActivity : AppCompatActivity() {
 
     private fun refreshPagos() {
         val pagos = PagoManager.pagos
-        binding.tvPagoCount.text = pagos.size.toString()
         binding.btnClearPagos.visibility = if (pagos.isEmpty()) View.GONE else View.VISIBLE
         binding.lytPagos.removeAllViews()
 
         if (pagos.isEmpty()) {
             binding.lytEmpty.visibility = View.VISIBLE
-            binding.lytPagos.visibility = View.GONE
+            binding.scrollPagos.visibility = View.GONE
             binding.btnContinuar.isEnabled = false
             binding.btnContinuar.alpha = 0.5f
         } else {
             binding.lytEmpty.visibility = View.GONE
-            binding.lytPagos.visibility = View.VISIBLE
+            binding.scrollPagos.visibility = View.VISIBLE
             binding.btnContinuar.isEnabled = true
             binding.btnContinuar.alpha = 1.0f
 
             val inflater = LayoutInflater.from(this)
             for ((idx, pago) in pagos.withIndex()) {
                 val row = inflater.inflate(R.layout.item_resumen_pago, binding.lytPagos, false)
-                row.findViewById<TextView>(R.id.id_Factura).text = "Fact. ${pago.numero}"
-                row.findViewById<TextView>(R.id.id_nc).text = "C$ ${fmt.format(pago.nc)}"
-                row.findViewById<TextView>(R.id.id_retencion).text = "C$ ${fmt.format(pago.retencion)}"
-                row.findViewById<TextView>(R.id.id_descuento).text = "C$ ${fmt.format(pago.descuento)}"
-                row.findViewById<TextView>(R.id.id_valor_recibido).text = "C$ ${fmt.format(pago.valorRecibido)}"
-                applyEstado(row, pago)
+                FilaPago.llenar(row, pago)
                 row.setOnLongClickListener {
                     removePago(idx)
                     true
                 }
-                binding.lytPagos.addView(row)
+                // Deslizar a la izquierda para eliminar (con "Deshacer")
+                val fila = FilaDeslizable(this, row)
+                fila.onEliminar = { eliminarConDeshacer(idx) }
+                binding.lytPagos.addView(fila)
             }
         }
     }
 
-    private fun applyEstado(row: View, pago: ItemPagoFactura) {
-        val color = estadoColor(pago.estado)
-        row.findViewById<View>(R.id.view_estado_bar).setBackgroundColor(color)
-        val badge = row.findViewById<TextView>(R.id.id_badge_estado)
-        badge.text = when (pago.action) {
-            "abono" -> "Bono"
-            "cancelacion" -> "Cancelacion"
-            "contado" -> "Contado"
-            else -> pago.action.replaceFirstChar { it.uppercase() }
-        }
-        badge.backgroundTintList = ColorStateList.valueOf(color)
-    }
-
-    private fun estadoColor(estado: String): Int {
-        return when (estado) {
-            "pagado" -> ContextCompat.getColor(this, R.color.green_500)
-            "parcial" -> ContextCompat.getColor(this, R.color.light_blue_400)
-            else -> ContextCompat.getColor(this, R.color.red_400)
-        }
+    private fun eliminarConDeshacer(index: Int) {
+        val pago = PagoManager.pagos.getOrNull(index) ?: return
+        PagoManager.removeAt(index)
+        refreshPagos()
+        Snackbar.make(binding.root, "Pago de Fact. ${pago.numero} eliminado", Snackbar.LENGTH_LONG)
+            .setAction("Deshacer") {
+                PagoManager.insertAt(index, pago)
+                refreshPagos()
+            }
+            .setActionTextColor(ContextCompat.getColor(this, R.color.umk_cyan))
+            .show()
     }
 
     private fun removePago(index: Int) {

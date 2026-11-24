@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.unimarksa.gmv.R
 import com.unimarksa.gmv.tools.SessionManager
@@ -21,6 +22,14 @@ class SessionScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_session_screen)
+
+        // Arriba blanco (íconos oscuros), abajo la franja azul rey continúa en la barra de navegación
+        window.statusBarColor = ContextCompat.getColor(this, R.color.umk_paper)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.umk_royal)
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = false
+        }
 
         val fullName = SessionManager.getFullName()
         val initial = fullName.firstOrNull()?.uppercaseChar()?.toString() ?: "U"
@@ -99,6 +108,8 @@ class SessionScreenActivity : AppCompatActivity() {
                 Toast.makeText(this, "No hay huellas registradas en el dispositivo", Toast.LENGTH_LONG).show()
                 irAlDashboard()
             }
+            // UNSUPPORTED / SECURITY_UPDATE_REQUIRED / STATUS_UNKNOWN: antes el toque no hacía nada (usuario atrapado)
+            else -> irAlDashboard()
         }
     }
 

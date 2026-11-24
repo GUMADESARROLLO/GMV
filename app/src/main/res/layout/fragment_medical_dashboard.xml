@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:text="Médicos"
                         android:textColor="@color/white_50"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -132,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:text="Visitas hoy"
                         android:textColor="@color/white_50"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -159,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:text="Pendientes"
                         android:textColor="@color/white_50"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
@@ -271,7 +271,7 @@
                     android:paddingVertical="3dp"
                     android:text="Próximo"
                     android:textColor="@color/green_700"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>

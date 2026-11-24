@@ -24,7 +24,7 @@
         android:text="No vencido"
         android:textSize="13sp"
         android:textColor="@color/grey_80"
-        android:fontFamily="sans-serif-medium" />
+        android:fontFamily="@font/archivo_medio" />
 
     <TextView
         android:id="@+id/tv_mora_amount"

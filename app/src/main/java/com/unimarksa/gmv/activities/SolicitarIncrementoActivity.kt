@@ -13,6 +13,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.BarrasSistema
+import com.unimarksa.gmv.tools.MetricaTile
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
@@ -27,28 +29,26 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_solicitar_incremento)
 
-        if (Build.VERSION.SDK_INT < 35) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.brand_primary_dark)
-        }
+        BarrasSistema.aplicar(this, R.color.umk_mist)
 
-        findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-            .setNavigationOnClickListener { finish() }
+        findViewById<android.view.View>(R.id.btn_back).setOnClickListener { finish() }
+        findViewById<TextView>(R.id.tvClienteSub).text =
+            listOf(intent.getStringExtra("codCliente"), intent.getStringExtra("clienteNombre"))
+                .filter { !it.isNullOrBlank() }.joinToString(" · ").ifEmpty { "Cliente" }
 
         val disponible = intent.getDoubleExtra("disponible", 0.0)
         val saldo = intent.getDoubleExtra("saldo", 0.0)
         val limite = intent.getDoubleExtra("limite", 0.0)
 
         val fmt = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
-        findViewById<TextView>(R.id.tvDisponible).text = "C$ ${fmt.format(disponible)}"
-        findViewById<TextView>(R.id.tvSaldo).text = "C$ ${fmt.format(saldo)}"
-        findViewById<TextView>(R.id.tvLimite).text = "C$ ${fmt.format(limite)}"
+        MetricaTile.llenarCredito(findViewById(android.R.id.content), limite, saldo, disponible) { "C$ ${fmt.format(it)}" }
 
         val tvBadge = findViewById<TextView>(R.id.tvBadgeExceso)
 
         setupCalculator(limite, tvBadge)
 
         val tvMotivo = findViewById<TextView>(R.id.tvMontoMotivo)
-        tvMotivo.setOnClickListener {
+        findViewById<android.view.View>(R.id.rowMotivo).setOnClickListener {
             val dialog = BottomSheetDialog(this)
             val view = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_motivo, null)
             dialog.setContentView(view)
@@ -61,10 +61,12 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
                 motivoText = etMotivo.text?.toString()?.trim() ?: ""
                 if (motivoText.isNotEmpty()) {
                     tvMotivo.text = motivoText
-                    tvMotivo.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+                    tvMotivo.setTextColor(ContextCompat.getColor(this, R.color.umk_ink))
+                    findViewById<TextView>(R.id.tvMotivoAccion).text = "Editar"
                 } else {
-                    tvMotivo.text = "Escribe el motivo del Incremento"
-                    tvMotivo.setTextColor(ContextCompat.getColor(this, R.color.available))
+                    tvMotivo.text = PLACEHOLDER_MOTIVO
+                    tvMotivo.setTextColor(ContextCompat.getColor(this, R.color.umk_ink_muted))
+                    findViewById<TextView>(R.id.tvMotivoAccion).text = "Escribir"
                 }
                 dialog.dismiss()
             }
@@ -72,8 +74,9 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
                 val text = etMotivo.text?.toString()?.trim()
                 if (text.isNullOrEmpty()) {
                     motivoText = ""
-                    tvMotivo.text = "Escribe el motivo del Incremento"
-                    tvMotivo.setTextColor(ContextCompat.getColor(this, R.color.available))
+                    tvMotivo.text = PLACEHOLDER_MOTIVO
+                    tvMotivo.setTextColor(ContextCompat.getColor(this, R.color.umk_ink_muted))
+                    findViewById<TextView>(R.id.tvMotivoAccion).text = "Escribir"
                 }
             }
             dialog.show()
@@ -82,7 +85,13 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btnEnviar).setOnClickListener {
             if (currentInput.isEmpty() || currentInput == "0" || currentInput == "0.") {
                 Snackbar.make(findViewById(R.id.btnEnviar),
-                    "Ingresa un monto vAlido", Snackbar.LENGTH_SHORT).show()
+                    "Ingresa un monto válido", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val montoNum = currentInput.toDoubleOrNull() ?: 0.0
+            if (montoNum <= limite) {
+                Snackbar.make(findViewById(R.id.btnEnviar),
+                    "El nuevo límite debe ser mayor al actual", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (motivoText.isEmpty()) {
@@ -150,18 +159,26 @@ class SolicitarIncrementoActivity : AppCompatActivity() {
 
     private fun updateDisplay(limite: Double, tvBadge: TextView, fmt: DecimalFormat) {
         val display = findViewById<TextView>(R.id.tvMontoDisplay)
-        if (currentInput.isEmpty()) {
-            display.text = "C$ 0.00"
-            tvBadge.text = "-"
-        } else {
-            val value = currentInput.toDoubleOrNull() ?: 0.0
-            display.text = "C$ ${fmt.format(value)}"
-            val exceso = value - limite
-            if (exceso > 0) {
-                tvBadge.text = "+C$ ${fmt.format(exceso)} sobre tu límite actual"
-            } else {
-                tvBadge.text = "-"
-            }
+        val badge = findViewById<android.view.View>(R.id.badge)
+        val icono = findViewById<android.view.View>(R.id.ivBadge)
+        val value = currentInput.toDoubleOrNull() ?: 0.0
+        display.text = "C$ ${fmt.format(value)}"
+        val exceso = value - limite
+        val (texto, fondo, color, conIcono) = when {
+            currentInput.isEmpty() -> Quad("Ingresa el nuevo límite", R.color.umk_mist, R.color.umk_ink_muted, false)
+            exceso > 0 -> Quad("Nuevo límite válido", R.color.umk_success_tint, R.color.umk_success, true)
+            else -> Quad("Debe ser mayor a C$ ${fmt.format(limite)}", R.color.status_pending_bg, R.color.status_pending_text, false)
         }
+        MetricaTile.llenarIncremento(findViewById(R.id.tileIncremento), value, limite) { "C$ ${fmt.format(it)}" }
+        tvBadge.text = texto
+        tvBadge.setTextColor(ContextCompat.getColor(this, color))
+        badge.backgroundTintList = ContextCompat.getColorStateList(this, fondo)
+        icono.visibility = if (conIcono) android.view.View.VISIBLE else android.view.View.GONE
+    }
+
+    private data class Quad(val texto: String, val fondo: Int, val color: Int, val icono: Boolean)
+
+    private companion object {
+        const val PLACEHOLDER_MOTIVO = "Toca para escribir el motivo"
     }
 }

@@ -66,7 +66,7 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
             selectedField = field
             fieldViews.forEach { (key, fv) ->
                 fv.container.setBackgroundResource(
-                    if (key == field) R.drawable.bg_input_selected else R.drawable.bg_input
+                    if (key == field) R.drawable.bg_campo_monto_activo else R.drawable.bg_campo_monto
                 )
             }
         }
@@ -111,10 +111,11 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
         val btnCancelacion = view.findViewById<MaterialButton>(R.id.btn_cancelacion)
         val btnContado = view.findViewById<MaterialButton>(R.id.btn_contado)
 
-        val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary)
-        val onPrimaryColor = ContextCompat.getColor(requireContext(), R.color.on_primary)
-        val strokeColor = ContextCompat.getColor(requireContext(), R.color.outline)
-        val transparent = ContextCompat.getColor(requireContext(), android.R.color.transparent)
+        val primaryColor = ContextCompat.getColor(requireContext(), R.color.umk_royal)
+        val onPrimaryColor = ContextCompat.getColor(requireContext(), R.color.umk_paper)
+        val strokeColor = ContextCompat.getColor(requireContext(), R.color.umk_line)
+        val inkColor = ContextCompat.getColor(requireContext(), R.color.umk_ink)
+        val transparent = ContextCompat.getColor(requireContext(), R.color.umk_paper)
 
         fun styleAsSelected(btn: MaterialButton) {
             btn.backgroundTintList = ColorStateList.valueOf(primaryColor)
@@ -125,9 +126,9 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
 
         fun styleAsUnselected(btn: MaterialButton) {
             btn.backgroundTintList = ColorStateList.valueOf(transparent)
-            btn.setTextColor(primaryColor)
+            btn.setTextColor(inkColor)
             btn.strokeColor = ColorStateList.valueOf(strokeColor)
-            btn.strokeWidth = 1
+            btn.strokeWidth = (1 * resources.displayMetrics.density).toInt()
         }
 
         fun selectAction(action: String) {
@@ -148,7 +149,7 @@ class PagoFacturaDialog : BottomSheetDialogFragment() {
                 }
                 "contado" -> {
                     styleAsSelected(btnContado)
-                    values[FIELD_RECIBIDO] = "%.2f".format(saldo)
+                    values[FIELD_RECIBIDO] = String.format(java.util.Locale.US, "%.2f", saldo)
                     updateDisplay()
                 }
             }

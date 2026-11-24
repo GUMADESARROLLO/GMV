@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<!-- Factura pendiente del perfil. Tocar = abrir detalle; mantener presionado = seleccionar
+     (en modo selección, tocar alterna). Seleccionada: fondo azul claro con borde azul rey y check. -->
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_tarjeta_perfil"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:strokeColor="@color/perfil_border"
-    app:strokeWidth="1dp">
+    android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="14dp"
         android:paddingVertical="14dp">
 
         <LinearLayout
@@ -27,7 +25,8 @@
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/bg_icon_circle_blue"
+            android:background="@drawable/bg_chip_pill"
+            android:backgroundTint="@color/umk_royal_tint"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -37,7 +36,7 @@
                 android:layout_height="22dp"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_receipt_long"
-                app:tint="@color/accent_primary" />
+                app:tint="@color/umk_royal" />
 
         </LinearLayout>
 
@@ -51,11 +50,11 @@
                 android:id="@+id/tv_factura_numero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
+                android:fontFeatureSettings="tnum"
                 android:text="00296830"
-                android:textColor="@color/perfil_text"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textColor="@color/umk_ink"
+                android:textFontWeight="800"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -69,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="6dp"
-                    android:background="@drawable/bg_perfil_chip"
+                    android:background="@drawable/bg_chip_pill"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="3dp"
                     android:text="Al día"
@@ -98,18 +97,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pendiente"
-                android:textColor="@color/perfil_text_muted"
-                android:textSize="11sp" />
+                android:textColor="@color/umk_ink_muted"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_factura_saldo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
+                android:fontFeatureSettings="tnum"
                 android:text="C$ 0.00"
-                android:textColor="@color/perfil_danger"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="@color/umk_danger"
+                android:textFontWeight="800"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_factura_facturado"
@@ -123,4 +122,4 @@
 
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</FrameLayout>

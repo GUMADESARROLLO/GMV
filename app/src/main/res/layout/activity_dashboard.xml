@@ -43,7 +43,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:importantForAccessibility="no"
+                        android:contentDescription="Cerrar búsqueda"
                         android:padding="10dp"
                         android:src="@drawable/ic_arrow_left"
                         android:tint="@android:color/white" />
@@ -67,7 +67,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:importantForAccessibility="no"
+                        android:contentDescription="Borrar búsqueda"
                         android:padding="10dp"
                         android:src="@drawable/ic_close"
                         android:tint="@color/grey_40"

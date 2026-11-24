@@ -42,24 +42,32 @@ class DetalleFacturaAdapter(
         holder.tvArticulo.text = item.articulo
         holder.tvDescripcion.text = item.descripcion
 
+        val ctx = holder.itemView.context
         val qty = item.cantidad.replace(",", "").trim().toDoubleOrNull() ?: 0.0
         holder.tvCantidad.text = "${"%,.0f".format(qty)} UND"
 
-        val precio = item.ventaNumerica
-        val total = qty * precio
+        // "venta" es el TOTAL de la línea (la suma de líneas da el saldo de la factura);
+        // el unitario se obtiene dividiendo entre la cantidad.
+        val totalLinea = item.ventaNumerica
+        val pad = (ctx.resources.displayMetrics.density).let { (10 * it).toInt() to (3 * it).toInt() }
 
         if (item.esBonificado) {
-            holder.tvPrecioUnitario.visibility = View.VISIBLE
-            holder.tvPrecioUnitario.text = "(BONO)"
-            holder.tvPrecioUnitario.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.available))
-            holder.tvTotalLinea.visibility = View.GONE
+            holder.tvTotalLinea.text = "Bonificado"
+            holder.tvTotalLinea.setBackgroundResource(R.drawable.bg_chip_pill)
+            holder.tvTotalLinea.backgroundTintList = ContextCompat.getColorStateList(ctx, R.color.umk_success_tint)
+            holder.tvTotalLinea.setPadding(pad.first, pad.second, pad.first, pad.second)
+            holder.tvTotalLinea.textSize = 12f
+            holder.tvPrecioUnitario.visibility = View.GONE
         } else {
-            holder.tvPrecioUnitario.visibility = View.VISIBLE
-            holder.tvPrecioUnitario.text = "C$ ${"%,.2f".format(precio)}"
-            holder.tvPrecioUnitario.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.available))
-            holder.tvTotalLinea.visibility = View.GONE
-
+            holder.tvTotalLinea.text = "C$ ${"%,.2f".format(totalLinea)}"
+            holder.tvTotalLinea.background = null
+            holder.tvTotalLinea.setPadding(0, 0, 0, 0)
+            holder.tvTotalLinea.textSize = 15f
+            holder.tvPrecioUnitario.text = if (qty > 0) "C$ ${"%,.2f".format(totalLinea / qty)} c/u" else ""
+            holder.tvPrecioUnitario.visibility = if (qty > 0) View.VISIBLE else View.GONE
         }
+        holder.itemView.contentDescription =
+            "${item.descripcion}, ${holder.tvCantidad.text}, ${holder.tvTotalLinea.text}"
     }
 
     override fun getItemCount() = items.size

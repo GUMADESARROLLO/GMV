@@ -49,7 +49,7 @@ class ListaAdapter(
 
         holder.avatar.background = GradientDrawable().apply {
             shape = GradientDrawable.OVAL
-            setColor(item.avatarBgColor.takeIf { it != 0 } ?: Color.parseColor("#BBDEFB"))
+            setColor(item.avatarBgColor.takeIf { it != 0 } ?: Color.parseColor("#E9ECF8"))
         }
 
         holder.itemView.setOnClickListener { onClick(item) }

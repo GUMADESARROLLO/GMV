@@ -22,11 +22,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.BarrasSistema
 import com.unimarksa.gmv.databinding.ActivityReciboColectorBinding
 import com.unimarksa.gmv.models.ItemPagoFactura
 import com.unimarksa.gmv.tools.ApiService
 import com.unimarksa.gmv.tools.CartManager
 import com.unimarksa.gmv.tools.PagoManager
+import com.unimarksa.gmv.tools.FilaPago
 import com.unimarksa.gmv.tools.SessionManager
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import java.text.DecimalFormat
@@ -50,18 +52,7 @@ class ReciboColectorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         binding = ActivityReciboColectorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (Build.VERSION.SDK_INT >= 35) {
-            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-            val h = if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
-            val scrim = View(this)
-            scrim.setBackgroundColor(ContextCompat.getColor(this, R.color.colorUmkPrimaryDark))
-            val content = findViewById<ViewGroup>(android.R.id.content)
-            scrim.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h)
-            content.addView(scrim)
-        } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
-        }
-        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
+        BarrasSistema.aplicar(this, R.color.umk_mist)
 
         val codCliente = intent.getStringExtra("codCliente") ?: CartManager.currentCliente?.codCliente ?: ""
         val nomCliente = intent.getStringExtra("nomCliente") ?: CartManager.currentCliente?.nombre ?: ""
@@ -94,7 +85,11 @@ class ReciboColectorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         clienteNombre = nomCliente
         if (clienteNombre.isNotEmpty() && clienteCodigo.isNotEmpty()) {
             binding.cardClient.visibility = View.VISIBLE
-            binding.tvClientName.text = "${clienteCodigo} - ${clienteNombre}"
+            binding.tvClientName.text = clienteNombre
+            binding.tvClientDireccion.text = "Código $clienteCodigo"
+            binding.tvClientAvatar.text = clienteNombre.split(" ")
+                .filter { it.isNotBlank() && it.first().isLetter() }
+                .take(2).joinToString("") { it.first().uppercase() }.ifEmpty { "CL" }
         }
         selectedDate = dateFmt.format(System.currentTimeMillis())
         binding.tvReciboFecha.text = selectedDate
@@ -109,50 +104,26 @@ class ReciboColectorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         if (pagos.isEmpty()) {
             val empty = TextView(this)
             empty.text = "No hay pagos agregados"
-            empty.setTextColor(0xFF9A9890.toInt())
-            empty.textSize = 13f
+            empty.setTextColor(ContextCompat.getColor(this, R.color.umk_ink_muted))
+            empty.textSize = 14f
             empty.gravity = android.view.Gravity.CENTER
-            empty.setPadding(0, 24, 0, 24)
+            val p = (24 * resources.displayMetrics.density).toInt()
+            empty.setPadding(0, p, 0, p)
             binding.lytPagos.addView(empty)
         } else {
             for (pago in pagos) {
                 val row = inflater.inflate(R.layout.item_resumen_pago, binding.lytPagos, false)
-                row.findViewById<TextView>(R.id.id_Factura).text = "Fact. ${pago.numero}"
-                row.findViewById<TextView>(R.id.id_nc).text = "C$ ${fmt.format(pago.nc)}"
-                row.findViewById<TextView>(R.id.id_retencion).text = "C$ ${fmt.format(pago.retencion)}"
-                row.findViewById<TextView>(R.id.id_descuento).text = "C$ ${fmt.format(pago.descuento)}"
-                row.findViewById<TextView>(R.id.id_valor_recibido).text = "C$ ${fmt.format(pago.valorRecibido)}"
-                applyEstado(row, pago)
+                FilaPago.llenar(row, pago)
                 binding.lytPagos.addView(row)
             }
         }
         updateTotals()
     }
 
-    private fun applyEstado(row: View, pago: ItemPagoFactura) {
-        val color = estadoColor(pago.estado)
-        row.findViewById<View>(R.id.view_estado_bar).setBackgroundColor(color)
-        val badge = row.findViewById<TextView>(R.id.id_badge_estado)
-        badge.text = when (pago.action) {
-            "abono" -> "Bono"
-            "cancelacion" -> "Cancelacion"
-            "contado" -> "Contado"
-            else -> pago.action.replaceFirstChar { it.uppercase() }
-        }
-        badge.backgroundTintList = ColorStateList.valueOf(color)
-    }
-
-    private fun estadoColor(estado: String): Int {
-        return when (estado) {
-            "pagado" -> ContextCompat.getColor(this, R.color.green_500)
-            "parcial" -> ContextCompat.getColor(this, R.color.light_blue_400)
-            else -> ContextCompat.getColor(this, R.color.red_400)
-        }
-    }
-
     private fun setupDatePicker() {
-        binding.tvReciboFecha.setOnClickListener {
+        binding.cardFechaRecibo.setOnClickListener {
             val now = Calendar.getInstance()
+            runCatching { dateFmt.parse(selectedDate) }.getOrNull()?.let { now.time = it }
             DatePickerDialog.newInstance(
                 this,
                 now.get(Calendar.YEAR),
@@ -180,7 +151,7 @@ class ReciboColectorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     }
 
     private fun setupReceiptNumber() {
-        binding.tvReciboNumero.setOnClickListener {
+        binding.cardNumeroRecibo.setOnClickListener {
             val dialog = Dialog(this)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.dialog_add_vineta)
@@ -280,33 +251,41 @@ class ReciboColectorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                 .show()
         }
 
-        binding.btnConfirm.setOnClickListener {
+        val deslizar = binding.btnConfirm
+        deslizar.texto = "Desliza para enviar el recibo"
+
+        fun aviso(titulo: String, mensaje: String) {
+            deslizar.reiniciar()
+            MaterialAlertDialogBuilder(this)
+                .setTitle(titulo)
+                .setMessage(mensaje)
+                .setPositiveButton("OK", null)
+                .show()
+        }
+
+        deslizar.onConfirmado = confirmar@{
             if (PagoManager.count == 0) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Sin pagos")
-                    .setMessage("Agrega al menos un pago antes de confirmar.")
-                    .setPositiveButton("OK", null)
-                    .show()
-                return@setOnClickListener
+                aviso("Sin pagos", "Agrega al menos un pago antes de enviar.")
+                return@confirmar
             }
             if (receiptNumber.isBlank()) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Campo requerido")
-                    .setMessage("Ingresa el n\u00famero de recibo antes de confirmar.")
-                    .setPositiveButton("OK", null)
-                    .show()
-                return@setOnClickListener
+                aviso("Campo requerido", "Ingresa el número de recibo antes de enviar.")
+                return@confirmar
             }
             if (selectedDate.isBlank()) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Campo requerido")
-                    .setMessage("Selecciona la fecha del recibo antes de confirmar.")
-                    .setPositiveButton("OK", null)
-                    .show()
-                return@setOnClickListener
+                aviso("Campo requerido", "Selecciona la fecha del recibo antes de enviar.")
+                return@confirmar
             }
 
-            showProgressDialog()
+            deslizar.cargando = true
+            deslizar.texto = "Enviando…"
+            binding.btnEdit.isEnabled = false
+
+            fun restaurar() {
+                deslizar.texto = "Desliza para enviar el recibo"
+                deslizar.reiniciar()
+                binding.btnEdit.isEnabled = true
+            }
 
             val ruta = SessionManager.getUsername().uppercase()
 
@@ -320,25 +299,30 @@ class ReciboColectorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                 total = PagoManager.totalRecibido,
                 observaciones = binding.etObservaciones.text.toString(),
                 onResult = { serverResponse ->
-                    dismissProgressDialog()
                     when {
                         serverResponse == "Nuevo" -> {
+                            deslizar.cargando = false
                             PagoManager.clear()
                             showSuccessDialog()
                         }
-                        serverResponse == "Existe" -> Toast.makeText(this, "El n\u00famero de recibo ya fue utilizado", Toast.LENGTH_LONG).show()
-                        serverResponse.startsWith("Error") -> Toast.makeText(this, "Error: $serverResponse", Toast.LENGTH_LONG).show()
-                        else -> Toast.makeText(this, "Respuesta: $serverResponse", Toast.LENGTH_LONG).show()
+                        serverResponse == "Existe" -> {
+                            restaurar()
+                            aviso("Recibo duplicado", "El número de recibo $receiptNumber ya fue utilizado. Cámbialo e intenta de nuevo.")
+                        }
+                        serverResponse.startsWith("Error") -> {
+                            restaurar()
+                            aviso("Error al enviar", serverResponse)
+                        }
+                        else -> {
+                            restaurar()
+                            aviso("Respuesta inesperada", serverResponse)
+                        }
                     }
                 },
                 onError = { error ->
-                    dismissProgressDialog()
                     android.util.Log.e("ReciboColector", "Error al enviar recibo: $error")
-                    MaterialAlertDialogBuilder(this)
-                        .setTitle("Error al enviar")
-                        .setMessage(error)
-                        .setPositiveButton("OK", null)
-                        .show()
+                    restaurar()
+                    aviso("Error al enviar", error)
                 }
             )
         }

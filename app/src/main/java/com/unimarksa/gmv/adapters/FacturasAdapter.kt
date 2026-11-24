@@ -70,10 +70,10 @@ class FacturasAdapter(
             return
         }
         val (texto, bg, fg) = when {
-            dias < 0 -> Triple("Vencida", R.color.perfil_chip_late_bg, R.color.perfil_chip_late_text)
-            dias == 0L -> Triple("Vence hoy", R.color.perfil_chip_soon_bg, R.color.perfil_chip_soon_text)
-            dias <= 7 -> Triple("Vence en $dias días", R.color.perfil_chip_soon_bg, R.color.perfil_chip_soon_text)
-            else -> Triple("Al día", R.color.perfil_chip_ok_bg, R.color.perfil_accent)
+            dias < 0 -> Triple("Vencida", R.color.status_cancel_bg, R.color.status_cancel_text)
+            dias == 0L -> Triple("Vence hoy", R.color.status_pending_bg, R.color.status_pending_text)
+            dias <= 7 -> Triple("Vence en $dias días", R.color.status_pending_bg, R.color.status_pending_text)
+            else -> Triple("Al día", R.color.status_active_bg, R.color.status_active_text)
         }
         tv.visibility = View.VISIBLE
         tv.text = texto
@@ -100,24 +100,35 @@ class FacturasAdapter(
         holder.tvVencimiento.text = item.vencimiento
         bindEstado(holder.tvEstado, item.vencimiento)
 
+        // setBackgroundColor reemplazaba la forma de la tarjeta (esquinas y borde); se usan drawables
         if (isSelected) {
-            holder.lytIconStatus.setBackgroundResource(R.drawable.bg_icon_circle_green)
+            holder.itemView.setBackgroundResource(R.drawable.bg_tarjeta_seleccionada)
+            holder.lytIconStatus.backgroundTintList = ContextCompat.getColorStateList(ctx, R.color.umk_royal)
             holder.ivStatusIcon.setImageResource(R.drawable.ic_check)
-            holder.ivStatusIcon.setColorFilter(ContextCompat.getColor(ctx, R.color.white))
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(ctx, R.color.accent_green_light))
+            holder.ivStatusIcon.setColorFilter(ContextCompat.getColor(ctx, R.color.umk_paper))
         } else {
-            holder.lytIconStatus.setBackgroundResource(R.drawable.bg_icon_circle_blue)
+            holder.itemView.setBackgroundResource(R.drawable.bg_tarjeta_perfil)
+            holder.lytIconStatus.backgroundTintList = ContextCompat.getColorStateList(ctx, R.color.umk_royal_tint)
             holder.ivStatusIcon.setImageResource(R.drawable.ic_receipt_long)
-            holder.ivStatusIcon.setColorFilter(ContextCompat.getColor(ctx, R.color.accent_primary))
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(ctx, android.R.color.white))
+            holder.ivStatusIcon.setColorFilter(ContextCompat.getColor(ctx, R.color.umk_royal))
         }
+        holder.itemView.isSelected = isSelected
+        holder.itemView.contentDescription =
+            "Factura ${item.numero}, saldo C$ ${"%,.2f".format(saldo)}" + if (isSelected) ", seleccionada" else ""
 
+        // En modo selección, tocar alterna; fuera de él, tocar abre el detalle
         holder.itemView.setOnClickListener {
-            onItemClick(item)
+            val pos = holder.bindingAdapterPosition
+            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+            if (selectedPositions.isNotEmpty()) toggleSelection(pos) else onItemClick(items[pos])
         }
 
         holder.itemView.setOnLongClickListener {
-            toggleSelection(position)
+            val pos = holder.bindingAdapterPosition
+            if (pos != RecyclerView.NO_POSITION) {
+                it.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+                toggleSelection(pos)
+            }
             true
         }
     }

@@ -9,7 +9,7 @@
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="12dp"
     app:cardElevation="1dp"
-    app:strokeColor="#F0F0F0"
+    app:strokeColor="@color/umk_line"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -34,7 +34,7 @@
                     android:id="@+id/tv_item_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#F5F5F5"
+                    android:background="@color/umk_mist"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_placeholder_product" />
@@ -55,7 +55,7 @@
                     android:maxLines="2"
                     android:ellipsize="end"
                     android:text="Producto"
-                    android:textColor="#1A1A18"
+                    android:textColor="@color/umk_ink"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SKU: 000000"
-                        android:textColor="#9A9890"
+                        android:textColor="@color/umk_ink_muted"
                         android:textSize="11sp" />
 
                     <TextView
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="| 2+1"
-                        android:textColor="#639922"
+                        android:textColor="@color/mora_ok"
                         android:textSize="11sp"
                         android:textStyle="bold"
                         android:visibility="gone" />
@@ -99,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="x1"
-                    android:textColor="#555450"
+                    android:textColor="@color/umk_ink_soft"
                     android:textSize="13sp" />
 
                 <TextView
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="C$ 0.00"
-                    android:textColor="#9A9890"
+                    android:textColor="@color/umk_ink_muted"
                     android:textSize="11sp" />
 
                 <TextView
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="C$ 0.00"
-                    android:textColor="#185FA5"
+                    android:textColor="@color/umk_royal"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 

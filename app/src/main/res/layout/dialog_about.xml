@@ -15,6 +15,7 @@
 
         <ImageButton
             android:id="@+id/bt_close"
+            android:contentDescription="Cerrar"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -35,8 +36,10 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:src="@drawable/logo_unimark"
-            android:tint="@color/colorPrimary" />
+            android:adjustViewBounds="true"
+            android:contentDescription="Unimark 20 años"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_unimark_20" />
 
         <TextView
             android:layout_width="wrap_content"

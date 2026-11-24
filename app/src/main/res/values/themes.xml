@@ -28,10 +28,28 @@
         <item name="colorSurfaceVariant">@color/surface_variant</item>
         <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
 
+        <!-- Superficies M3: sin esto Material usa su paleta base (lavanda) en hojas, diálogos, menús y chips -->
+        <item name="colorSurfaceBright">@color/umk_paper</item>
+        <item name="colorSurfaceDim">@color/umk_line</item>
+        <item name="colorSurfaceContainerLowest">@color/umk_paper</item>
+        <item name="colorSurfaceContainerLow">@color/umk_paper</item>
+        <item name="colorSurfaceContainer">#F7F9FC</item>
+        <item name="colorSurfaceContainerHigh">@color/umk_paper</item>
+        <item name="colorSurfaceContainerHighest">#EEF1F7</item>
+        <item name="colorSurfaceInverse">@color/umk_navy</item>
+        <item name="colorOnSurfaceInverse">@color/umk_paper</item>
+        <item name="colorPrimaryInverse">@color/umk_cyan</item>
+        <item name="colorPrimaryFixed">@color/umk_royal_tint</item>
+        <item name="colorOnPrimaryFixed">@color/umk_navy</item>
+        <item name="colorSecondaryFixed">@color/umk_cyan_tint</item>
+        <item name="colorOnSecondaryFixed">@color/umk_navy</item>
+
         <item name="colorOutline">@color/outline</item>
         <item name="colorOutlineVariant">@color/outline_variant</item>
 
-        <!-- Typography -->
+        <!-- Typography: Archivo (línea gráfica Unimark) en toda la app -->
+        <item name="android:fontFamily">@font/archivo</item>
+        <item name="fontFamily">@font/archivo</item>
         <item name="textAppearanceDisplayLarge">@style/TextAppearance.M3.DisplayLarge</item>
         <item name="textAppearanceDisplayMedium">@style/TextAppearance.M3.DisplayMedium</item>
         <item name="textAppearanceDisplaySmall">@style/TextAppearance.M3.DisplaySmall</item>
@@ -52,13 +70,15 @@
         <item name="android:statusBarColor">@color/colorUmkPrimaryDark</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Theme.GMV" parent="Base.Theme.GMV" />
 
-    <style name="Theme.GMV.Splash" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:windowBackground">#09C7A1</item>
-        <item name="android:statusBarColor">@color/colorUmkPrimaryDark</item>
+    <style name="Theme.GMV.Splash" parent="Base.Theme.GMV">
+        <item name="android:windowBackground">@color/umk_paper</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/umk_paper</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 </resources>

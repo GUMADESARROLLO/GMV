@@ -77,7 +77,7 @@
             android:paddingVertical="4dp"
             android:text="ACTIVO"
             android:textColor="@android:color/white"
-            android:textSize="9sp"
+            android:textSize="11sp"
             android:textStyle="bold" />
 
     </LinearLayout>

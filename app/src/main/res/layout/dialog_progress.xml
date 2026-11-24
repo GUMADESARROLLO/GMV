@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Enviando pedido..."
-        android:textColor="#555450"
+        android:textColor="@color/umk_ink_soft"
         android:textSize="15sp" />
 
 </LinearLayout>

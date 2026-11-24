@@ -9,14 +9,14 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:src="@drawable/img_empty_history"
-        android:tint="#BDBDBD" />
+        android:tint="@color/umk_silver" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Sin resultados"
-        android:textColor="#9E9E9E"
+        android:textColor="@color/umk_ink_muted"
         android:textSize="16sp" />
 
 </LinearLayout>

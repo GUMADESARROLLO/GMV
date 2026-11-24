@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.unimarksa.gmv.R
+import com.unimarksa.gmv.tools.BarrasSistema
 import com.unimarksa.gmv.adapters.ViewPagerAdapter
 import com.unimarksa.gmv.tools.CartManager
 import com.unimarksa.gmv.tools.Searchable
@@ -56,11 +57,8 @@ class DashboardActivity : AppCompatActivity() {
             insets
         }
 
-        if (Build.VERSION.SDK_INT < 35) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorUmkPrimaryDark)
-        }
+        BarrasSistema.aplicar(this, R.color.umk_navy)
 
-        ViewCompat.getWindowInsetsController(window.decorView)?.isAppearanceLightStatusBars = false
 
         viewPager = findViewById(R.id.viewpager)
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
@@ -88,7 +86,6 @@ class DashboardActivity : AppCompatActivity() {
         val activeColor = ContextCompat.getColor(this, R.color.nav_active_icon)
         val inactiveColor = ContextCompat.getColor(this, R.color.nav_inactive_icon)
         val activeTextColor = ContextCompat.getColor(this, R.color.nav_active_text)
-        val activeBg = ContextCompat.getDrawable(this, R.drawable.nav_active_bg)
 
         val tabs = listOf(navArticulos, navClientes, navPerfil)
         val iconViews = listOf(ivArticulos, ivClientes, ivPerfil)
@@ -97,10 +94,12 @@ class DashboardActivity : AppCompatActivity() {
         fun setActive(tab: Int) {
             tabs.forEachIndexed { i, tabLayout ->
                 val isActive = i == tab
-                textViews[i].visibility = if (isActive) View.VISIBLE else View.GONE
+                // Etiquetas siempre visibles; la activa se distingue por color y peso
                 textViews[i].setTextColor(if (isActive) activeTextColor else inactiveColor)
+                textViews[i].typeface = android.graphics.Typeface.create(
+                    textViews[i].typeface, if (isActive) 700 else 500, false)
                 iconViews[i].setColorFilter(if (isActive) activeColor else inactiveColor)
-                tabLayout.background = if (isActive) activeBg else null
+                tabLayout.isSelected = isActive
             }
             if (!isSearchOpen) toolbar.title = getTabTitle(tab)
         }

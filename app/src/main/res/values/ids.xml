@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Acción de accesibilidad personalizada de FilaDeslizable -->
+    <item name="accion_eliminar_pago" type="id" />
+</resources>

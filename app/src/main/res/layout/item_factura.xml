@@ -10,8 +10,8 @@
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="12dp"
     app:cardElevation="0dp"
-    app:rippleColor="#1A1565C0"
-    app:strokeColor="#E8ECF0"
+    app:rippleColor="#1A2B3B9E"
+    app:strokeColor="@color/umk_line"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="FAC-2025-0118"
-                    android:textColor="#1F2937"
+                    android:textColor="@color/umk_ink"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="C$ 8,400.00"
-                    android:textColor="#1F2937"
+                    android:textColor="@color/umk_ink"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="14 mayo 2025"
-                    android:textColor="#9BA3AF"
+                    android:textColor="@color/umk_ink_muted"
                     android:textSize="13sp" />
 
                 <!-- Badge de estado (el color se cambia por código) -->
@@ -117,7 +117,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:src="@drawable/ic_chevron_right"
-            app:tint="#C5CAD3" />
+            app:tint="@color/umk_silver" />
 
     </LinearLayout>
 

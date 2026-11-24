@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F6F9"
+    android:background="@color/umk_mist"
     android:fitsSystemWindows="true">
 
     <!-- ===================== TOOLBAR SIMPLE ===================== -->
@@ -60,7 +60,7 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E8ECF0"
+                app:strokeColor="@color/umk_line"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -77,7 +77,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_search"
-                        app:tint="#9BA3AF" />
+                        app:tint="@color/umk_ink_muted" />
 
                     <EditText
                         android:id="@+id/et_buscar"
@@ -86,8 +86,8 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:hint="Buscar por nº factura o monto…"
-                        android:textColorHint="#C5CAD3"
-                        android:textColor="#1F2937"
+                        android:textColorHint="@color/umk_silver"
+                        android:textColor="@color/umk_ink"
                         android:textSize="13sp"
                         android:paddingStart="10dp"
                         android:inputType="text"
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="FACTURAS"
-                        android:textColor="#9BA3AF"
+                        android:textColor="@color/umk_ink_muted"
                         android:textSize="11sp"
                         android:letterSpacing="0.10"
                         android:textStyle="bold" />
@@ -145,7 +145,7 @@
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp"
                         android:text="18 resultados"
-                        android:textColor="#1565C0"
+                        android:textColor="@color/umk_royal"
                         android:textSize="11sp"
                         android:textStyle="bold" />
 
@@ -191,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="Cargando historial..."
-                android:textColor="#9BA3AF"
+                android:textColor="@color/umk_ink_muted"
                 android:textSize="13sp" />
         </LinearLayout>
     </FrameLayout>
